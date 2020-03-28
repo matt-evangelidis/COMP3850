@@ -15,6 +15,10 @@ public class Login : MonoBehaviour
     private string Password;
     private String[] lines;
     private String DecryptedPassword;
+
+    public void forgetPassword() {
+        warning.GetComponent<Text>().text = "Please contact your admin for support!";
+    }
     public void LoginButton() {
 
         bool UN = false; //username
