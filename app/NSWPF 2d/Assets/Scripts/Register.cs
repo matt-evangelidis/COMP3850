@@ -117,7 +117,8 @@ public class Register : MonoBehaviour
         }
         else 
         {
-            Debug.LogWarning("Password feild EMPTY!");
+            warning.GetComponent<Text>().text = "Password field EMPTY!";
+            Debug.LogWarning("Password field EMPTY!");
             return;
         }
 

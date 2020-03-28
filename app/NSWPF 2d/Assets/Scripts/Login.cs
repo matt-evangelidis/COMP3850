@@ -35,7 +35,7 @@ public class Login : MonoBehaviour
             }
             else
             {
-                warning.GetComponent<Text>().text = "Username doesn't exist";
+                warning.GetComponent<Text>().text = "Username doesn't exist or password is wrong!";
                 Debug.LogWarning("Username doesn't exist");
                 return;
             }
@@ -53,6 +53,7 @@ public class Login : MonoBehaviour
             if (System.IO.File.Exists(@"database/" + Username + ".txt"))
             {
                 int i = 1;
+                DecryptedPassword = "";
                 foreach (char c in lines[2])
                 {
                     char Decrypted = (char)(c / i);
