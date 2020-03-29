@@ -4,19 +4,28 @@ using System;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Login : MonoBehaviour
 {
     public GameObject username;
     public GameObject password;
     public GameObject warning;
+    public GameObject register;
 
     private string Username;
     private string Password;
     private String[] lines;
     private String DecryptedPassword;
 
-    public void forgetPassword() {
+    public void registerButton()
+    {
+        //Application.LoadLevel("Register Menu");
+        SceneManager.LoadScene("Register Menu");
+    }
+
+    public void forgetPassword() 
+    {
         warning.GetComponent<Text>().text = "Please contact your admin for support!";
     }
     public void LoginButton() {
@@ -27,10 +36,10 @@ public class Login : MonoBehaviour
         //validate username
         if (Username != "")
         {
-            if (System.IO.File.Exists(@"database/" + Username + ".txt"))
+            if (System.IO.File.Exists(@"database/login/" + Username + ".txt"))
             {
                 UN = true;
-                lines = System.IO.File.ReadAllLines(@"database/" + Username + ".txt");
+                lines = System.IO.File.ReadAllLines(@"database/login/" + Username + ".txt");
                 warning.GetComponent<Text>().text = "";
             }
             else
@@ -50,11 +59,11 @@ public class Login : MonoBehaviour
         // validate password
         if (Password != "")
         {
-            if (System.IO.File.Exists(@"database/" + Username + ".txt"))
+            if (System.IO.File.Exists(@"database/login/" + Username + ".txt"))
             {
                 int i = 1;
                 DecryptedPassword = "";
-                foreach (char c in lines[2])
+                foreach (char c in lines[4])
                 {
                     char Decrypted = (char)(c / i);
                     DecryptedPassword += Decrypted.ToString();
@@ -88,10 +97,11 @@ public class Login : MonoBehaviour
 
         if (UN == true && PW == true) 
         {
+            print("Login Successful");
+            //Application.LoadLevel("Main Menu");
+            SceneManager.LoadScene("Main Menu");
             username.GetComponent<InputField>().text = "";
             password.GetComponent<InputField>().text = "";
-            print("Login Successful");
-            Application.LoadLevel("Main Menu");
         }
 
     }
