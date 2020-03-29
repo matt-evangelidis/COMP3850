@@ -4,6 +4,7 @@ using System;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Register : MonoBehaviour
 {
@@ -12,13 +13,17 @@ public class Register : MonoBehaviour
     public GameObject password;
     public GameObject confPassword;
     public GameObject warning;
+    public GameObject firstName;
+    public GameObject lastName;
 
-    private string   Username;
-    private string   Email;
-    private string   Password;
-    private string   ConfPassword;
-    private string   form;
-    private bool     EmailValid = false;
+    private string Username;
+    private string Email;
+    private string Password;
+    private string ConfPassword;
+    private string FirstName;
+    private string LastName;
+    private string form;
+    private bool   EmailValid = false;
 
     // Start is called before the first frame update
     void Start()
@@ -26,19 +31,55 @@ public class Register : MonoBehaviour
         
     }
 
+    public void CancelRegister() 
+    {
+        SceneManager.LoadScene("Login Menu");
+    }
+
     public void RegisterButton() {
 
+        bool FN  = false; //first name
+        bool LN  = false; //last name
         bool UN  = false; //username
         bool EM  = false; //email
         bool PW  = false; //password
         bool CPW = false; //Confirm password
 
+        //validate first name
+        if (FirstName != "")
+        {
+            FN = true;
+            warning.GetComponent<Text>().text = "";
+        }
+        else
+        {
+            warning.GetComponent<Text>().text = "First Name is EMPTY!";
+            Debug.LogWarning("First Name is EMPTY!");
+            return;
+        }
+
+        //validate lastname
+        if(LastName != "")
+        {
+            LN = true;
+            warning.GetComponent<Text>().text = "";
+        }
+        else
+        {
+            warning.GetComponent<Text>().text = "Last Name is EMPTY!";
+            Debug.LogWarning("Last Name is EMPTY!");
+            return;
+        }
+
         //validate username
 
         if (Username != "")
         {
+            if (!System.IO.Directory.Exists(@"database/login/")) {
+                System.IO.Directory.CreateDirectory(@"database/login/");
+            }
 
-            if (!System.IO.File.Exists(@"database/" + Username + ".txt"))
+            if (!System.IO.File.Exists(@"database/login/" + Username + ".txt"))
             {
                 UN = true;
                 warning.GetComponent<Text>().text = "";
@@ -144,9 +185,10 @@ public class Register : MonoBehaviour
             return;
         }
 
-        //encrypt password
-        if (UN == true && EM == true && PW == true && CPW == true) 
+        
+        if (FN == true && LN == true && UN == true && EM == true && PW == true && CPW == true) 
         {
+            //encrypt password
             bool Clear = true;
             int i = 1;
             foreach (char c in Password) {
@@ -158,14 +200,17 @@ public class Register : MonoBehaviour
                 Password += Encrypted.ToString();
                 i++;
             }
-            form = (Username + "\n" + Email + "\n" + Password);
-            System.IO.File.WriteAllText(@"database/"+Username+".txt",form);
+            form = (FirstName + "\n" + LastName + "\n" + Username + "\n" + Email + "\n" + Password);
+            System.IO.File.WriteAllText(@"database/login/" + Username+".txt",form);
+            //warning.GetComponent<Text>().text = "Registration complete";
+            SceneManager.LoadScene("Register Success");
 
+            firstName.GetComponent<InputField>().text = "";
+            lastName.GetComponent<InputField>().text = "";
             username.GetComponent<InputField>().text = "";
             email.GetComponent<InputField>().text = "";
             password.GetComponent<InputField>().text = "";
             confPassword.GetComponent<InputField>().text = "";
-            warning.GetComponent<Text>().text = "Registration complete";
         }
     }
 
@@ -174,6 +219,14 @@ public class Register : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Tab)) {
 
+            if (firstName.GetComponent<InputField>().isFocused)
+            {
+                lastName.GetComponent<InputField>().Select();
+            }
+            if (lastName.GetComponent<InputField>().isFocused)
+            {
+                username.GetComponent<InputField>().Select();
+            }
             if (username.GetComponent<InputField>().isFocused) {
                 email.GetComponent<InputField>().Select();
             }
@@ -188,16 +241,18 @@ public class Register : MonoBehaviour
 
         }
 
-        if (Input.GetKeyDown(KeyCode.Return)) {
-            if (Username != "" && Email != "" && Password != "" && ConfPassword != "") {
-                RegisterButton();
-            }
-        }
+        FirstName = firstName.GetComponent<InputField>().text;
+        LastName = lastName.GetComponent<InputField>().text;
         Username = username.GetComponent<InputField>().text;
         Email = email.GetComponent<InputField>().text;
         Password = password.GetComponent<InputField>().text;
         ConfPassword = confPassword.GetComponent<InputField>().text;
 
+        if (Input.GetKeyDown(KeyCode.Return)) {
+            if (FirstName != "" && LastName != "" && Username != "" && Email != "" && Password != "" && ConfPassword != "") {
+                RegisterButton();
+            }
+        }
     }
 
     void EmailValidation() {
