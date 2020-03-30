@@ -15,6 +15,7 @@ public class Register : MonoBehaviour
     public GameObject warning;
     public GameObject firstName;
     public GameObject lastName;
+    public GameObject role;
 
     private string Username;
     private string Email;
@@ -22,13 +23,21 @@ public class Register : MonoBehaviour
     private string ConfPassword;
     private string FirstName;
     private string LastName;
+    private string Role;
     private string form;
+
     private bool   EmailValid = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        firstName.GetComponent<InputField>().text = "";
+        lastName.GetComponent<InputField>().text = "";
+        username.GetComponent<InputField>().text = "";
+        email.GetComponent<InputField>().text = "";
+        password.GetComponent<InputField>().text = "";
+        confPassword.GetComponent<InputField>().text = "";
+        role.GetComponent<Dropdown>().captionText.text = "Choose your role";
     }
 
     public void CancelRegister() 
@@ -44,12 +53,15 @@ public class Register : MonoBehaviour
         bool EM  = false; //email
         bool PW  = false; //password
         bool CPW = false; //Confirm password
+        bool R   = false; //role
+
+        warning.GetComponent<Text>().text = "";
 
         //validate first name
         if (FirstName != "")
         {
             FN = true;
-            warning.GetComponent<Text>().text = "";
+            //warning.GetComponent<Text>().text = "";
         }
         else
         {
@@ -62,7 +74,7 @@ public class Register : MonoBehaviour
         if(LastName != "")
         {
             LN = true;
-            warning.GetComponent<Text>().text = "";
+            //warning.GetComponent<Text>().text = "";
         }
         else
         {
@@ -82,7 +94,7 @@ public class Register : MonoBehaviour
             if (!System.IO.File.Exists(@"database/login/" + Username + ".txt"))
             {
                 UN = true;
-                warning.GetComponent<Text>().text = "";
+                //warning.GetComponent<Text>().text = "";
             }
             else
             {
@@ -110,7 +122,7 @@ public class Register : MonoBehaviour
                     if (Email.Contains("."))
                     {
                         EM = true;
-                        warning.GetComponent<Text>().text = "";
+                        //warning.GetComponent<Text>().text = "";
                     }
                     else
                     {
@@ -147,7 +159,7 @@ public class Register : MonoBehaviour
             if (Password.Length > 5)
             {
                 PW = true;
-                warning.GetComponent<Text>().text = "";
+                //warning.GetComponent<Text>().text = "";
             }
             else
             {
@@ -169,7 +181,7 @@ public class Register : MonoBehaviour
             if (ConfPassword.Equals(Password))
             {
                 CPW = true;
-                warning.GetComponent<Text>().text = "";
+                //warning.GetComponent<Text>().text = "";
             }
             else
             {
@@ -185,8 +197,21 @@ public class Register : MonoBehaviour
             return;
         }
 
+        //validate role
+        if (!Role.Equals("Choose your role"))
+        {
+            R = true;
+        }
+        else
+        {
+            warning.GetComponent<Text>().text = "You must choose your role!";
+            Debug.LogWarning("You must choose your role!");
+            return;
+        }
+
+
         
-        if (FN == true && LN == true && UN == true && EM == true && PW == true && CPW == true) 
+        if (FN == true && LN == true && UN == true && EM == true && PW == true && CPW == true && R == true) 
         {
             //encrypt password
             bool Clear = true;
@@ -200,17 +225,20 @@ public class Register : MonoBehaviour
                 Password += Encrypted.ToString();
                 i++;
             }
-            form = (FirstName + "\n" + LastName + "\n" + Username + "\n" + Email + "\n" + Password);
+            form = (FirstName + "\n" + LastName + "\n" + Username + "\n" + Email + "\n" + Password + "\n" + Role);
             System.IO.File.WriteAllText(@"database/login/" + Username+".txt",form);
             //warning.GetComponent<Text>().text = "Registration complete";
             SceneManager.LoadScene("Register Success");
 
+            /*
             firstName.GetComponent<InputField>().text = "";
             lastName.GetComponent<InputField>().text = "";
             username.GetComponent<InputField>().text = "";
             email.GetComponent<InputField>().text = "";
             password.GetComponent<InputField>().text = "";
             confPassword.GetComponent<InputField>().text = "";
+            role.GetComponent<Dropdown>().captionText.text = "Choose your role";
+            */
         }
     }
 
@@ -247,11 +275,11 @@ public class Register : MonoBehaviour
         Email = email.GetComponent<InputField>().text;
         Password = password.GetComponent<InputField>().text;
         ConfPassword = confPassword.GetComponent<InputField>().text;
+        Role = role.GetComponent<Dropdown>().captionText.text;
 
         if (Input.GetKeyDown(KeyCode.Return)) {
-            if (FirstName != "" && LastName != "" && Username != "" && Email != "" && Password != "" && ConfPassword != "") {
-                RegisterButton();
-            }
+            RegisterButton();
+            
         }
     }
 

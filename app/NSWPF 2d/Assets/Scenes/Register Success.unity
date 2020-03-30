@@ -564,11 +564,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 618938325}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a74d652e5355a648bd03787ac034802, type: 3}
+  m_Script: {fileID: 11500000, guid: d6828436b2e4a1f4587d07f1ea59a2c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  login: {fileID: 491619127}
-  register: {fileID: 1815728909}
+  toLogin: {fileID: 491619127}
+  toRegister: {fileID: 1815728909}
 --- !u!1 &642980922
 GameObject:
   m_ObjectHideFlags: 0

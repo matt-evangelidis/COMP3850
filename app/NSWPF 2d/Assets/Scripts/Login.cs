@@ -32,20 +32,55 @@ public class Login : MonoBehaviour
 
         bool UN = false; //username
         bool PW = false; //password
+        string Role = "";
+
+        warning.GetComponent<Text>().text = "";
 
         //validate username
         if (Username != "")
         {
-            if (System.IO.File.Exists(@"database/login/" + Username + ".txt"))
+            // validate password
+            if (Password != "")
             {
-                UN = true;
-                lines = System.IO.File.ReadAllLines(@"database/login/" + Username + ".txt");
-                warning.GetComponent<Text>().text = "";
+                if (System.IO.File.Exists(@"database/login/" + Username + ".txt"))
+                {
+                    UN = true;
+                    lines = System.IO.File.ReadAllLines(@"database/login/" + Username + ".txt");
+                    //warning.GetComponent<Text>().text = "";
+
+                    //decrypt password in the database and compare
+                    int i = 1;
+                    DecryptedPassword = "";
+                    foreach (char c in lines[4])
+                    {
+                        char Decrypted = (char)(c / i);
+                        DecryptedPassword += Decrypted.ToString();
+                        i++;
+                    }
+                    if (Password.Equals(DecryptedPassword))
+                    {
+                        PW = true;
+                        Role = lines[5];
+                        //warning.GetComponent<Text>().text = "";
+                    }
+                    else
+                    {
+                        warning.GetComponent<Text>().text = "Username doesn't exist or password is wrong!";
+                        Debug.LogWarning("password is wrong!");
+                        return;
+                    }
+                }
+                else
+                {
+                    warning.GetComponent<Text>().text = "Username doesn't exist or password is wrong!";
+                    Debug.LogWarning("Username doesn't exist");
+                    return;
+                }
             }
-            else
+            else //pass word is empty
             {
-                warning.GetComponent<Text>().text = "Username doesn't exist or password is wrong!";
-                Debug.LogWarning("Username doesn't exist");
+                warning.GetComponent<Text>().text = "Password must not be EMPTY!";
+                Debug.LogWarning("Password must not be EMPTY!");
                 return;
             }
         }
@@ -56,50 +91,16 @@ public class Login : MonoBehaviour
             return;
         }
 
-        // validate password
-        if (Password != "")
-        {
-            if (System.IO.File.Exists(@"database/login/" + Username + ".txt"))
-            {
-                int i = 1;
-                DecryptedPassword = "";
-                foreach (char c in lines[4])
-                {
-                    char Decrypted = (char)(c / i);
-                    DecryptedPassword += Decrypted.ToString();
-                    i++;
-                }
-                if (Password.Equals(DecryptedPassword))
-                {
-                    PW = true;
-                    warning.GetComponent<Text>().text = "";
-                }
-                else
-                {
-                    warning.GetComponent<Text>().text = "Username doesn't exist or password is wrong!";
-                    Debug.LogWarning("password is wrong!");
-                    return;
-                }
-            }
-            else 
-            {
-                warning.GetComponent<Text>().text = "Username doesn't exist or password is wrong!";
-                Debug.LogWarning("Username doesn't exist ");
-                return;
-            }
-        }
-        else
-        {
-            warning.GetComponent<Text>().text = "Password must not be EMPTY!";
-            Debug.LogWarning("Password must not be EMPTY!");
-            return;
-        }
-
         if (UN == true && PW == true) 
         {
-            print("Login Successful");
-            //Application.LoadLevel("Main Menu");
-            SceneManager.LoadScene("Main Menu");
+            if (Role.Equals("Learner"))
+            {
+                SceneManager.LoadScene("Main Menu");
+
+            } else if (Role.Equals("Supervisor")) {
+
+                SceneManager.LoadScene("Supervisor Menu");
+            }
             username.GetComponent<InputField>().text = "";
             password.GetComponent<InputField>().text = "";
         }
@@ -127,10 +128,7 @@ public class Login : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Return))
         {
-            if (Username != "" && Password != "" )
-            {
-                LoginButton();
-            }
+            LoginButton();
         }
         Username = username.GetComponent<InputField>().text;
         Password = password.GetComponent<InputField>().text;

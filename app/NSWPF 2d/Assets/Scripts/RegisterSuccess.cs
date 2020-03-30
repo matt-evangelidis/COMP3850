@@ -8,8 +8,13 @@ using UnityEngine.SceneManagement;
 
 public class RegisterSuccess : MonoBehaviour
 {
-    public GameObject login;
-    public GameObject register;
+    public GameObject toLogin;
+    public GameObject toRegister;
+    // Start is called before the first frame update
+    void Start()
+    {
+        
+    }
 
     public void ProceedToLogin()
     {
@@ -18,11 +23,6 @@ public class RegisterSuccess : MonoBehaviour
     public void BackToRegister()
     {
         SceneManager.LoadScene("Register Menu");
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
     }
 
     // Update is called once per frame
