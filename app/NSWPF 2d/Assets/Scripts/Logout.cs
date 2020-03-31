@@ -4,9 +4,12 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 
-public class MainMenu : MonoBehaviour
+public class Logout : MonoBehaviour
 {
+
+
     // Start is called before the first frame update
     void Start()
     {

@@ -13,8 +13,11 @@ public class Login : MonoBehaviour
     public GameObject warning;
     public GameObject register;
 
+    public static string fullName; //we will send this to the main menu welcome text
     private string Username;
     private string Password;
+    private string firstName;
+    private string lastName;
     private String[] lines;
     private String DecryptedPassword;
 
@@ -93,6 +96,11 @@ public class Login : MonoBehaviour
 
         if (UN == true && PW == true) 
         {
+            // edited by Lin: send name to main menu welcome text
+            lines = System.IO.File.ReadAllLines(@"database/login/" + Username  + ".txt");
+            firstName = lines[0];
+            lastName = lines[1];
+            fullName = firstName + ' ' + lastName;
             if (Role.Equals("Learner"))
             {
                 SceneManager.LoadScene("Main Menu");
