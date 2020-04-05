@@ -946,8 +946,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -191.59991, y: -83.75}
-  m_SizeDelta: {x: 346.8, y: 33.300003}
+  m_AnchoredPosition: {x: -190.23996, y: -84.229996}
+  m_SizeDelta: {x: 380.48, y: 34.27}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &632326680
 MonoBehaviour:
@@ -1685,8 +1685,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -175.97, y: -36}
-  m_SizeDelta: {x: 351.95, y: 62.2}
+  m_AnchoredPosition: {x: -190.24, y: -44.22}
+  m_SizeDelta: {x: 380.48, y: 45.76}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1623529293
 MonoBehaviour:
@@ -1708,10 +1708,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 40
+    m_FontSize: 25
     m_FontStyle: 1
     m_BestFit: 0
-    m_MinSize: 4
+    m_MinSize: 2
     m_MaxSize: 70
     m_Alignment: 3
     m_AlignByGeometry: 0
@@ -1719,7 +1719,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: NSWPF Learning
+  m_Text: NSWPF Learning Environment
 --- !u!222 &1623529294
 CanvasRenderer:
   m_ObjectHideFlags: 0
