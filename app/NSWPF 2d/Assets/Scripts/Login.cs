@@ -14,6 +14,7 @@ public class Login : MonoBehaviour
     public GameObject register;
 
     public static string fullName; //we will send this to the main menu welcome text
+    public static string globalUsername;
     private string Username;
     private string Password;
     private string firstName;
@@ -101,6 +102,7 @@ public class Login : MonoBehaviour
             firstName = lines[0];
             lastName = lines[1];
             fullName = firstName + ' ' + lastName;
+            globalUsername = Username;
             if (Role.Equals("Learner"))
             {
                 SceneManager.LoadScene("Main Menu");
@@ -141,4 +143,5 @@ public class Login : MonoBehaviour
         Username = username.GetComponent<InputField>().text;
         Password = password.GetComponent<InputField>().text;
     }
+
 }
