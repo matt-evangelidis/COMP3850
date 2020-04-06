@@ -8,8 +8,13 @@ public class Quiz : MonoBehaviour
 {
     public GameObject build;
     public GameObject[] buttons;
+    public GameObject[] textboxes;
+    public Quiz global;
+    public Button next;
+    public int count = 0;
+    private int total;
     private string _title;
-    private List<Question> _questions;
+    private List<Question> _questions = new List<Question>();
     public string title { get { return _title; } set { _title = value; } }
     public List<Question> questions { get { return _questions; } set { _questions = value; } }
     
@@ -71,13 +76,13 @@ public class Quiz : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        next.onClick.AddListener(Next);
         List<Question> t = new List<Question>();
-        Quiz q = new Quiz("searching", t);
-        build_questions(q.questions);
-        for(int i = 0; i < buttons.Length; i++)
+        global = new Quiz("searching", t);
+        build_questions(global.questions);
+        for(int i = 0; i < textboxes.Length; i++)
         {
-            buttons[i].GetComponentInChildren<Text>().text = q.questions[0].answers[i].text;
-            //buttons[i].GetComponent<Text>().text = q.questions[0].answers[i].text;
+            textboxes[i].GetComponent<Text>().text = global.questions[0].answers[i].text;
         }
 
     }
@@ -85,10 +90,17 @@ public class Quiz : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
-
+    public void Next()
+    {
+        count++;
+        for (int j = 0; j < textboxes.Length; j++)
+        {
+            textboxes[j].GetComponent<Text>().text = global.questions[count].answers[j].text;
+        }
+    }
 
     public void Test()
     {
