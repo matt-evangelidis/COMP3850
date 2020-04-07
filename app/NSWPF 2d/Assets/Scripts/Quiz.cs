@@ -3,16 +3,24 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class Quiz : MonoBehaviour
 {
+    //gameobject variables
     public GameObject build;
     public GameObject[] buttons;
-    public GameObject[] textboxes;
-    public Quiz global;
+    public GameObject questiontext;
+    public GameObject warning;
+    Quiz global;
     public Button next;
-    public int count = 0;
-    private int total;
+
+    //counting variables
+    int count = 0;
+    public Answer current;
+    public int total;
+    
+    //class variables
     private string _title;
     private List<Question> _questions = new List<Question>();
     public string title { get { return _title; } set { _title = value; } }
@@ -31,7 +39,7 @@ public class Quiz : MonoBehaviour
         if (System.IO.File.Exists(@"database/quiz/searching.txt"))
         {
             //array for reading
-            String[] lines = System.IO.File.ReadAllLines(@"database/quiz/searching.txt");
+            string[] lines = System.IO.File.ReadAllLines(@"database/quiz/searching.txt");
 
             for (int i = 0; i < lines.Length; i++)
             {
@@ -49,11 +57,11 @@ public class Quiz : MonoBehaviour
                 }
 
                 //set correct field
-                int len = temp.Length - 1;
-                len = Int32.Parse(temp[len]);
-                a[len].correct = true;
+                int len = Int32.Parse(temp[temp.Length-1]);
+                //len = Int32.Parse(temp[len]);
+                a[len-1].correct = true;
 
-                //build question, 
+                //build question
                 Question te = new Question(temp[0], a);
                 q.Add(te);
             }
@@ -76,15 +84,19 @@ public class Quiz : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //button setup
         next.onClick.AddListener(Next);
+
+        //quiz setup
         List<Question> t = new List<Question>();
         global = new Quiz("searching", t);
         build_questions(global.questions);
-        for(int i = 0; i < textboxes.Length; i++)
-        {
-            textboxes[i].GetComponent<Text>().text = global.questions[0].answers[i].text;
-        }
 
+        questiontext.GetComponent<Text>().text = global.questions[count].question;
+        for(int i = 0; i < buttons.Length; i++)
+        {
+            buttons[i].GetComponentInChildren<Text>().text = global.questions[count].answers[i].text;
+        }
     }
 
     // Update is called once per frame
@@ -95,11 +107,53 @@ public class Quiz : MonoBehaviour
 
     public void Next()
     {
-        count++;
-        for (int j = 0; j < textboxes.Length; j++)
+        if (current.text != "")
         {
-            textboxes[j].GetComponent<Text>().text = global.questions[count].answers[j].text;
+            if (current.correct)
+            {
+                total++;
+            }
+
+            count++;
+            for (int i = 0; i < buttons.Length; i++)
+            {
+                buttons[i].GetComponentInChildren<Text>().text = global.questions[count].answers[i].text;
+            }
+            questiontext.GetComponent<Text>().text = global.questions[count].question;
         }
+        else
+        {
+            warning.GetComponent<Text>().text = "Please select an answer before pressing next";
+        }
+    }
+
+    public void Select(GameObject b, Answer a) // question buttons
+    {
+        //Debug.Log(b.ToString() + " selected: " + current.text);
+        current = a;
+        Debug.Log(b.ToString() + " selected: " + current.text);
+        Debug.Log(a.correct.ToString());
+    }
+
+    public void Select1()
+    {
+        Select(buttons[0], global.questions[count].answers[0]);
+
+    }
+
+    public void Select2()
+    {
+        Select(buttons[1], global.questions[count].answers[1]);
+    }
+
+    public void Select3()
+    {
+        Select(buttons[2], global.questions[count].answers[2]);
+    }
+
+    public void Select4()
+    {
+        Select(buttons[3], global.questions[count].answers[3]);
     }
 
     public void Test()
@@ -123,8 +177,6 @@ public class Question : MonoBehaviour
         question = q;
         answers = a;
     }
-
-
 }
 
 public class Answer : MonoBehaviour
