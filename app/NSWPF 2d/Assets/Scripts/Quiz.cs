@@ -14,10 +14,11 @@ public class Quiz : MonoBehaviour
     public GameObject warning;
     Quiz global;
     public Button next;
+    public Button back;
 
     //counting variables
-    int count = 0;
-    public Answer current;
+    int count;
+    Answer current;
     public int total;
     
     //class variables
@@ -86,12 +87,15 @@ public class Quiz : MonoBehaviour
     {
         //button setup
         next.onClick.AddListener(Next);
+        back.onClick.AddListener(Back);
 
         //quiz setup
         List<Question> t = new List<Question>();
         global = new Quiz("searching", t);
         build_questions(global.questions);
 
+        //display first question and answer text
+        count = 0;
         questiontext.GetComponent<Text>().text = global.questions[count].question;
         for(int i = 0; i < buttons.Length; i++)
         {
@@ -127,6 +131,17 @@ public class Quiz : MonoBehaviour
         }
     }
 
+    public void Back()
+    {
+        count--;
+        total--;
+        for (int i = 0; i < buttons.Length; i++)
+        {
+            buttons[i].GetComponentInChildren<Text>().text = global.questions[count].answers[i].text;
+        }
+        questiontext.GetComponent<Text>().text = global.questions[count].question;
+    }
+
     public void Select(GameObject b, Answer a) // question buttons
     {
         //Debug.Log(b.ToString() + " selected: " + current.text);
@@ -138,7 +153,6 @@ public class Quiz : MonoBehaviour
     public void Select1()
     {
         Select(buttons[0], global.questions[count].answers[0]);
-
     }
 
     public void Select2()
