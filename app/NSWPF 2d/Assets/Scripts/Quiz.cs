@@ -13,20 +13,24 @@ public class Quiz : MonoBehaviour
     public GameObject questiontext;
     public GameObject warning;
     Quiz global;
+    List<Question> records;
     public Button next;
     public Button back;
+    public GameObject page;
+    public Button submit;
+    public GameObject result;
 
     //counting variables
     int count;
-    Answer current;
+    Answer current; //the selected Button on the page
     public int total;
-    
+
     //class variables
     private string _title;
     private List<Question> _questions = new List<Question>();
     public string title { get { return _title; } set { _title = value; } }
     public List<Question> questions { get { return _questions; } set { _questions = value; } }
-    
+
     public Quiz(string t, List<Question> q) //constructor
     {
         title = t;
@@ -58,9 +62,8 @@ public class Quiz : MonoBehaviour
                 }
 
                 //set correct field
-                int len = Int32.Parse(temp[temp.Length-1]);
-                //len = Int32.Parse(temp[len]);
-                a[len-1].correct = true;
+                int len = Int32.Parse(temp[temp.Length - 1]) - 1;
+                a[len].correct = true;
 
                 //build question
                 Question te = new Question(temp[0], a);
@@ -85,22 +88,25 @@ public class Quiz : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //button setup
-        next.onClick.AddListener(Next);
-        back.onClick.AddListener(Back);
-
         //quiz setup
         List<Question> t = new List<Question>();
         global = new Quiz("searching", t);
         build_questions(global.questions);
 
+        //chosen answer setup
+        records = new List<Question>();
+
+        //button setup
+        next.onClick.AddListener(Next);
+        back.onClick.AddListener(Back);
+        submit.interactable = false;
+
+        //update display
+        UpdatePage();
+
         //display first question and answer text
         count = 0;
-        questiontext.GetComponent<Text>().text = global.questions[count].question;
-        for(int i = 0; i < buttons.Length; i++)
-        {
-            buttons[i].GetComponentInChildren<Text>().text = global.questions[count].answers[i].text;
-        }
+        UpdateQA();
     }
 
     // Update is called once per frame
@@ -111,35 +117,140 @@ public class Quiz : MonoBehaviour
 
     public void Next()
     {
-        if (current.text != "")
+        try
         {
-            if (current.correct)
+            if (current.text != "")
             {
-                total++;
-            }
+                //record answer
+                UpdateRecord();
 
-            count++;
-            for (int i = 0; i < buttons.Length; i++)
-            {
-                buttons[i].GetComponentInChildren<Text>().text = global.questions[count].answers[i].text;
+                //increase count
+                Increment();
+
+                //update display
+                UpdateQA();
+                UpdatePage();
             }
-            questiontext.GetComponent<Text>().text = global.questions[count].question;
         }
-        else
-        {
+        catch (NullReferenceException)
+        {   
             warning.GetComponent<Text>().text = "Please select an answer before pressing next";
         }
     }
 
     public void Back()
     {
-        count--;
-        total--;
+        //decrease count
+        Decrement();
+
+        if (count < 0)
+        {
+            count = 0;
+        }
+        if (count > 0)
+        { 
+            UpdateRecord();
+        }
+
+        UpdateQA();
+        UpdatePage();
+    }
+
+    public void UpdateQA()
+    {
+        warning.GetComponent<Text>().text = "";
+        questiontext.GetComponent<Text>().text = global.questions[count].question;
+        
         for (int i = 0; i < buttons.Length; i++)
         {
             buttons[i].GetComponentInChildren<Text>().text = global.questions[count].answers[i].text;
+            //Debug.Log("break");
         }
-        questiontext.GetComponent<Text>().text = global.questions[count].question;
+    }
+
+    public void Increment()
+    {
+        count++;
+    }
+    public void Decrement()
+    {
+        count--;
+    }
+
+    public void UpdatePage()
+    {
+        int c1 = count + 1;
+        string temp = c1.ToString();
+        page.GetComponent<Text>().text = temp + "/" + global.questions.Count.ToString();
+        //Debug.Log(global.questions.Count);
+
+        // next button active
+        if (count == global.questions.Count - 1)
+        {
+            next.gameObject.SetActive(false);
+            submit.interactable = true;
+        }
+        if (count < global.questions.Count - 1)
+        {
+            submit.interactable = false;
+            next.gameObject.SetActive(true);
+        }
+
+        //back button active
+        
+    }
+
+    public void UpdateRecord()
+    {
+
+        if (count == 0 && records.Count < 1)//check if new record
+        {
+            records.Add(new Question(global.questions[count].question, new List<Answer>()));//add current question text, empty Answer List
+            records[count].answers.Add(current);//add current to empty Answer List
+        }
+        else if (records.Count > 0)
+        {
+            if (count > 0)
+            { 
+                if (!(records[count - 1].question.Equals(global.questions[count].question)))
+                {
+                    records.Add(new Question(global.questions[count].question, new List<Answer>()));
+                    records[count].answers.Add(current);
+                    Debug.Log("working " + global.questions[count].question);
+                }
+            }
+        }
+
+/*        Debug.Log(records.Count);
+        foreach (Question q in records)
+        {
+            Debug.Log(q.question);
+            foreach (Answer a in q.answers)
+            {
+                Debug.Log(a.text);
+            }
+        }*/
+    }
+
+    public void Submit()
+    {
+        int sum = 0;
+        foreach (Question q in records)
+        {
+            foreach (Answer a in q.answers)
+            {
+                if (a.correct)
+                {
+                    sum++;
+                }
+            }
+        }
+        if (current.correct)
+        {
+            sum++;
+        }
+        result.GetComponent<Text>().text = sum.ToString() + " out of " + global.questions.Count;
+        Debug.Log("Total = " + sum.ToString());
     }
 
     public void Select(GameObject b, Answer a) // question buttons
@@ -168,14 +279,6 @@ public class Quiz : MonoBehaviour
     public void Select4()
     {
         Select(buttons[3], global.questions[count].answers[3]);
-    }
-
-    public void Test()
-    {
-        List<Question> t = new List<Question>();
-        Quiz q = new Quiz("searching", t);
-        build_questions(t);
-        print(q);
     }
 }
 
