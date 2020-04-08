@@ -15,7 +15,6 @@ public class Register : MonoBehaviour
     public GameObject warning;
     public GameObject firstName;
     public GameObject lastName;
-    public GameObject role;
 
     private string Username;
     private string Email;
@@ -23,7 +22,7 @@ public class Register : MonoBehaviour
     private string ConfPassword;
     private string FirstName;
     private string LastName;
-    private string Role;
+    private string Role = "Learner";
     private string form;
 
     private bool   EmailValid = false;
@@ -37,7 +36,6 @@ public class Register : MonoBehaviour
         email.GetComponent<InputField>().text = "";
         password.GetComponent<InputField>().text = "";
         confPassword.GetComponent<InputField>().text = "";
-        role.GetComponent<Dropdown>().captionText.text = "Choose your role";
     }
 
     public void CancelRegister() 
@@ -226,19 +224,10 @@ public class Register : MonoBehaviour
                 i++;
             }
             form = (FirstName + "\n" + LastName + "\n" + Username + "\n" + Email + "\n" + Password + "\n" + Role);
-            System.IO.File.WriteAllText(@"database/login/learner/" + Username+".txt",form);
+            System.IO.File.WriteAllText(@"database/login/learner/" + Username + ".txt", form);
+
             //warning.GetComponent<Text>().text = "Registration complete";
             SceneManager.LoadScene("Register Success");
-
-            /*
-            firstName.GetComponent<InputField>().text = "";
-            lastName.GetComponent<InputField>().text = "";
-            username.GetComponent<InputField>().text = "";
-            email.GetComponent<InputField>().text = "";
-            password.GetComponent<InputField>().text = "";
-            confPassword.GetComponent<InputField>().text = "";
-            role.GetComponent<Dropdown>().captionText.text = "Choose your role";
-            */
         }
     }
 
@@ -275,7 +264,6 @@ public class Register : MonoBehaviour
         Email = email.GetComponent<InputField>().text;
         Password = password.GetComponent<InputField>().text;
         ConfPassword = confPassword.GetComponent<InputField>().text;
-        Role = role.GetComponent<Dropdown>().captionText.text;
 
         if (Input.GetKeyDown(KeyCode.Return)) {
             RegisterButton();
