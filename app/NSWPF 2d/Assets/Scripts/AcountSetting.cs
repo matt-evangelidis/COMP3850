@@ -48,9 +48,9 @@ public class AcountSetting : MonoBehaviour
     void Start()
     {
         Username = Login.globalUsername;
-        if (System.IO.File.Exists(@"database/login/" + Username + ".txt"))
+        if (System.IO.File.Exists(@"database/login/learner/" + Username + ".txt"))
         {
-            lines = System.IO.File.ReadAllLines(@"database/login/" + Username + ".txt");
+            lines = System.IO.File.ReadAllLines(@"database/login/learner/" + Username + ".txt");
             username.GetComponent<TextMeshProUGUI>().text = Username;
             firstName.GetComponent<InputField>().text = lines[0];
             lastName.GetComponent<InputField>().text = lines[1];
@@ -241,7 +241,7 @@ public class AcountSetting : MonoBehaviour
                     i++;
                 }
                 form = (FirstName + "\n" + LastName + "\n" + Username + "\n" + Email + "\n" + Password + "\n" + Role);
-                System.IO.File.WriteAllText(@"database/login/" + Username + ".txt", form);
+                System.IO.File.WriteAllText(@"database/login/learner/" + Username + ".txt", form);
                 edit = false;
                 warning.GetComponent<Text>().text = "Changes are saved!";
                 curPassword.GetComponent<InputField>().text = "";

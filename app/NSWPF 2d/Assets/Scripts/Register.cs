@@ -87,11 +87,11 @@ public class Register : MonoBehaviour
 
         if (Username != "")
         {
-            if (!System.IO.Directory.Exists(@"database/login/")) {
-                System.IO.Directory.CreateDirectory(@"database/login/");
+            if (!System.IO.Directory.Exists(@"database/login/learner/")) {
+                System.IO.Directory.CreateDirectory(@"database/login/learner/");
             }
 
-            if (!System.IO.File.Exists(@"database/login/" + Username + ".txt"))
+            if (!System.IO.File.Exists(@"database/login/learner/" + Username + ".txt"))
             {
                 UN = true;
                 //warning.GetComponent<Text>().text = "";
@@ -226,7 +226,7 @@ public class Register : MonoBehaviour
                 i++;
             }
             form = (FirstName + "\n" + LastName + "\n" + Username + "\n" + Email + "\n" + Password + "\n" + Role);
-            System.IO.File.WriteAllText(@"database/login/" + Username+".txt",form);
+            System.IO.File.WriteAllText(@"database/login/learner/" + Username+".txt",form);
             //warning.GetComponent<Text>().text = "Registration complete";
             SceneManager.LoadScene("Register Success");
 

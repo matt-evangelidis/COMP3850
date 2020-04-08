@@ -46,10 +46,10 @@ public class Login : MonoBehaviour
             // validate password
             if (Password != "")
             {
-                if (System.IO.File.Exists(@"database/login/" + Username + ".txt"))
+                if (System.IO.File.Exists(@"database/login/learner/" + Username + ".txt"))
                 {
                     UN = true;
-                    lines = System.IO.File.ReadAllLines(@"database/login/" + Username + ".txt");
+                    lines = System.IO.File.ReadAllLines(@"database/login/learner/" + Username + ".txt");
                     //warning.GetComponent<Text>().text = "";
 
                     //decrypt password in the database and compare
@@ -98,7 +98,7 @@ public class Login : MonoBehaviour
         if (UN == true && PW == true) 
         {
             // edited by Lin: send name to main menu welcome text
-            lines = System.IO.File.ReadAllLines(@"database/login/" + Username  + ".txt");
+            lines = System.IO.File.ReadAllLines(@"database/login/learner/" + Username  + ".txt");
             firstName = lines[0];
             lastName = lines[1];
             fullName = firstName + ' ' + lastName;
@@ -120,7 +120,7 @@ public class Login : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
