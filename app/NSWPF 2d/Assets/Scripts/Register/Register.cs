@@ -89,6 +89,15 @@ public class Register : MonoBehaviour
                 System.IO.Directory.CreateDirectory(@"database/login/learner/");
             }
 
+            if (Username.Length >= 5)
+            {
+                if (Username.Substring(0, 5).Equals("admin"))
+                {
+                    warning.GetComponent<Text>().text = "cannot start username with 'admin' keywords";
+                    return;
+                }
+            }
+
             if (!System.IO.File.Exists(@"database/login/learner/" + Username + ".txt"))
             {
                 UN = true;

@@ -94,6 +94,109 @@ public class AcountSetting : MonoBehaviour
         Password = password.GetComponent<InputField>().text;
         ConfPassword = confPassword.GetComponent<InputField>().text;
 
+        
+        //do everything in here
+        bool FN = false; //first name
+        bool LN = false; //last name
+        bool EM = false; //email
+        bool newPW = false; // true if only new password
+        bool CurPW = false; // current password
+        bool PW = false; //password
+        bool CPW = false; //Confirm password
+
+        //validate first name
+        if (FirstName != "")
+        {
+            FN = true;
+            //warning.GetComponent<Text>().text = "";
+        }
+        else
+        {
+            warning.GetComponent<Text>().text = "First Name is EMPTY!";
+            Debug.LogWarning("First Name is EMPTY!");
+            return;
+        }
+
+        //validate lastname
+        if (LastName != "")
+        {
+            LN = true;
+            //warning.GetComponent<Text>().text = "";
+        }
+        else
+        {
+            warning.GetComponent<Text>().text = "Last Name is EMPTY!";
+            Debug.LogWarning("Last Name is EMPTY!");
+            return;
+        }
+
+        //validate email
+
+        if (Email != "")
+        {
+            EmailValidation();
+            if (EmailValid)
+            {
+                if (Email.Contains("@"))
+                {
+                    if (Email.Contains("."))
+                    {
+                        EM = true;
+                        //warning.GetComponent<Text>().text = "";
+                    }
+                    else
+                    {
+                        warning.GetComponent<Text>().text = "Unvalid Email";
+                        Debug.LogWarning("Unvalid Email.");
+                        return;
+                    }
+                }
+                else
+                {
+                    warning.GetComponent<Text>().text = "Unvalid Email";
+                    Debug.LogWarning("Unvalid Email@");
+                    return;
+                }
+            }
+            else
+            {
+                warning.GetComponent<Text>().text = "Unvalid Email";
+                Debug.LogWarning("Unvalid Email");
+                return;
+            }
+        }
+        else
+        {
+            warning.GetComponent<Text>().text = "Email field EMPTY!";
+            Debug.LogWarning("Email field EMPTY!");
+            return;
+        }
+
+        //validate password
+
+        if (Password != "")
+        {
+            newPW = true;
+            if (Password.Length > 5)
+            {
+                PW = true;
+                //warning.GetComponent<Text>().text = "";
+            }
+            else
+            {
+                warning.GetComponent<Text>().text = "Password must be at least 6 characters long";
+                Debug.LogWarning("Password must be at least 6 characters long");
+                return;
+            }
+        }
+        else
+        {
+            newPW = false;
+            Debug.LogWarning("Password field EMPTY!");
+        }
+
+
+
         //decrypt password in the database and compare
         int i = 1;
         DecryptedPassword = "";
@@ -103,107 +206,22 @@ public class AcountSetting : MonoBehaviour
             DecryptedPassword += Decrypted.ToString();
             i++;
         }
-        if (CurPassword.Equals(DecryptedPassword))
+
+        if (CurPassword.Equals(DecryptedPassword)) 
         {
-            //do everything in here
-            bool FN = false; //first name
-            bool LN = false; //last name
-            bool EM = false; //email
-            bool PW = false; //password
-            bool CPW = false; //Confirm password
+            CurPW = true;
+        }
+        else
+        {
+            CurPW = false;
+            warning.GetComponent<Text>().text = "Current password is INCORRECT!";
+            Debug.LogWarning("current password is wrong!");
+            return;
+        }
 
-            //validate first name
-            if (FirstName != "")
-            {
-                FN = true;
-                //warning.GetComponent<Text>().text = "";
-            }
-            else
-            {
-                warning.GetComponent<Text>().text = "First Name is EMPTY!";
-                Debug.LogWarning("First Name is EMPTY!");
-                return;
-            }
-
-            //validate lastname
-            if (LastName != "")
-            {
-                LN = true;
-                //warning.GetComponent<Text>().text = "";
-            }
-            else
-            {
-                warning.GetComponent<Text>().text = "Last Name is EMPTY!";
-                Debug.LogWarning("Last Name is EMPTY!");
-                return;
-            }
-
-            //validate email
-
-            if (Email != "")
-            {
-                EmailValidation();
-                if (EmailValid)
-                {
-                    if (Email.Contains("@"))
-                    {
-                        if (Email.Contains("."))
-                        {
-                            EM = true;
-                            //warning.GetComponent<Text>().text = "";
-                        }
-                        else
-                        {
-                            warning.GetComponent<Text>().text = "Unvalid Email";
-                            Debug.LogWarning("Unvalid Email.");
-                            return;
-                        }
-                    }
-                    else
-                    {
-                        warning.GetComponent<Text>().text = "Unvalid Email";
-                        Debug.LogWarning("Unvalid Email@");
-                        return;
-                    }
-                }
-                else
-                {
-                    warning.GetComponent<Text>().text = "Unvalid Email";
-                    Debug.LogWarning("Unvalid Email");
-                    return;
-                }
-            }
-            else
-            {
-                warning.GetComponent<Text>().text = "Email field EMPTY!";
-                Debug.LogWarning("Email field EMPTY!");
-                return;
-            }
-
-            //validate password
-
-            if (Password != "")
-            {
-                if (Password.Length > 5)
-                {
-                    PW = true;
-                    //warning.GetComponent<Text>().text = "";
-                }
-                else
-                {
-                    warning.GetComponent<Text>().text = "Password must be at least 6 characters long";
-                    Debug.LogWarning("Password must be at least 6 characters long");
-                    return;
-                }
-            }
-            else
-            {
-                warning.GetComponent<Text>().text = "Password field EMPTY!";
-                Debug.LogWarning("Password field EMPTY!");
-                return;
-            }
-
-            //validate confirm password
+        //validate confirm password
+        if (newPW == true)
+        {
             if (ConfPassword != "")
             {
                 if (ConfPassword.Equals(Password))
@@ -224,8 +242,19 @@ public class AcountSetting : MonoBehaviour
                 Debug.LogWarning("Confirm Password field EMPTY");
                 return;
             }
+        }
+        else if (newPW == false) 
+        {
+            if (ConfPassword != "") 
+            {
+                warning.GetComponent<Text>().text = "Confirm Password must match the new password";
+                Debug.LogWarning("No new password but confirm password is filled");
+            }
+        }
 
-            if (FN == true && LN == true && EM == true && PW == true && CPW == true)
+        if (newPW == true)
+        {
+            if (FN == true && LN == true && EM == true && CurPW == true && PW == true && CPW == true)
             {
                 bool Clear = true;
                 i = 1;
@@ -247,15 +276,37 @@ public class AcountSetting : MonoBehaviour
                 curPassword.GetComponent<InputField>().text = "";
                 password.GetComponent<InputField>().text = "";
                 confPassword.GetComponent<InputField>().text = "";
-
+                Login.fullName = FirstName + " " + LastName;
             }
         }
-        else
+        else if (newPW == false)
         {
-            warning.GetComponent<Text>().text = "Current password is INCORRECT!";
-            Debug.LogWarning("current password is wrong!");
-            return;
+            if (FN == true && LN == true && EM == true && CurPW == true) 
+            {
+                bool Clear = true;
+                i = 1;
+                foreach (char c in CurPassword)
+                {
+                    if (Clear)
+                    {
+                        CurPassword = "";
+                        Clear = false;
+                    }
+                    char Encrypted = (char)(c * i);
+                    CurPassword += Encrypted.ToString();
+                    i++;
+                }
+                form = (FirstName + "\n" + LastName + "\n" + Username + "\n" + Email + "\n" + CurPassword + "\n" + Role);
+                System.IO.File.WriteAllText(@"database/login/learner/" + Username + ".txt", form);
+                edit = false;
+                warning.GetComponent<Text>().text = "Changes are saved!";
+                curPassword.GetComponent<InputField>().text = "";
+                password.GetComponent<InputField>().text = "";
+                confPassword.GetComponent<InputField>().text = "";
+                Login.fullName = FirstName + " " + LastName;
+            }
         }
+        
 
     }
 

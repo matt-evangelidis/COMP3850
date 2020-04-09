@@ -15,6 +15,7 @@ public class Login : MonoBehaviour
 
     public static string fullName; //we will send this to the main menu welcome text
     public static string globalUsername;
+    public static string globalRole;
     private string Username;
     private string Password;
     private string firstName;
@@ -32,6 +33,70 @@ public class Login : MonoBehaviour
     {
         warning.GetComponent<Text>().text = "Please contact your admin for support!";
     }
+
+    private bool adminLogin() {
+        if (Username.Length < 5) return false;
+        if (!Username.Substring(0, 5).Equals("admin")) {
+            return false;
+        }
+        bool PW = false; //password
+        // validate password
+        if (Password != "")
+        {
+            if (System.IO.File.Exists(@"database/login/admin/" + Username + ".txt"))
+            {
+                lines = System.IO.File.ReadAllLines(@"database/login/admin/" + Username + ".txt");
+                //warning.GetComponent<Text>().text = "";
+
+                //decrypt password in the database and compare
+                int i = 1;
+                DecryptedPassword = "";
+                foreach (char c in lines[4])
+                {
+                    char Decrypted = (char)(c / i);
+                    DecryptedPassword += Decrypted.ToString();
+                    i++;
+                }
+                if (Password.Equals(DecryptedPassword))
+                {
+                    PW = true;
+                }
+                else
+                {
+                    warning.GetComponent<Text>().text = "Username doesn't exist or password is wrong!";
+                    Debug.LogWarning("password is wrong!");
+                    return false;
+                }
+            }
+            else
+            {
+                warning.GetComponent<Text>().text = "Username doesn't exist or password is wrong!";
+                Debug.LogWarning("Username doesn't exist");
+                return false;
+            }
+        }
+        else //password is empty
+        {
+            warning.GetComponent<Text>().text = "Password must not be EMPTY!";
+            Debug.LogWarning("Password must not be EMPTY!");
+            return false;
+        }
+
+        if (PW == true) {
+            lines = System.IO.File.ReadAllLines(@"database/login/admin/" + Username + ".txt");
+            firstName = lines[0];
+            lastName = lines[1];
+            fullName = firstName + ' ' + lastName;
+            globalUsername = Username;
+            globalRole = lines[5];
+
+            SceneManager.LoadScene("Admin Menu");
+            
+            username.GetComponent<InputField>().text = "";
+            password.GetComponent<InputField>().text = "";
+        }
+        return PW;
+    }
     public void LoginButton() {
 
         bool UN = false; //username
@@ -40,9 +105,18 @@ public class Login : MonoBehaviour
 
         warning.GetComponent<Text>().text = "";
 
+        if (adminLogin() == true) return;
+
         //validate username
         if (Username != "")
         {
+            if (Username.Length >= 5)
+            {
+                if (Username.Substring(0, 5).Equals("admin"))
+                {
+                    adminLogin();
+                }
+            }
             // validate password
             if (Password != "")
             {
@@ -95,7 +169,7 @@ public class Login : MonoBehaviour
             return;
         }
 
-        if (UN == true && PW == true) 
+        if (UN == true && PW == true)
         {
             // edited by Lin: send name to main menu welcome text
             lines = System.IO.File.ReadAllLines(@"database/login/learner/" + Username  + ".txt");
