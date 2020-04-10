@@ -91,7 +91,7 @@ public class Register : MonoBehaviour
 
             if (Username.Length >= 5)
             {
-                if (Username.Substring(0, 5).Equals("admin"))
+                if (Username.Substring(0, 5).Equals("admin", StringComparison.OrdinalIgnoreCase) || Username.Substring(0,5).Equals("nswpf", StringComparison.OrdinalIgnoreCase))
                 {
                     warning.GetComponent<Text>().text = "cannot start username with 'admin' keywords";
                     return;
@@ -269,7 +269,7 @@ public class Register : MonoBehaviour
 
         FirstName = firstName.GetComponent<InputField>().text;
         LastName = lastName.GetComponent<InputField>().text;
-        Username = username.GetComponent<InputField>().text;
+        Username = username.GetComponent<InputField>().text.ToLower();
         Email = email.GetComponent<InputField>().text;
         Password = password.GetComponent<InputField>().text;
         ConfPassword = confPassword.GetComponent<InputField>().text;

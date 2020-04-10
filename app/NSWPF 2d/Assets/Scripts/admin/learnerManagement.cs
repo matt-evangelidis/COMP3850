@@ -8,7 +8,7 @@ using UnityEngine.EventSystems;
 using UnityEditorInternal;
 using UnityEngine.SceneManagement;
 
-public class learnerManagement : MonoBehaviour
+public class LearnerManagement : MonoBehaviour
 {
     public void backtoAdminMenu() {
         SceneManager.LoadScene("Admin Menu");

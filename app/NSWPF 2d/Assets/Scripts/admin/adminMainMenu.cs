@@ -8,7 +8,7 @@ using UnityEngine.EventSystems;
 using UnityEditorInternal;
 using UnityEngine.SceneManagement;
 
-public class adminMainMenu : MonoBehaviour
+public class AdminMainMenu : MonoBehaviour
 {
     public GameObject adminBtn;
     public GameObject supervisorBtn;

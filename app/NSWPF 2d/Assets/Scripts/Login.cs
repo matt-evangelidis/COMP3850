@@ -36,7 +36,7 @@ public class Login : MonoBehaviour
 
     private bool adminLogin() {
         if (Username.Length < 5) return false;
-        if (!Username.Substring(0, 5).Equals("admin")) {
+        if (!Username.Substring(0, 5).Equals("admin", StringComparison.OrdinalIgnoreCase)) {
             return false;
         }
         bool PW = false; //password
@@ -112,7 +112,7 @@ public class Login : MonoBehaviour
         {
             if (Username.Length >= 5)
             {
-                if (Username.Substring(0, 5).Equals("admin"))
+                if (Username.Substring(0, 5).Equals("admin", StringComparison.OrdinalIgnoreCase))
                 {
                     adminLogin();
                 }
