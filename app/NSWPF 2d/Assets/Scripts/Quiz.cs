@@ -101,6 +101,8 @@ public class Quiz : MonoBehaviour
         back.onClick.AddListener(Back);
         submit.interactable = false;
 
+        result.GetComponent<Text>().text = "";
+
         //update display
         UpdatePage();
 
