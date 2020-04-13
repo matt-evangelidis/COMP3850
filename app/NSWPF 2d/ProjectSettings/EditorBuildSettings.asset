@@ -47,4 +47,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Admin/Admin Edit User.unity
     guid: 2516dc0a28699a74ea464f9d55207733
+  - enabled: 1
+    path: Assets/Scenes/Quiz/Quiz Menu.unity
+    guid: 193ae9d6cdfbac34283f3315f740dc3b
+  - enabled: 1
+    path: Assets/Scenes/Quiz/Quiz Result.unity
+    guid: 2ae1585e447062345a48c6a1d1eb1cbc
   m_configObjects: {}
