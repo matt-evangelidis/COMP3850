@@ -177,6 +177,7 @@ public class Login : MonoBehaviour
             lastName = lines[1];
             fullName = firstName + ' ' + lastName;
             globalUsername = Username;
+            globalRole = Role;
             if (Role.Equals("Learner"))
             {
                 SceneManager.LoadScene("Main Menu");
