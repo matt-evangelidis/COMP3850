@@ -394,6 +394,7 @@ MonoBehaviour:
   userEntry: {fileID: 2109468915}
   warning: {fileID: 706950627}
   content: {fileID: 1186270709}
+  backToSupervisorMainBtnTxt: {fileID: 873093661}
 --- !u!114 &212171751
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -866,7 +867,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 422839190}
   m_Direction: 0
   m_Value: 0
-  m_Size: 0.99999994
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

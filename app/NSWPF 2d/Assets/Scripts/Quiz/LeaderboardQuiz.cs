@@ -17,7 +17,7 @@ public class LeaderboardQuiz : MonoBehaviour
     public GameObject achievementBtn;
     public GameObject backBtn;
     public GameObject backModuleBtn;
-
+    public Text backToSupervisorMainBtnTxt;
 
     private string filePath = "database/leaderboard/quiz/";
 
@@ -29,7 +29,7 @@ public class LeaderboardQuiz : MonoBehaviour
         }
         else if (Login.globalRole.Equals("Supervisor"))
         {
-            SceneManager.LoadScene("Module Searching Supervisor");
+            SceneManager.LoadScene("Supervisor Menu");
         }
 
         // dummy field
@@ -53,6 +53,8 @@ public class LeaderboardQuiz : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        backToSupervisorMainBtnTxt.GetComponent<Text>().text = "Supervisor Menu"; // override button text
+
         if (Login.globalRole.Equals("Learner"))
         {
             achievementBtn.SetActive(true);

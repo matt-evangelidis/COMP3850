@@ -2109,6 +2109,7 @@ MonoBehaviour:
   achievementBtn: {fileID: 1727217226}
   backBtn: {fileID: 220314192}
   backModuleBtn: {fileID: 1353816649}
+  backToSupervisorMainBtnTxt: {fileID: 1183372334}
 --- !u!114 &592857852
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2570,7 +2571,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1880174537}
   m_Direction: 0
   m_Value: 0
-  m_Size: 0.99999994
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

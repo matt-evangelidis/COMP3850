@@ -14,6 +14,7 @@ public class AchievementQuiz : MonoBehaviour
     public GameObject userEntry;
     public GameObject warning;
     public GameObject content;
+    public Text backToSupervisorMainBtnTxt;
 
     private string[] lines;
     private string[] attemps;
@@ -21,7 +22,18 @@ public class AchievementQuiz : MonoBehaviour
     private string filePath = "database/leaderboard/quiz/";
 
     public void backToModule() {
-        SceneManager.LoadScene("Module Searching");
+        if(Login.globalRole.Equals("Learner"))
+        {
+            SceneManager.LoadScene("Module Searching");
+        }
+        else if (Login.globalRole.Equals("Supervisor"))
+        {
+            
+            SceneManager.LoadScene("Supervisor Menu");
+        }
+
+        // dummy field
+        // SceneManager.LoadScene("Module Searching");
     }
 
     public void toLeaderboard() {
@@ -31,6 +43,8 @@ public class AchievementQuiz : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        backToSupervisorMainBtnTxt.GetComponent<Text>().text = "Supervisor Menu"; // override button text
+
         if (!System.IO.File.Exists(@filePath + Login.globalUsername + ".txt"))
         {
             warning.GetComponent<Text>().text = "Internal error, please contact admin";
