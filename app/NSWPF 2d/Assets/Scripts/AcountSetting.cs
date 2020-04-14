@@ -94,8 +94,24 @@ public class AcountSetting : MonoBehaviour
     public void cancelEdit() {
         edit = false;
     }
+
+    // backToMenu extended by Lin: (instance ref, reusing code from BackToMainMenu.cs)
     public void backToMenu() {
-        SceneManager.LoadScene("Main Menu");
+        BackToMainMenu btmm = gameObject.AddComponent<BackToMainMenu>();
+        // equiv to BackToMainMenu btmm = new BackToMainMenu();
+        // but Unity doesn't like it 
+        btmm.ToMain();
+
+        // Or alternatively like this, but 255 code smells :)
+        //if (Login.globalRole.Equals("Learner"))
+        //    SceneManager.LoadScene("Main Menu");
+        //else if (Login.globalRole.Equals("Supervisor"))
+        //    SceneManager.LoadScene("Supervisor Menu");
+        //else if (Login.globalRole.Equals("Admin")
+        //{ 
+            // To be extended
+            // SceneManager.LoadScene("Admin Menu");
+        //}
     }
     public void saveChange() {
         FirstName = firstName.GetComponent<InputField>().text;

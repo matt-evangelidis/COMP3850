@@ -29,9 +29,18 @@ public class BackToMainMenu : MonoBehaviour
         // Debug.Log(Login.globalRole);
         // Debug.Log(_role);
         if (_role == "Learner")
+        {
             SceneManager.LoadScene("Main Menu");
+        }
         else if (_role == "Supervisor")
+        {
             SceneManager.LoadScene("Supervisor Menu");
+        }
+        else if (_role == "Admin")
+        {
+            // To be extended
+            // SceneManager.LoadScene("Admin Menu");
+        }
         else
         {
             Debug.Log("BOOM! You didn't start the game at login scene.");
