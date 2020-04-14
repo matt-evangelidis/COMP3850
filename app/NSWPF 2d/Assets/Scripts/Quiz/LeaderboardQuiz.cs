@@ -23,7 +23,17 @@ public class LeaderboardQuiz : MonoBehaviour
 
     public void backToModule()
     {
-        SceneManager.LoadScene("Module Searching");
+        if (Login.globalRole.Equals("Learner"))
+        {
+            SceneManager.LoadScene("Module Searching");
+        }
+        else if (Login.globalRole.Equals("Supervisor"))
+        {
+            SceneManager.LoadScene("Module Searching Supervisor");
+        }
+
+        // dummy field
+        // SceneManager.LoadScene("Module Searching");
     }
 
     public void toAchievement()
