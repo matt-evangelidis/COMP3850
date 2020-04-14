@@ -43,14 +43,25 @@ public class AcountSetting : MonoBehaviour
 
     private bool edit = false;
 
+    private string pathLearner = "database/login/learner/";
+    private string pathSupervisor = "database/login/supervisor/";
+    private string path = "";
 
     // Start is called before the first frame update
     void Start()
     {
-        Username = Login.globalUsername;
-        if (System.IO.File.Exists(@"database/login/learner/" + Username + ".txt"))
+        if (Login.globalRole.Equals("Supervisor"))
         {
-            lines = System.IO.File.ReadAllLines(@"database/login/learner/" + Username + ".txt");
+            path = pathSupervisor;
+        }
+        else if (Login.globalRole.Equals("Learner"))
+        {
+            path = pathLearner;
+        }
+        Username = Login.globalUsername;
+        if (System.IO.File.Exists(@path + Username + ".txt"))
+        {
+            lines = System.IO.File.ReadAllLines(@path + Username + ".txt");
             username.GetComponent<TextMeshProUGUI>().text = Username;
             firstName.GetComponent<InputField>().text = lines[0];
             lastName.GetComponent<InputField>().text = lines[1];
@@ -270,7 +281,7 @@ public class AcountSetting : MonoBehaviour
                     i++;
                 }
                 form = (FirstName + "\n" + LastName + "\n" + Username + "\n" + Email + "\n" + Password + "\n" + Role);
-                System.IO.File.WriteAllText(@"database/login/learner/" + Username + ".txt", form);
+                System.IO.File.WriteAllText(@path + Username + ".txt", form);
                 edit = false;
                 warning.GetComponent<Text>().text = "Changes are saved!";
                 curPassword.GetComponent<InputField>().text = "";
@@ -297,7 +308,7 @@ public class AcountSetting : MonoBehaviour
                     i++;
                 }
                 form = (FirstName + "\n" + LastName + "\n" + Username + "\n" + Email + "\n" + CurPassword + "\n" + Role);
-                System.IO.File.WriteAllText(@"database/login/learner/" + Username + ".txt", form);
+                System.IO.File.WriteAllText(@path + Username + ".txt", form);
                 edit = false;
                 warning.GetComponent<Text>().text = "Changes are saved!";
                 curPassword.GetComponent<InputField>().text = "";

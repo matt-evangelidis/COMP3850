@@ -14,6 +14,10 @@ public class LeaderboardQuiz : MonoBehaviour
     public GameObject userEntry;
     public GameObject warning;
     public GameObject content;
+    public GameObject achievementBtn;
+    public GameObject backBtn;
+    public GameObject backModuleBtn;
+
 
     private string filePath = "database/leaderboard/quiz/";
 
@@ -26,9 +30,35 @@ public class LeaderboardQuiz : MonoBehaviour
     {
         SceneManager.LoadScene("Achievement Quiz");
     }
+
+    public void backToManagement() {
+        if (Login.globalRole.Equals("Supervisor"))
+        {
+        }
+        else if (Login.globalRole.Equals("Admin")) 
+        {
+            SceneManager.LoadScene("Learner Management");
+        }
+    }
     // Start is called before the first frame update
     void Start()
     {
+        if (Login.globalRole.Equals("Learner"))
+        {
+            achievementBtn.SetActive(true);
+            backBtn.SetActive(false);
+            backModuleBtn.SetActive(true);
+        }
+        else if (Login.globalRole.Equals("Supervisor"))
+        {
+
+        }
+        else if (Login.globalRole.Equals("Admin"))
+        {
+            achievementBtn.SetActive(false);
+            backBtn.SetActive(true);
+            backModuleBtn.SetActive(false);
+        }
         Leaderboard leaderboard = new Leaderboard(filePath);
         foreach (Achievement achievement in leaderboard.achievements) 
         {

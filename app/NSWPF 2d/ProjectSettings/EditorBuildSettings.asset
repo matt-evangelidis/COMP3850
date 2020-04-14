@@ -30,22 +30,22 @@ EditorBuildSettings:
     path: Assets/Scenes/Quiz/Module Searching.unity
     guid: 40f1460558799494ab874cf46443cbd7
   - enabled: 1
-    path: Assets/Scenes/Admin/Learner Management.unity
+    path: Assets/Scenes/Admin/Learner Management/Learner Management.unity
     guid: a90dbfc03396e2b468072f5b9a3fc802
   - enabled: 1
-    path: Assets/Scenes/Admin/Admin Management.unity
+    path: Assets/Scenes/Admin/Admin Management/Admin Management.unity
     guid: b37636f04e9290f4caeb3b12620f9a8c
   - enabled: 1
-    path: Assets/Scenes/Admin/Supervisor Management.unity
+    path: Assets/Scenes/Admin/Supervisor Management/Supervisor Management.unity
     guid: d3693752731e38f47b328ee505e5de48
   - enabled: 1
-    path: Assets/Scenes/Admin/Learner Info.unity
+    path: Assets/Scenes/Admin/Learner Management/Learner Info.unity
     guid: 8c0f16ab943774e498bc22d078d3a364
   - enabled: 1
     path: Assets/Scenes/Quiz/Leaderboard Quiz.unity
     guid: ce5ed5fa78d45ca419e579388d9b5139
   - enabled: 1
-    path: Assets/Scenes/Admin/Admin Edit User.unity
+    path: Assets/Scenes/Admin/Admin Management/Admin Edit User.unity
     guid: 2516dc0a28699a74ea464f9d55207733
   - enabled: 1
     path: Assets/Scenes/Quiz/Quiz Menu.unity
@@ -56,4 +56,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Quiz/Achievement Quiz.unity
     guid: decc93f6dfac182459746058a8699c45
+  - enabled: 1
+    path: Assets/Scenes/Admin/Supervisor Management/Create Supervisor.unity
+    guid: 4f72bf9a3fe2e6147a33317511c5a9d3
+  - enabled: 1
+    path: Assets/Scenes/Admin/Supervisor Management/Supervisor Register Success.unity
+    guid: f110bf0522a194b4abed299b4accdbe9
+  - enabled: 1
+    path: Assets/Scenes/Admin/Supervisor Management/Supervisor Info.unity
+    guid: 09801fe1be887384faba535b2a2271ae
   m_configObjects: {}

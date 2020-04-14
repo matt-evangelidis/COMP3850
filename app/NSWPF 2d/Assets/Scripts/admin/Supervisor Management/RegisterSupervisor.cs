@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class Register : MonoBehaviour
+public class RegisterSupervisor : MonoBehaviour
 {
     public GameObject username;
     public GameObject email;
@@ -22,38 +22,48 @@ public class Register : MonoBehaviour
     private string ConfPassword;
     private string FirstName;
     private string LastName;
-    private string Role = "Learner";
+    private string Role = "Supervisor";
     private string form;
 
-    private string filePath = "database/login/learner/";
+    private string filePath = "database/login/supervisor/";
 
-    private bool   EmailValid = false;
-
+    private bool EmailValid = false;
     // Start is called before the first frame update
     void Start()
     {
         firstName.GetComponent<InputField>().text = "";
         lastName.GetComponent<InputField>().text = "";
-        username.GetComponent<InputField>().text = "";
+        username.GetComponent<InputField>().text = "nswpf";
         email.GetComponent<InputField>().text = "";
         password.GetComponent<InputField>().text = "";
         confPassword.GetComponent<InputField>().text = "";
     }
-
-    public void CancelRegister() 
+    public void CancelRegister()
     {
-        SceneManager.LoadScene("Login Menu");
+        SceneManager.LoadScene("Supervisor Management");
     }
 
-    public void RegisterButton() {
+    void EmailValidation()
+    {
+        foreach (char c in Email)
+        {
+            if ((int)c > 32 && (int)c < 126)
+                EmailValid = true;
+            else
+                EmailValid = false;
+        }
+    }
 
-        bool FN  = false; //first name
-        bool LN  = false; //last name
-        bool UN  = false; //username
-        bool EM  = false; //email
-        bool PW  = false; //password
+    public void RegisterButton()
+    {
+
+        bool FN = false; //first name
+        bool LN = false; //last name
+        bool UN = false; //username
+        bool EM = false; //email
+        bool PW = false; //password
         bool CPW = false; //Confirm password
-        bool R   = false; //role
+        bool R = false; //role
 
         warning.GetComponent<Text>().text = "";
 
@@ -71,7 +81,7 @@ public class Register : MonoBehaviour
         }
 
         //validate lastname
-        if(LastName != "")
+        if (LastName != "")
         {
             LN = true;
             //warning.GetComponent<Text>().text = "";
@@ -85,19 +95,28 @@ public class Register : MonoBehaviour
 
         //validate username
 
-        if (Username != "")
+        if (Username != "" && !Username.Equals("NSWPF", StringComparison.OrdinalIgnoreCase))
         {
-            if (!System.IO.Directory.Exists(@filePath)) {
+            if (!System.IO.Directory.Exists(@filePath))
+            {
                 System.IO.Directory.CreateDirectory(@filePath);
             }
 
-            if (Username.Length >= 5)
+            if (Username.Length <= 5)
             {
-                if (Username.Substring(0, 5).Equals("admin", StringComparison.OrdinalIgnoreCase) || Username.Substring(0,5).Equals("nswpf", StringComparison.OrdinalIgnoreCase))
-                {
-                    warning.GetComponent<Text>().text = "cannot start username with 'admin' or 'nswpf' keywords";
-                    return;
-                }
+                warning.GetComponent<Text>().text = "supervisor account must start with 'nswpf'";
+                return;
+            }
+
+            if (Username.Substring(0, 5).Equals("admin", StringComparison.OrdinalIgnoreCase))
+            {
+                warning.GetComponent<Text>().text = "cannot start username with 'admin' keywords";
+                return;
+            }
+            if (!Username.Substring(0, 5).Equals("nswpf", StringComparison.OrdinalIgnoreCase))
+            {
+                warning.GetComponent<Text>().text = "supervisor account must start with 'nswpf'";
+                return;
             }
 
             if (!System.IO.File.Exists(@filePath + Username + ".txt"))
@@ -111,7 +130,7 @@ public class Register : MonoBehaviour
                 Debug.LogWarning("Username taken");
                 return;
             }
-        } 
+        }
         else
         {
             warning.GetComponent<Text>().text = "Username field EMPTY!";
@@ -140,7 +159,7 @@ public class Register : MonoBehaviour
                         return;
                     }
                 }
-                else 
+                else
                 {
                     warning.GetComponent<Text>().text = "Unvalid Email";
                     Debug.LogWarning("Unvalid Email@");
@@ -177,7 +196,7 @@ public class Register : MonoBehaviour
                 return;
             }
         }
-        else 
+        else
         {
             warning.GetComponent<Text>().text = "Password field EMPTY!";
             Debug.LogWarning("Password field EMPTY!");
@@ -199,7 +218,7 @@ public class Register : MonoBehaviour
                 return;
             }
         }
-        else 
+        else
         {
             warning.GetComponent<Text>().text = "Confirm Password field EMPTY";
             Debug.LogWarning("Confirm Password field EMPTY");
@@ -219,14 +238,16 @@ public class Register : MonoBehaviour
         }
 
 
-        
-        if (FN == true && LN == true && UN == true && EM == true && PW == true && CPW == true && R == true) 
+
+        if (FN == true && LN == true && UN == true && EM == true && PW == true && CPW == true && R == true)
         {
             //encrypt password
             bool Clear = true;
             int i = 1;
-            foreach (char c in Password) {
-                if (Clear) {
+            foreach (char c in Password)
+            {
+                if (Clear)
+                {
                     Password = "";
                     Clear = false;
                 }
@@ -238,14 +259,15 @@ public class Register : MonoBehaviour
             System.IO.File.WriteAllText(@filePath + Username + ".txt", form);
 
             //warning.GetComponent<Text>().text = "Registration complete";
-            SceneManager.LoadScene("Register Success");
+            SceneManager.LoadScene("Supervisor Register Success");
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Tab)) {
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
 
             if (firstName.GetComponent<InputField>().isFocused)
             {
@@ -255,7 +277,8 @@ public class Register : MonoBehaviour
             {
                 username.GetComponent<InputField>().Select();
             }
-            if (username.GetComponent<InputField>().isFocused) {
+            if (username.GetComponent<InputField>().isFocused)
+            {
                 email.GetComponent<InputField>().Select();
             }
             if (email.GetComponent<InputField>().isFocused)
@@ -276,19 +299,11 @@ public class Register : MonoBehaviour
         Password = password.GetComponent<InputField>().text;
         ConfPassword = confPassword.GetComponent<InputField>().text;
 
-        if (Input.GetKeyDown(KeyCode.Return)) {
-            RegisterButton();
-            
-        }
-    }
-
-    void EmailValidation() {
-        foreach (char c in Email) 
+        if (Input.GetKeyDown(KeyCode.Return))
         {
-            if ((int)c > 32 && (int)c < 126)
-                EmailValid = true;
-            else
-                EmailValid = false;
+            RegisterButton();
+
         }
+
     }
 }

@@ -33,6 +33,7 @@ public class ChooseUserToEdit : MonoBehaviour
             }
 
             AdminEdit.adminEditUsername = Username;
+            AdminEdit.adminEditRole = "Learner";
             SceneManager.LoadScene("Admin Edit User");
         }
     }

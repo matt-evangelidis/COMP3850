@@ -12,7 +12,7 @@ using TMPro;
 public class LearnerInfo : MonoBehaviour
 {
     public GameObject userEntry;
-
+    private string filePath = "database/login/learner/";
     public void backToLearnerManagement() {
         SceneManager.LoadScene("Learner Management");
     }
@@ -21,8 +21,8 @@ public class LearnerInfo : MonoBehaviour
     void Start()
     {
 
-        Cohort cohort = new Cohort();
-        foreach (Learner learner in cohort.learners)
+        Cohort cohort = new Cohort(filePath);
+        foreach (User learner in cohort.users)
         {
             GameObject go = (GameObject)Instantiate(userEntry);
             go.transform.SetParent(this.transform);
@@ -32,7 +32,7 @@ public class LearnerInfo : MonoBehaviour
             go.transform.Find("Email").GetComponent<InputField>().text = learner.email;
         }
         
-        //Destroy(userEntry);
+        Destroy(userEntry);
     }
 
     // Update is called once per frame

@@ -6,6 +6,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
+using UnityEditorInternal;
+
 public class AdminEdit : MonoBehaviour
 {
     public GameObject username;
@@ -29,6 +31,7 @@ public class AdminEdit : MonoBehaviour
     private bool edit = false;
 
     public static string adminEditUsername = "";
+    public static string adminEditRole = "";
     private string Username;
     private string Email;
     private string Password;
@@ -38,16 +41,37 @@ public class AdminEdit : MonoBehaviour
     private string LastName;
     private string Role;
     private string form;
+
+    private string pathLearner = "database/login/learner/";
+    private string pathSupervisor = "database/login/supervisor/";
+    private string path = "";
     // Start is called before the first frame update
     void Start()
     {
-        if (adminEditUsername.Equals("")) return;
-        if (!System.IO.File.Exists(@"database/login/learner/" + adminEditUsername + ".txt")) {
+        if (adminEditUsername.Equals(""))
+        {
+            warning.GetComponent<Text>().text = "Internal error, please contact develper";
+            return;
+        } else if (adminEditRole.Equals("")) 
+        {
+            warning.GetComponent<Text>().text = "Internal error, please contact develper";
+            return;
+        }
+
+        if (adminEditRole.Equals("Learner"))
+        {
+            path = pathLearner;
+        }
+        else if (adminEditRole.Equals("Supervisor")) 
+        {
+            path = pathSupervisor;
+        }
+        if (!System.IO.File.Exists(@path + adminEditUsername + ".txt")) {
             warning.GetComponent<Text>().text = "Unexpected error, please contact development team";
             Debug.LogWarning("cannot find user file");
         }
 
-        lines = System.IO.File.ReadAllLines(@"database/login/learner/" + adminEditUsername + ".txt");
+        lines = System.IO.File.ReadAllLines(@path + adminEditUsername + ".txt");
         username.GetComponentInChildren<InputField>().text = adminEditUsername;
         firstName.GetComponentInChildren<InputField>().text = lines[0];
         lastName.GetComponentInChildren<InputField>().text = lines[1];
@@ -56,9 +80,16 @@ public class AdminEdit : MonoBehaviour
         Role = lines[5];
     }
 
-    public void backToLearnerInfo()
+    public void backToUserInfo()
     {
-        SceneManager.LoadScene("Learner Info");
+        if (adminEditRole.Equals("Learner"))
+        {
+            SceneManager.LoadScene("Learner Info");
+        }
+        else if (adminEditRole.Equals("Supervisor")) 
+        {
+            SceneManager.LoadScene("Supervisor Info");
+        }
     }
 
     void EmailValidation()
@@ -112,10 +143,42 @@ public class AdminEdit : MonoBehaviour
         }
 
         if (Username.Length >= 5) {
-            if (Username.Substring(0, 5).Equals("admin", StringComparison.OrdinalIgnoreCase) || Username.Substring(0, 5).Equals("nswpf", StringComparison.OrdinalIgnoreCase)) 
+            if (Username.Substring(0, 5).Equals("admin", StringComparison.OrdinalIgnoreCase)) 
             {
                 UN = false;
+                warning.GetComponent<Text>().text = "must not start with 'admin'";
+                return;
             }
+            if (adminEditRole.Equals("Learner"))
+            {
+                if (Username.Substring(0, 5).Equals("nswpf", StringComparison.OrdinalIgnoreCase))
+                {
+                    UN = false;
+                    warning.GetComponent<Text>().text = "Learners cannot start with 'nswpf'";
+                    return;
+                }
+            }
+            else if (adminEditRole.Equals("Supervisor"))
+            {
+                if (!Username.Substring(0, 5).Equals("nswpf", StringComparison.OrdinalIgnoreCase))
+                {
+                    UN = false;
+                    warning.GetComponent<Text>().text = "Supervisor start with 'nswpf'";
+                    return;
+                }
+                if (Username.Equals("nswpf", StringComparison.OrdinalIgnoreCase)) 
+                {
+                    UN = false;
+                    warning.GetComponent<Text>().text = "Supervisor must not only 'nswpf'";
+                    return;
+                }
+            }
+        } 
+        else if (Username.Length <= 5)
+        {
+            UN = false;
+            warning.GetComponent<Text>().text = "Learners must start with 'nswpf'";
+            return;
         }
 
         //validate first name
@@ -274,19 +337,18 @@ public class AdminEdit : MonoBehaviour
                 form = (FirstName + "\n" + LastName + "\n" + Username + "\n" + Email + "\n" + Password + "\n" + Role);
                 if (Username.Equals(adminEditUsername, StringComparison.OrdinalIgnoreCase))
                 {
-                    System.IO.File.WriteAllText(@"database/login/learner/" + adminEditUsername + ".txt", form);
+                    System.IO.File.WriteAllText(@path + adminEditUsername + ".txt", form);
                 }
                 else if (!Username.Equals(adminEditUsername, StringComparison.OrdinalIgnoreCase))
                 {
-                    System.IO.File.Delete(@"database/login/learner/" + adminEditUsername + ".txt");
-                    System.IO.File.WriteAllText(@"database/login/learner/" + Username + ".txt", form);
+                    System.IO.File.Delete(@path + adminEditUsername + ".txt");
+                    System.IO.File.WriteAllText(@path + Username + ".txt", form);
                     adminEditUsername = Username;
                 }
                 edit = false;
                 warning.GetComponent<Text>().text = "Changes are saved!";
                 password.GetComponentInChildren<InputField>().text = "";
                 confPassword.GetComponentInChildren<InputField>().text = "";
-                Login.fullName = FirstName + " " + LastName;
             }
         }
         else if (newPW == false)
@@ -309,12 +371,12 @@ public class AdminEdit : MonoBehaviour
                 form = (FirstName + "\n" + LastName + "\n" + Username + "\n" + Email + "\n" + CurPassword + "\n" + Role);
                 if (Username.Equals(adminEditUsername, StringComparison.OrdinalIgnoreCase))
                 {
-                    System.IO.File.WriteAllText(@"database/login/learner/" + adminEditUsername + ".txt", form);
+                    System.IO.File.WriteAllText(@path + adminEditUsername + ".txt", form);
                 }
                 else if (!Username.Equals(adminEditUsername, StringComparison.OrdinalIgnoreCase))
                 {
-                    System.IO.File.Delete(@"database/login/learner/" + adminEditUsername + ".txt");
-                    System.IO.File.WriteAllText(@"database/login/learner/" + Username + ".txt", form);
+                    System.IO.File.Delete(@path + adminEditUsername + ".txt");
+                    System.IO.File.WriteAllText(@path + Username + ".txt", form);
                     adminEditUsername = Username;
                 }
                 edit = false;

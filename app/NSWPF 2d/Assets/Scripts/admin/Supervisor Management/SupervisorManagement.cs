@@ -7,19 +7,20 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEditorInternal;
 using UnityEngine.SceneManagement;
-
-public class LearnerManagement : MonoBehaviour
+public class SupervisorManagement : MonoBehaviour
 {
-    public void backtoAdminMenu() {
+    public void backtoAdminMenu()
+    {
         SceneManager.LoadScene("Admin Menu");
     }
 
-    public void toLearnerInfo() {
-        SceneManager.LoadScene("Learner Info");
+    public void toSupervisorInfo()
+    {
+        SceneManager.LoadScene("Supervisor Info");
     }
-
-    public void toLeaderboard() {
-        SceneManager.LoadScene("Learderboard");
+    public void toCreateSupervisor()
+    {
+        SceneManager.LoadScene("Create Supervisor");
     }
 
     // Start is called before the first frame update
