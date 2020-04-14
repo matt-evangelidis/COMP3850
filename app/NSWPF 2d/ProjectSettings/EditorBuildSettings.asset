@@ -42,7 +42,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Admin/Learner Info.unity
     guid: 8c0f16ab943774e498bc22d078d3a364
   - enabled: 1
-    path: Assets/Scenes/Leaderboard.unity
+    path: Assets/Scenes/Quiz/Leaderboard Quiz.unity
     guid: ce5ed5fa78d45ca419e579388d9b5139
   - enabled: 1
     path: Assets/Scenes/Admin/Admin Edit User.unity
@@ -53,4 +53,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Quiz/Quiz Result.unity
     guid: 2ae1585e447062345a48c6a1d1eb1cbc
+  - enabled: 1
+    path: Assets/Scenes/Quiz/Achievement Quiz.unity
+    guid: decc93f6dfac182459746058a8699c45
   m_configObjects: {}

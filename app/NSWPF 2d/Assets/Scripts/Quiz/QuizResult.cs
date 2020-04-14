@@ -16,6 +16,13 @@ public class QuizResult : MonoBehaviour
     private int noQuestions = Quiz.totalQuestion;
     private int noCorrects = Quiz.noCorrects;
 
+    public void toAchievement() {
+        SceneManager.LoadScene("Achievement Quiz");
+    }
+
+    public void toLeaderboard() {
+        SceneManager.LoadScene("Leaderboard Quiz");
+    }
     public void reAttemp() {
         SceneManager.LoadScene("Quiz Menu");
     }

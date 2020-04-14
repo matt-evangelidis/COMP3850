@@ -9,7 +9,6 @@ using UnityEditorInternal;
 
 public class Cohort
 {
-    public Cohort cohort;
     private List<Learner> _learners = new List<Learner>();
     public List<Learner> learners { get { return _learners; } set { _learners = value; } }
     public Cohort(List<Learner> learners) {
@@ -23,7 +22,11 @@ public class Cohort
         return null;
     }
 
-    public Cohort() {
+    public Cohort()
+    //---------------------------------------------------
+    // Getting alll learners
+    //---------------------------------------------------
+    {
         // Getting alll learners
         DirectoryInfo d = new DirectoryInfo(@"database/login/learner/");
         if (d == null) return;
@@ -45,17 +48,6 @@ public class Cohort
             Learner learner = new Learner(userName, firstName, lastName, email, password, role);
             learners.Add(learner);
         }
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
 

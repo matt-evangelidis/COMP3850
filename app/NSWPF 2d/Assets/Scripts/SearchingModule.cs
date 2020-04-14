@@ -13,6 +13,14 @@ public class SearchingModule : MonoBehaviour
     public void toQuiz() {
         SceneManager.LoadScene("Quiz Menu");
     }
+
+    public void toAchievement() 
+    {
+        SceneManager.LoadScene("Achievement Quiz");
+    }
+    public void toLeaderboard() {
+        SceneManager.LoadScene("Leaderboard Quiz");
+    }
     void Start()
     {
         

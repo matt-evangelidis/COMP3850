@@ -25,6 +25,8 @@ public class Register : MonoBehaviour
     private string Role = "Learner";
     private string form;
 
+    private string filePath = "database/login/learner/";
+
     private bool   EmailValid = false;
 
     // Start is called before the first frame update
@@ -85,8 +87,8 @@ public class Register : MonoBehaviour
 
         if (Username != "")
         {
-            if (!System.IO.Directory.Exists(@"database/login/learner/")) {
-                System.IO.Directory.CreateDirectory(@"database/login/learner/");
+            if (!System.IO.Directory.Exists(@filePath)) {
+                System.IO.Directory.CreateDirectory(@filePath);
             }
 
             if (Username.Length >= 5)
@@ -98,7 +100,7 @@ public class Register : MonoBehaviour
                 }
             }
 
-            if (!System.IO.File.Exists(@"database/login/learner/" + Username + ".txt"))
+            if (!System.IO.File.Exists(@filePath + Username + ".txt"))
             {
                 UN = true;
                 //warning.GetComponent<Text>().text = "";
@@ -233,7 +235,7 @@ public class Register : MonoBehaviour
                 i++;
             }
             form = (FirstName + "\n" + LastName + "\n" + Username + "\n" + Email + "\n" + Password + "\n" + Role);
-            System.IO.File.WriteAllText(@"database/login/learner/" + Username + ".txt", form);
+            System.IO.File.WriteAllText(@filePath + Username + ".txt", form);
 
             //warning.GetComponent<Text>().text = "Registration complete";
             SceneManager.LoadScene("Register Success");

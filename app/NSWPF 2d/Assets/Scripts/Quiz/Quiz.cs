@@ -5,11 +5,15 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using System.IO;
 
 public class Quiz : MonoBehaviour
 {
     // variable to control the flow of game:
     private int currentIndex;
+
+    // variable to save achievement 
+    private string filePath = "database/leaderboard/quiz/";
 
     // variable for result
     public static int totalQuestion;
@@ -249,6 +253,28 @@ public class Quiz : MonoBehaviour
         select(buttons[3],questions[currentIndex].answers[3]);
     }
 
+    private void saveAchievement()
+    //-------------------------------------------------------------------
+    // Save result to file 
+    //-------------------------------------------------------------------
+    {
+        string finalResult = noCorrects.ToString() + "," + totalQuestion.ToString() + ";"; ;
+
+        if (!System.IO.Directory.Exists(@filePath))
+        {
+            System.IO.Directory.CreateDirectory(@filePath);
+        }
+
+        if (!System.IO.File.Exists(@filePath + Login.globalUsername + ".txt"))
+        {
+            System.IO.File.WriteAllText(@filePath + Login.globalUsername + ".txt", finalResult);
+        }
+        else
+        {
+            File.AppendAllText(@filePath+ Login.globalUsername + ".txt", finalResult);
+        }
+    }
+
     public void finish()
     //-------------------------------------------------------------------
     // when submit, calculate the correct points and send to result scene
@@ -270,6 +296,7 @@ public class Quiz : MonoBehaviour
         totalQuestion = questions.Count;
         noCorrects = sum;
         SceneManager.LoadScene("Quiz Result");
+        saveAchievement();
 
     }
 
