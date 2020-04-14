@@ -15,7 +15,7 @@ public class MenuPanel : MonoBehaviour
         SceneManager.LoadScene("Account");
     }
 
-    public void toSearching() {
+    public virtual void toSearching() {
         SceneManager.LoadScene("Module Searching");
     }
 

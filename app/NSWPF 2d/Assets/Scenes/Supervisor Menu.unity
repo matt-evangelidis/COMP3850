@@ -338,7 +338,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 502320477}
+      - m_Target: {fileID: 502320481}
         m_MethodName: toSearching
         m_Mode: 1
         m_Arguments:
@@ -843,7 +843,7 @@ GameObject:
   - component: {fileID: 502320480}
   - component: {fileID: 502320479}
   - component: {fileID: 502320478}
-  - component: {fileID: 502320477}
+  - component: {fileID: 502320481}
   m_Layer: 5
   m_Name: Menu Panel
   m_TagString: Untagged
@@ -876,20 +876,6 @@ RectTransform:
   m_AnchoredPosition: {x: -0.000061035156, y: -79.000015}
   m_SizeDelta: {x: -50, y: 220.8}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &502320477
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 502320475}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c5424808dc3e95f43b67efc2f4e29091, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  searching: {fileID: 185038085}
-  account: {fileID: 904261155}
 --- !u!114 &502320478
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -950,6 +936,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 502320475}
   m_CullTransparentMesh: 0
+--- !u!114 &502320481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 502320475}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6573d028bfe90364e976133c2d434e32, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  searching: {fileID: 185038085}
+  account: {fileID: 1914844223}
+  viewUsers: {fileID: 904261155}
+  viewLeaderboard: {fileID: 1863378842}
 --- !u!1 &592953413
 GameObject:
   m_ObjectHideFlags: 0
@@ -1336,8 +1338,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 502320477}
-        m_MethodName: toAccount
+      - m_Target: {fileID: 502320481}
+        m_MethodName: toViewUsers
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2405,8 +2407,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 502320477}
-        m_MethodName: toAccount
+      - m_Target: {fileID: 502320481}
+        m_MethodName: toLeaderboard
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2465,7 +2467,7 @@ GameObject:
   - component: {fileID: 1914844226}
   - component: {fileID: 1914844225}
   m_Layer: 5
-  m_Name: Account
+  m_Name: Manage Account
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2534,7 +2536,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 502320477}
+      - m_Target: {fileID: 502320481}
         m_MethodName: toAccount
         m_Mode: 1
         m_Arguments:
