@@ -65,4 +65,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Admin/Supervisor Management/Supervisor Info.unity
     guid: 09801fe1be887384faba535b2a2271ae
+  - enabled: 1
+    path: Assets/Scenes/Quiz/Module Searching Supervisor.unity
+    guid: 6b93d40b23289a748bfc06d5c0283ce8
   m_configObjects: {}
