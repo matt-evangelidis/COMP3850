@@ -52,8 +52,7 @@ public class LeaderboardQuiz : MonoBehaviour
     }
     // Start is called before the first frame update
     void Start()
-    {
-        backToSupervisorMainBtnTxt.GetComponent<Text>().text = "Supervisor Menu"; // override button text
+    { 
 
         if (Login.globalRole.Equals("Learner"))
         {
@@ -63,7 +62,7 @@ public class LeaderboardQuiz : MonoBehaviour
         }
         else if (Login.globalRole.Equals("Supervisor"))
         {
-
+            backToSupervisorMainBtnTxt.GetComponent<Text>().text = "Supervisor Menu"; // override button text
         }
         else if (Login.globalRole.Equals("Admin"))
         {
