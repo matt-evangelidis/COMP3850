@@ -867,7 +867,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 422839190}
   m_Direction: 0
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.99999994
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1849,7 +1849,7 @@ GameObject:
   - component: {fileID: 828227735}
   - component: {fileID: 828227734}
   m_Layer: 5
-  m_Name: Attemp
+  m_Name: Attempt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1905,7 +1905,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Attemp
+  m_Text: Attempt
 --- !u!222 &828227735
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3948,7 +3948,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Total Question
+  m_Text: Total Questions
 --- !u!222 &2139523257
 CanvasRenderer:
   m_ObjectHideFlags: 0
