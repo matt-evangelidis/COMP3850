@@ -43,7 +43,10 @@ public class AchievementQuiz : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        backToSupervisorMainBtnTxt.GetComponent<Text>().text = "Supervisor Menu"; // override button text
+        if (Login.globalRole.Equals("Supervisor"))
+        {
+            backToSupervisorMainBtnTxt.GetComponent<Text>().text = "Supervisor Menu"; // override button text
+        }
 
         if (!System.IO.File.Exists(@filePath + Login.globalUsername + ".txt"))
         {
