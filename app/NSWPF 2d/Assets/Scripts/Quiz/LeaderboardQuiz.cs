@@ -76,10 +76,9 @@ public class LeaderboardQuiz : MonoBehaviour
             GameObject go = (GameObject)Instantiate(userEntry);
             go.transform.SetParent(content.transform);
             go.transform.Find("Username").GetComponentInChildren<InputField>().text = achievement.username;
-            go.transform.Find("Attemp").GetComponent<InputField>().text = achievement.noAttemps;
-            go.transform.Find("BestAttemp").GetComponent<InputField>().text = achievement.bestAttemp;
-            go.transform.Find("Percent").GetComponent<InputField>().text = achievement.percent;
-            Debug.Log(achievement.username+ " " + achievement.noAttemps + " " + achievement.bestAttemp + " " + achievement.percent);
+            go.transform.Find("Attempt").GetComponentInChildren<InputField>().text = achievement.noAttempts;
+            go.transform.Find("BestAttempt").GetComponentInChildren<InputField>().text = achievement.bestAttemp;
+            go.transform.Find("Percent").GetComponentInChildren<InputField>().text = achievement.percent;
         }
 
         Destroy(userEntry);
