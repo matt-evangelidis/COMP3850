@@ -280,6 +280,7 @@ public class Quiz : MonoBehaviour
     // when submit, calculate the correct points and send to result scene
     //-------------------------------------------------------------------
     {
+        
         if (selectedAnswer == null) 
         {
             warning.GetComponent<Text>().text = "Please finish you answer before submiting";
@@ -296,6 +297,10 @@ public class Quiz : MonoBehaviour
         totalQuestion = questions.Count;
         noCorrects = sum;
         SceneManager.LoadScene("Quiz Result");
+        if (Login.globalRole.Equals("Supervisor"))
+        {
+            return;
+        }
         saveAchievement();
 
     }

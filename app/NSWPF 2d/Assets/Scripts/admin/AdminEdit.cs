@@ -176,9 +176,12 @@ public class AdminEdit : MonoBehaviour
         } 
         else if (Username.Length <= 5)
         {
-            UN = false;
-            warning.GetComponent<Text>().text = "Learners must start with 'nswpf'";
-            return;
+            if (adminEditRole.Equals("Supervisor"))
+            {
+                UN = false;
+                warning.GetComponent<Text>().text = "Supervisor must start with 'nswpf'";
+                return;
+            }
         }
 
         //validate first name

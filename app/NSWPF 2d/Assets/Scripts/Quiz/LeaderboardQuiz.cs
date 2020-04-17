@@ -29,7 +29,7 @@ public class LeaderboardQuiz : MonoBehaviour
         }
         else if (Login.globalRole.Equals("Supervisor"))
         {
-            SceneManager.LoadScene("Supervisor Menu");
+            SceneManager.LoadScene("Module Searching Supervisor");
         }
 
         // dummy field
@@ -62,7 +62,10 @@ public class LeaderboardQuiz : MonoBehaviour
         }
         else if (Login.globalRole.Equals("Supervisor"))
         {
+            backModuleBtn.SetActive(true);
             backToSupervisorMainBtnTxt.GetComponent<Text>().text = "Supervisor Menu"; // override button text
+            achievementBtn.SetActive(false);
+            backBtn.SetActive(false);
         }
         else if (Login.globalRole.Equals("Admin"))
         {
