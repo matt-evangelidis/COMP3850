@@ -49,6 +49,7 @@ public class Leaderboard
             string[] attempts = lines[0].Split(';');
             float bestScore = 0.0f;
             int attemptIndex = 0;
+            int bestAttemptInt = attemptIndex;
             for (int i = 0; i < attempts.Length-1; i++)
             {
                 string[] results = attempts[i].Split(',');
@@ -61,13 +62,13 @@ public class Leaderboard
                     noQuestion = total.ToString();
                     
                     bestAttemp = "#"+attemptIndex.ToString();
-                    
+                    bestAttemptInt = attemptIndex;
 
                 }
             }
             noAttempts = (attempts.Length-1).ToString();
 
-            Achievement achievement = new Achievement(filename,noCorrects,noQuestion,noAttempts,bestAttemp);
+            Achievement achievement = new Achievement(filename,noCorrects,noQuestion,noAttempts,bestAttemp, attempts.Length - 1, bestAttemptInt, bestScore);
             achievements.Add(achievement);
         }
     }
@@ -81,20 +82,29 @@ public class Achievement
     private string _percent;
     private string _noAttempts;
     private string _bestAttemp;
+    private float _result;
+    private int _totalAttempts;
+    private int _bestAttemptInt;
     public string username { get { return _username; } set { _username = value; } }
     public string noCorrects { get { return _noCorrects; } set { _noCorrects = value; } }
     public string noQuestion { get { return _noQuestion; } set { _noQuestion = value; } }
-
     public string percent { get { return _percent; } set { _percent = value; } }
+    public float result { get { return _result; } set { _result = value; } }
     public string noAttempts { get { return _noAttempts; } set { _noAttempts = value; } }
+    public int totalAttempts { get { return _totalAttempts; } set { _totalAttempts = value; } }
     public string bestAttempt { get { return _bestAttemp; } set { _bestAttemp = value; } }
-    public Achievement(string username, string noCorrects, string noQuestion, string noAttempts, string bestAttempt) 
+    public int bestAttemptInt { get { return _bestAttemptInt; } set { _bestAttemptInt = value; } }
+    
+    public Achievement(string username, string noCorrects, string noQuestion, string noAttempts, string bestAttempt,int totalAttempts,int bestAttemptInt, float result) 
     {
         this.username = username;
         this.noAttempts = noAttempts;
         this.bestAttempt = bestAttempt;
         this.noCorrects = noCorrects;
         this.noQuestion = noQuestion;
+        this.result = result;
+        this.totalAttempts = totalAttempts;
+        this.bestAttemptInt = bestAttemptInt;
         this.percent = ((float.Parse(noCorrects) / float.Parse(noQuestion)) * 100).ToString() + "%";
     }
 }

@@ -8,6 +8,7 @@ using UnityEngine.EventSystems;
 using UnityEditorInternal;
 using UnityEngine.SceneManagement;
 using TMPro;
+using System.Linq;
 
 public class LeaderboardQuiz : MonoBehaviour
 {
@@ -25,8 +26,8 @@ public class LeaderboardQuiz : MonoBehaviour
 
     private string filePath = "database/leaderboard/quiz/";
 
-    private List<Achievement> achievements;
-    List<GameObject> entries;
+    private List<Achievement> achievementList;
+    private List<GameObject> entries;
 
     private bool sorted;
     private enum mode
@@ -112,10 +113,11 @@ public class LeaderboardQuiz : MonoBehaviour
             warning.GetComponent<Text>().text = "ERROR: cannot load leaderboard";
         }
 
-        this.achievements = leaderboard.achievements;
+        achievementList = new List<Achievement>(leaderboard.achievements);
+        this.achievementList = leaderboard.achievements.ToList();
         entries = new List<GameObject>();
 
-        foreach (Achievement achievement in achievements) 
+        foreach (Achievement achievement in achievementList) 
         {
             GameObject go = (GameObject)Instantiate(userEntry);
             entries.Add(go);
@@ -126,7 +128,7 @@ public class LeaderboardQuiz : MonoBehaviour
             go.transform.Find("Percent").GetComponentInChildren<InputField>().text = achievement.percent;
         }
 
-        sorted = true;
+            sorted = true;
         sortMode = (int) mode.usernameAsc;
 
         //Destroy(userEntry);
@@ -134,14 +136,14 @@ public class LeaderboardQuiz : MonoBehaviour
 
         // sorting
         Username.onClick.AddListener(sortByUsername);
-        TotalAttempts.onClick.AddListener(sortByResult);
+        TotalAttempts.onClick.AddListener(sortByTotalAttempts);
         BestAttemp.onClick.AddListener(sortByBestAttempt);
         Result.onClick.AddListener(sortByResult);
     }
 
     public void sortByUsername() 
     {
-        achievements.Sort(delegate (Achievement x, Achievement y)
+        achievementList.Sort(delegate (Achievement x, Achievement y)
         {
             if (sortMode != (int)mode.usernameAsc)
             {
@@ -166,15 +168,15 @@ public class LeaderboardQuiz : MonoBehaviour
 
     public void sortByTotalAttempts() 
     {
-        achievements.Sort(delegate (Achievement x, Achievement y)
+        achievementList.Sort(delegate (Achievement x, Achievement y)
         {
             if (sortMode != (int)mode.totalAttemptsAsc)
             {
-                return x.noAttempts.CompareTo(y.noAttempts);
+                return x.totalAttempts.CompareTo(y.totalAttempts);
             }
             else
             {
-                return y.noAttempts.CompareTo(x.noAttempts);
+                return y.totalAttempts.CompareTo(x.totalAttempts);
             }
         });
         sorted = false;
@@ -186,19 +188,23 @@ public class LeaderboardQuiz : MonoBehaviour
         {
             sortMode = (int)mode.totalAttemptsAsc;
         }
+        foreach (Achievement achievement in achievementList)
+        {
+            Debug.Log(achievement.noAttempts);
+        }
     }
 
     public void sortByBestAttempt()
     {
-        achievements.Sort(delegate (Achievement x, Achievement y)
+        achievementList.Sort(delegate (Achievement x, Achievement y)
         {
             if (sortMode != (int)mode.bestAttemptAsc)
             {
-                return x.bestAttempt.CompareTo(y.bestAttempt);
+                return y.bestAttemptInt.CompareTo(x.bestAttemptInt);
             }
             else
             {
-                return y.bestAttempt.CompareTo(x.bestAttempt);
+                return x.bestAttemptInt.CompareTo(y.bestAttemptInt);
             }
         });
         sorted = false;
@@ -214,15 +220,15 @@ public class LeaderboardQuiz : MonoBehaviour
 
     public void sortByResult()
     {
-        achievements.Sort(delegate (Achievement x, Achievement y)
+        achievementList.Sort(delegate (Achievement x, Achievement y)
         {
             if (sortMode != (int)mode.resultDes)
             {
-                return y.percent.CompareTo(x.percent);
+                return y.result.CompareTo(x.result);
             }
             else
             {
-                return x.percent.CompareTo(y.percent);
+                return x.result.CompareTo(y.result);
             }
         });
         sorted = false;
@@ -251,7 +257,7 @@ public class LeaderboardQuiz : MonoBehaviour
         }
 
         userEntry.SetActive(true);
-        foreach (Achievement achievement in achievements)
+        foreach (Achievement achievement in achievementList)
         {
             GameObject go = (GameObject)Instantiate(userEntry);
             entries.Add(go);
