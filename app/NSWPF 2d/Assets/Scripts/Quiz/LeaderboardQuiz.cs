@@ -130,7 +130,7 @@ public class LeaderboardQuiz : MonoBehaviour
         sortMode = (int) mode.usernameAsc;
 
         //Destroy(userEntry);
-        //userEntry.SetActive(false);
+        userEntry.SetActive(false);
 
         // sorting
         Username.onClick.AddListener(sortByUsername);
@@ -250,6 +250,7 @@ public class LeaderboardQuiz : MonoBehaviour
             Destroy(go);
         }
 
+        userEntry.SetActive(true);
         foreach (Achievement achievement in achievements)
         {
             GameObject go = (GameObject)Instantiate(userEntry);
@@ -260,7 +261,7 @@ public class LeaderboardQuiz : MonoBehaviour
             go.transform.Find("BestAttempt").GetComponentInChildren<InputField>().text = achievement.bestAttempt;
             go.transform.Find("Percent").GetComponentInChildren<InputField>().text = achievement.percent;
         }
-
+        userEntry.SetActive(false);
         sorted = true;
     }
 }
