@@ -31,7 +31,6 @@ public class Login : MonoBehaviour
 
     public void registerButton()
     {
-        //Application.LoadLevel("Register Menu");
         SceneManager.LoadScene("Register Menu");
     }
 
@@ -132,7 +131,7 @@ public class Login : MonoBehaviour
             firstName = lines[0];
             lastName = lines[1];
             fullName = firstName + ' ' + lastName;
-            globalUsername = Username;
+            globalUsername = Username.ToLower();
             globalRole = Role;
             if (Role.Equals("Learner"))
             {
