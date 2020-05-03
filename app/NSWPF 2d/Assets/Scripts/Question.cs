@@ -14,7 +14,22 @@ public class Question
         question = q;
         answers = a;
     }
+    public Answer getCorrectAnswer()
+    {
+        foreach (Answer answer in answers) {
+            if (answer.correct == true)
+                return answer;
+        }
+        return null;
+    }
+
+    public Answer getAnswer(int i) {
+        if (i >= 0 && i <= 3)
+            return answers[i];
+        return null;
+    }
 }
+
 
 public class Answer
 {
@@ -29,4 +44,8 @@ public class Answer
         correct = c;
     }
 
+    public bool isCorrect() 
+    {
+        return correct;
+    }
 }
