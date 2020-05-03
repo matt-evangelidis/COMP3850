@@ -87,12 +87,12 @@ public class Achievement
 
     public string percent { get { return _percent; } set { _percent = value; } }
     public string noAttempts { get { return _noAttempts; } set { _noAttempts = value; } }
-    public string bestAttemp { get { return _bestAttemp; } set { _bestAttemp = value; } }
-    public Achievement(string username, string noCorrects, string noQuestion, string noAttempts, string bestAttemp) 
+    public string bestAttempt { get { return _bestAttemp; } set { _bestAttemp = value; } }
+    public Achievement(string username, string noCorrects, string noQuestion, string noAttempts, string bestAttempt) 
     {
         this.username = username;
         this.noAttempts = noAttempts;
-        this.bestAttemp = bestAttemp;
+        this.bestAttempt = bestAttempt;
         this.noCorrects = noCorrects;
         this.noQuestion = noQuestion;
         this.percent = ((float.Parse(noCorrects) / float.Parse(noQuestion)) * 100).ToString() + "%";
