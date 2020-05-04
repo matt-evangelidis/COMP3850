@@ -39,7 +39,7 @@ public class BackToMainMenu : MonoBehaviour
         else if (_role == "Admin")
         {
             // To be extended
-            // SceneManager.LoadScene("Admin Menu");
+            SceneManager.LoadScene("Admin Menu");
         }
         else
         {
