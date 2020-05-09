@@ -25,4 +25,9 @@ public class SearchingModuleSupervisor : SearchingModule
     {
         // SceneManager.LoadScene("Quiz blahblahblah");
     }
+
+    public void toDiscussion()
+    {
+        SceneManager.LoadScene("Searching Discussion");
+    }
 }

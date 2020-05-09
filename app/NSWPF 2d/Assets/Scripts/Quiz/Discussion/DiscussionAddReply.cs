@@ -26,13 +26,16 @@ public class DiscussionAddReply : MonoBehaviour
     {
         Reply.GetComponent<InputField>().text = "";
 
-        if (Login.globalUsername.Equals(""))
+        if (Login.globalUsername == null)
         {
             warning.GetComponent<Text>().text = "cannot verify username! Please contact admin";
             return;
         }
 
-
+        if (Login.globalRole == null) {
+            warning.GetComponent<Text>().text = "cannot verify role! Please contact admin";
+            return;
+        }
 
     }
 
