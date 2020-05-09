@@ -21,6 +21,10 @@ public class SearchingModule : MonoBehaviour
     public void toLeaderboard() {
         SceneManager.LoadScene("Leaderboard Quiz");
     }
+    public void toDiscussion() {
+        SceneManager.LoadScene("Searching Discussion");
+    }
+
     void Start()
     {
         

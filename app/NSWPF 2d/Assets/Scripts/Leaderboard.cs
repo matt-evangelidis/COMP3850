@@ -9,7 +9,7 @@ using UnityEditorInternal;
 
 public class Leaderboard
 {
-    private List<Achievement> _achievements = new List<Achievement>();
+    private List<Achievement> _achievements;
     public List<Achievement> achievements { get { return _achievements; } set { _achievements = value; } }
     public Leaderboard(List<Achievement> achievements) 
     {
@@ -33,6 +33,8 @@ public class Leaderboard
     {
         DirectoryInfo directory = new DirectoryInfo(@path);
         if (directory == null) return;
+
+        achievements = new List<Achievement>();
 
         //gettin text file
         FileInfo[] Files = directory.GetFiles("*.txt");
