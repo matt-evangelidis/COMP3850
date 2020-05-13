@@ -172,7 +172,7 @@ public class Quiz : MonoBehaviour
         print(selectedAnswer);
         if (selectedAnswer == null)
         {
-            warning.GetComponent<Text>().text = "Please choose your answer before continue";
+            warning.GetComponent<Text>().text = "Please choose your answer before you continue.";
             return;
         }
 
