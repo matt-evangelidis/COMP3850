@@ -16,7 +16,6 @@ public class Quiz2Handler : MonoBehaviour
 
     //internal variables
     private bool complete = false;
-    private int sum;
 
     // Start is called before the first frame update
     void Start()
@@ -34,23 +33,16 @@ public class Quiz2Handler : MonoBehaviour
         //check if all boxes have been found
         for (int i = 0; i < boxes.Length; i++)
         {
-            if(!boxes[i].GetComponent<DisplayScript>().getActive())
+            if(!boxes[0].GetComponent<DisplayScript>().getActive() 
+                || !boxes[i].GetComponent<DisplayScript>().getActive()
+                || !boxes[boxes.Length-1].GetComponent<DisplayScript>().getActive())
             {
                 break;
             }
             complete = true;
         }
 
-        //update text field with current results
-        sum = 0;
-        for (int i = 0; i < boxes.Length; i++)
-        {
-            if (boxes[i].GetComponent<DisplayScript>().getActive())
-            {
-                sum++;
-            }
-        }
-        //textOutput.text = sum + "/" + boxes.Length;
+        //print(complete);
 
         //quiz completion, disable script
         if (complete)
@@ -72,6 +64,17 @@ public class Quiz2Handler : MonoBehaviour
 
     public void ButtonClick()
     {
+
+        //update text field with current results
+        int sum = 0;
+        for (int i = 0; i < boxes.Length; i++)
+        {
+            if (boxes[i].GetComponent<DisplayScript>().getActive())
+            {
+                sum++;
+            }
+        }
+
         textOutput.text = sum + "/" + boxes.Length;
         finishButton.gameObject.SetActive(true);
         submitButton.gameObject.SetActive(false);
