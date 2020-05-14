@@ -65,33 +65,78 @@ public class Quiz : MonoBehaviour
         {
             //array for reading
             string[] lines = System.IO.File.ReadAllLines(@"database/quiz/searching.txt");
-            for (int i = 0; i < lines.Length; i++)
+            if (lines.Length > no_questions)
             {
-                //temp string array, delimited by ;, first entry is the question, last entry is the correct answer
-                string[] temp = lines[i].Split(';');
-
-                //temp answer list
-                List<Answer> a = new List<Answer>();
-
-                //start from first answer, end at last answer
-                for (int j = 1; j < temp.Length - 1; j++)
-                {
-                    Answer t = new Answer(temp[j], false);
-                    a.Add(t);
+                List<int> rndList = new List<int>();
+                System.Random rnd = new System.Random();
+                for (int i = 0; i < no_questions; i++) {
+                    int random = rnd.Next(lines.Length);
+                    if (!rndList.Contains(random)) {
+                        rndList.Add(random);
+                        continue;
+                    }
+                    // if the number is duplicated then do this loop again.
+                    i--;
                 }
 
-                //set correct field
-                int len = Int32.Parse(temp[temp.Length - 1]) - 1;
-                a[len].correct = true;
+                for (int i = 0; i < rndList.Count; i++) {
+                    //temp string array, delimited by ;, first entry is the question, last entry is the correct answer
+                    string[] temp = lines[rndList[i]].Split(';');
 
-                //shuffle answer
-                ShuffleList<Answer>(a);
+                    //temp answer list
+                    List<Answer> a = new List<Answer>();
 
-                //build question
-                Question te = new Question(temp[0], a);
-                questions.Add(te);
+                    //start from first answer, end at last answer
+                    for (int j = 1; j < temp.Length - 1; j++)
+                    {
+                        Answer t = new Answer(temp[j], false);
+                        a.Add(t);
+                    }
+
+                    //set correct field
+                    int len = Int32.Parse(temp[temp.Length - 1]) - 1;
+                    a[len].correct = true;
+
+                    //shuffle answer
+                    ShuffleList<Answer>(a);
+
+                    //build question
+                    Question te = new Question(temp[0], a);
+                    questions.Add(te);
+                }
             }
-            ShuffleList<Question>(questions);
+            else if (lines.Length <= no_questions)
+            {
+                //if there is <no_questions> questions and under then shows them all.
+                for (int i = 0; i < lines.Length; i++)
+                {
+                    //temp string array, delimited by ;, first entry is the question, last entry is the correct answer
+                    string[] temp = lines[i].Split(';');
+
+                    //temp answer list
+                    List<Answer> a = new List<Answer>();
+
+                    //start from first answer, end at last answer
+                    for (int j = 1; j < temp.Length - 1; j++)
+                    {
+                        Answer t = new Answer(temp[j], false);
+                        a.Add(t);
+                    }
+
+                    //set correct field
+                    int len = Int32.Parse(temp[temp.Length - 1]) - 1;
+                    a[len].correct = true;
+
+                    //shuffle answer
+                    ShuffleList<Answer>(a);
+
+                    //build question
+                    Question te = new Question(temp[0], a);
+                    questions.Add(te);
+                }
+                ShuffleList<Question>(questions);
+            }
+            
         }
         else 
         {
