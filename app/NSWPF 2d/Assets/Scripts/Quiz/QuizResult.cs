@@ -29,7 +29,14 @@ public class QuizResult : MonoBehaviour
 
     public void toSearchingModule()
     {
-        SceneManager.LoadScene("Module Searching");
+        if (Login.globalRole.Equals("Learner"))
+        {
+            SceneManager.LoadScene("Module Searching");
+        }
+        if (Login.globalRole.Equals("Supervisor"))
+        {
+            SceneManager.LoadScene("Module Searching Supervisor");
+        }
     }
 
 
