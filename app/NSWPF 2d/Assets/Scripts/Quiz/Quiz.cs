@@ -38,6 +38,7 @@ public class Quiz : MonoBehaviour
 
     // List of question
     private List<Question> questions = new List<Question>();
+    private int no_questions = 5;
 
     // shuffle the answer. (NOT A CLEVER WAY)
     public static void ShuffleList<T>(IList<T> objList)
@@ -64,7 +65,6 @@ public class Quiz : MonoBehaviour
         {
             //array for reading
             string[] lines = System.IO.File.ReadAllLines(@"database/quiz/searching.txt");
-
             for (int i = 0; i < lines.Length; i++)
             {
                 //temp string array, delimited by ;, first entry is the question, last entry is the correct answer
@@ -91,6 +91,7 @@ public class Quiz : MonoBehaviour
                 Question te = new Question(temp[0], a);
                 questions.Add(te);
             }
+            ShuffleList<Question>(questions);
         }
         else 
         {
