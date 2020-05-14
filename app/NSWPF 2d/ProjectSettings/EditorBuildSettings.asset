@@ -80,4 +80,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Quiz/Discussion/Discussion Reply.unity
     guid: 4e5905be632cf5642afb29772180e4fa
+  - enabled: 1
+    path: Assets/Scenes/Quiz2/Quiz2.unity
+    guid: dcd96ad81c0b61f45b3b9e0afca26490
   m_configObjects: {}
