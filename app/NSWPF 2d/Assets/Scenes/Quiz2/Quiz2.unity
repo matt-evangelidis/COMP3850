@@ -170,7 +170,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
@@ -191,7 +191,7 @@ Canvas:
   serializedVersion: 3
   m_RenderMode: 1
   m_Camera: {fileID: 2070734042}
-  m_PlaneDistance: 195.6
+  m_PlaneDistance: 232.9
   m_PixelPerfect: 1
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
@@ -281,8 +281,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 183597868}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 70.8077, y: -9.16364, z: -11114.297}
-  m_LocalScale: {x: 108, y: 108, z: 108}
+  m_LocalPosition: {x: 44.900005, y: -7.0000114, z: -11114.297}
+  m_LocalScale: {x: 86.4, y: 86.4, z: 108}
   m_Children:
   - {fileID: 80767038}
   - {fileID: 1639958374}
@@ -637,8 +637,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 346.3, y: 44.499996}
-  m_SizeDelta: {x: 272.5, y: 72.2}
+  m_AnchoredPosition: {x: 273, y: 37.79999}
+  m_SizeDelta: {x: 225.6, y: 60.2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1422165003
 MonoBehaviour:
@@ -764,8 +764,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 346.3, y: 116.7}
-  m_SizeDelta: {x: 272.5, y: 72.2}
+  m_AnchoredPosition: {x: 273, y: 98}
+  m_SizeDelta: {x: 225.6, y: 60.2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1473929077
 MonoBehaviour:
@@ -843,8 +843,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 346.3, y: 44.499996}
-  m_SizeDelta: {x: 272.5, y: 72.2}
+  m_AnchoredPosition: {x: 273, y: 37.79999}
+  m_SizeDelta: {x: 225.6, y: 60.2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1613794448
 MonoBehaviour:
@@ -1186,8 +1186,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2039279680}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 8.762038, y: -0.5163786, z: -4662.0005}
-  m_LocalScale: {x: 51.800003, y: 51.800003, z: 51.800003}
+  m_LocalPosition: {x: -6.499997, y: 0.19998932, z: -4662.0005}
+  m_LocalScale: {x: 41.440002, y: 41.440002, z: 51.800003}
   m_Children: []
   m_Father: {fileID: 37189793}
   m_RootOrder: 1
