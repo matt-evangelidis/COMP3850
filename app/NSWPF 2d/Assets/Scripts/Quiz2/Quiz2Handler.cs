@@ -75,7 +75,7 @@ public class Quiz2Handler : MonoBehaviour
             }
         }
 
-        textOutput.text = sum + "/" + boxes.Length;
+        textOutput.text = sum + "/" + boxes.Length + " clues found!";
         finishButton.gameObject.SetActive(true);
         submitButton.gameObject.SetActive(false);
         complete = true;
