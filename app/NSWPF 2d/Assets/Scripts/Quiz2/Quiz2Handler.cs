@@ -27,19 +27,22 @@ public class Quiz2Handler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        int sum = 0;
         //circle placement
         PlaceEllipse();
 
         //check if all boxes have been found
         for (int i = 0; i < boxes.Length; i++)
         {
-            if(!boxes[0].GetComponent<DisplayScript>().getActive() 
-                || !boxes[i].GetComponent<DisplayScript>().getActive()
-                || !boxes[boxes.Length-1].GetComponent<DisplayScript>().getActive())
+            if(boxes[i].GetComponent<DisplayScript>().getActive())
             {
-                break;
+                sum++;
             }
-            complete = true;
+
+            if (sum == boxes.Length)
+            {
+                complete = true;
+            }
         }
 
         //print(complete);
