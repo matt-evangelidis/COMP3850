@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using System.IO;
+using System.Linq;
 
 public class Quiz : MonoBehaviour
 {
@@ -38,6 +39,22 @@ public class Quiz : MonoBehaviour
     // List of question
     private List<Question> questions = new List<Question>();
 
+    // shuffle the answer. (NOT A CLEVER WAY)
+    public static void ShuffleList<T>(IList<T> objList)
+    {
+        System.Random rnd = new System.Random();
+        int totalItem = objList.Count;
+        T obj;
+        while (totalItem >= 1)
+        {
+            totalItem -= 1;
+            int nextIndex = rnd.Next(totalItem, objList.Count);
+            obj = objList[nextIndex];
+            objList[nextIndex] = objList[totalItem];
+            objList[totalItem] = obj;
+        }
+    }
+
     public void build_questions() 
     //----------------------------------------------------------
     // Get the txt file and build question bank from txt content
@@ -66,6 +83,9 @@ public class Quiz : MonoBehaviour
                 //set correct field
                 int len = Int32.Parse(temp[temp.Length - 1]) - 1;
                 a[len].correct = true;
+
+                //shuffle answer
+                ShuffleList<Answer>(a);
 
                 //build question
                 Question te = new Question(temp[0], a);

@@ -42,6 +42,10 @@ public class AchievementQuiz : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (Login.globalUsername == null) {
+            warning.GetComponent<Text>().text = "Internal Error. Please contact admin!";
+            return;
+        }
         if (Login.globalRole.Equals("Supervisor"))
         {
             backToSupervisorMainBtnTxt.GetComponent<Text>().text = "Supervisor Menu"; // override button text
@@ -49,14 +53,14 @@ public class AchievementQuiz : MonoBehaviour
 
         if (!System.IO.File.Exists(@filePath + Login.globalUsername + ".txt"))
         {
-            warning.GetComponent<Text>().text = "Internal error, please contact admin";
+            warning.GetComponent<Text>().text = "There is no progress yet";
             return;
         }
 
         lines = System.IO.File.ReadAllLines(@filePath + Login.globalUsername + ".txt");
         if (lines[0] == "")
         {
-            warning.GetComponent<Text>().text = "No Achievement";
+            warning.GetComponent<Text>().text = "There is no progress yet";
             return;
         }
         attemps = lines[0].Split(';');
