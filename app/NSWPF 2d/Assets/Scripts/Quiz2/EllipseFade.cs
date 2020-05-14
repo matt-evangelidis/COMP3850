@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ClickArea : MonoBehaviour
+public class EllipseFade : MonoBehaviour
 {
     //script attached to pref
     private GameObject self;

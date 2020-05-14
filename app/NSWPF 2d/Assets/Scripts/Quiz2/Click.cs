@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class Click : MonoBehaviour
 {
-    public GameObject areaClick;
+    public GameObject obj; //object to be placed when mouse is clicked
     // Start is called before the first frame update
     void Start()
     {
@@ -19,7 +19,7 @@ public class Click : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             Vector2 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Instantiate(areaClick, worldPosition, Quaternion.identity);
+            Instantiate(obj, worldPosition, Quaternion.identity);
         }
     }
 }

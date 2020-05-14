@@ -20,19 +20,20 @@ public class DisplayScript : MonoBehaviour
         temp.color = new Color(c.r, c.g, c.b, 0f);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        /*        if (active)
-                {
-                    temp.color = new Color(c.r, c.g, c.b, 1f);
-                }*/
-    }
     void OnMouseDown()
     {
-        //make the shape visible when clicked within its collider
+        //if not active
+        if (!active)
+        {
+            //make the shape visible when clicked within its collider
+            temp.color = new Color(c.r, c.g, c.b, 1f);
+            //set to active
+            active = true;
+        }
+    }
 
-        temp.color = new Color(c.r, c.g, c.b, 1f);
-        //active = true;
+    public bool getActive()
+    {
+        return active;
     }
 }
