@@ -13,22 +13,35 @@ public class QuizResult : MonoBehaviour
     public GameObject wrong;
     public GameObject total;
 
+    public static List<Record> records;
+    public static bool review = false;
+    public static List<Question> questions;
+
     private int noQuestions = Quiz.totalQuestion;
     private int noCorrects = Quiz.noCorrects;
 
     public void toAchievement() {
+        records = null;
         SceneManager.LoadScene("Achievement Quiz");
     }
 
+    public void toFeadback() {
+        review = true;
+        SceneManager.LoadScene("Quiz Menu");
+    }
+
     public void toLeaderboard() {
+        records = null;
         SceneManager.LoadScene("Leaderboard Quiz");
     }
     public void reAttemp() {
+        records = null;
         SceneManager.LoadScene("Quiz Menu");
     }
 
     public void toSearchingModule()
     {
+        records = null;
         if (Login.globalRole.Equals("Learner"))
         {
             SceneManager.LoadScene("Module Searching");
@@ -43,6 +56,9 @@ public class QuizResult : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        records = Quiz.records;
+        review = false;
+        questions = Quiz.questions;
         int noIncorrects = noQuestions - noCorrects;
         float percentage = ((float)noCorrects / (float)noQuestions)*100;
         total.GetComponent<Text>().text = noQuestions.ToString();

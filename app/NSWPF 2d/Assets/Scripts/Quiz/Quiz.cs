@@ -25,6 +25,9 @@ public class Quiz : MonoBehaviour
     public GameObject questiontext;
     public GameObject warning;
 
+    // Quiz state:
+    bool LEARNER_WORKING = true;
+
     // interaction variable
     public GameObject page;
     public Button next;
@@ -34,10 +37,10 @@ public class Quiz : MonoBehaviour
     // variable to remember the selection
     private Answer selectedAnswer = null;
     private GameObject selectedButton;
-    private List<Record> records;
+    public static List<Record> records;
 
     // List of question
-    private List<Question> questions = new List<Question>();
+    public static List<Question> questions;
     private int no_questions = 5;
 
     // shuffle the answer. (NOT A CLEVER WAY)
@@ -160,6 +163,10 @@ public class Quiz : MonoBehaviour
         for (int i = 0; i < buttons.Length; i++)
         {
             buttons[i].GetComponentInChildren<Text>().text = questions[currentIndex].answers[i].text;
+            if (LEARNER_WORKING == false)
+            {
+                buttons[i].GetComponent<Button>().interactable = false;
+            }
         }
     }
 
@@ -184,17 +191,64 @@ public class Quiz : MonoBehaviour
             next.gameObject.SetActive(true);
             submit.gameObject.SetActive(false);
             back.gameObject.SetActive(true);
+            if (LEARNER_WORKING == false) {
+                submit.gameObject.SetActive(true);
+            }
         }
         if (currentIndex <= 0) 
         {
             back.gameObject.SetActive(false);
             next.gameObject.SetActive(true);
             submit.gameObject.SetActive(false);
+            if (LEARNER_WORKING == false)
+            {
+                submit.gameObject.SetActive(true);
+            }
         }
 
-        // display the selected answer;
-        if (selectedAnswer != null) {
-            EventSystem.current.SetSelectedGameObject(selectedButton);
+        //display feedback
+        if (LEARNER_WORKING == false)
+        {
+            selectedAnswer = records[currentIndex].answer;
+            for (int i = 0; i < buttons.Length; i++) {
+                ColorBlock colours = buttons[i].GetComponent<Button>().colors;
+                colours.disabledColor = new Color32(255,255,255,255);
+                colours.selectedColor = new Color32(255,255,255,255);
+                buttons[i].GetComponent<Button>().colors = colours;
+            }
+            if (records[currentIndex].answer.correct == true)
+            {
+                int rightIndex = records[currentIndex].question.answers.IndexOf(records[currentIndex].answer);
+                Button rightButton = buttons[rightIndex].GetComponent<Button>();
+                ColorBlock colours = rightButton.colors;
+                colours.disabledColor = new Color32(102, 231, 133, 255);
+                colours.selectedColor = new Color32(102, 231, 133, 255);
+                rightButton.colors = colours;
+            }
+            else 
+            {
+                int wrongIndex = records[currentIndex].question.answers.IndexOf(records[currentIndex].answer);
+                Button wrongButton = buttons[wrongIndex].GetComponent<Button>();
+                ColorBlock wrongColours = wrongButton.colors;
+                wrongColours.disabledColor = new Color32(214, 121, 113, 255);
+                wrongColours.selectedColor = new Color32(214, 121, 113, 255);
+                wrongButton.colors = wrongColours;
+
+                int rightIndex = records[currentIndex].question.answers.IndexOf(records[currentIndex].question.getCorrectAnswer());
+                Button rightButton = buttons[rightIndex].GetComponent<Button>();
+                ColorBlock rightColours = rightButton.colors;
+                rightColours.disabledColor = new Color32(102, 231, 133, 255);
+                rightColours.selectedColor = new Color32(102, 231, 133, 255);
+                rightButton.colors = rightColours;
+            }
+        }
+        else // if not feebback
+        {
+            // display the selected answer;
+            if (selectedAnswer != null)
+            {
+                EventSystem.current.SetSelectedGameObject(selectedButton);
+            }
         }
     }
 
@@ -235,7 +289,6 @@ public class Quiz : MonoBehaviour
     // When next button is clicked, show next question
     //----------------------------------------------------------
     {
-        print(selectedAnswer);
         if (selectedAnswer == null)
         {
             warning.GetComponent<Text>().text = "Please choose your answer before you continue.";
@@ -374,10 +427,23 @@ public class Quiz : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        build_questions();
-        records = new List<Record>();
-        currentIndex = 0;
+        if (QuizResult.review == true)
+        {
+            LEARNER_WORKING = false;
+            questions = QuizResult.questions;
+            records = QuizResult.records;
+            submit.GetComponentInChildren<Text>().text = "Finish Review";
+        }
+        else 
+        {
+            LEARNER_WORKING = true;
+            questions = new List<Question>();
+            build_questions();
+            records = new List<Record>();
+            submit.GetComponentInChildren<Text>().text = "Submit";
+        }
         //button setup
+        currentIndex = 0;
         next.onClick.AddListener(nextQuestion);
         back.onClick.AddListener(previousQuestion);
         submit.onClick.AddListener(finish);
@@ -388,13 +454,20 @@ public class Quiz : MonoBehaviour
 
     private void Update()
     {
-        if (selectedAnswer != null)
+        if (LEARNER_WORKING == true)
         {
-            EventSystem.current.SetSelectedGameObject(selectedButton);
+            if (selectedAnswer != null)
+            {
+                EventSystem.current.SetSelectedGameObject(selectedButton);
+            }
+            else
+            {
+                EventSystem.current.SetSelectedGameObject(null);
+            }
         }
-        else 
+        else if (LEARNER_WORKING == false) 
         {
-            EventSystem.current.SetSelectedGameObject(null);
+
         }
     }
 }
