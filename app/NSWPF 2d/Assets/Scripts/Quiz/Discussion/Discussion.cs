@@ -66,10 +66,26 @@ public class Discussion
             return error_return;
         }
 
+
         if (thread.content == "") 
         {
             errorCode = 1;
             error_message = "ERROR: content is empty!";
+            error_return = new KeyValuePair<int, string>(errorCode, error_message);
+            return error_return;
+        }
+
+        if (thread.heading.Contains(";") || thread.heading.Contains("<END>")) 
+        {
+            errorCode = 1;
+            error_message = "ERROR: Heading must not contain ';' or '<END>'!";
+            error_return = new KeyValuePair<int, string>(errorCode, error_message);
+            return error_return;
+        }
+        if (thread.content.Contains(";") || thread.content.Contains("<END>"))
+        {
+            errorCode = 1;
+            error_message = "ERROR: content must not contain ';' or '<END>'!";
             error_return = new KeyValuePair<int, string>(errorCode, error_message);
             return error_return;
         }
