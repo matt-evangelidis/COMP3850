@@ -309,7 +309,7 @@ MonoBehaviour:
     m_BestFit: 1
     m_MinSize: 10
     m_MaxSize: 40
-    m_Alignment: 0
+    m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -654,7 +654,7 @@ MonoBehaviour:
     m_BestFit: 1
     m_MinSize: 10
     m_MaxSize: 40
-    m_Alignment: 0
+    m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -772,7 +772,7 @@ PrefabInstance:
     - target: {fileID: 5358818815511890467, guid: 527baabfce388994386a1167e313a611,
         type: 3}
       propertyPath: message
-      value: Box 2
+      value: Hood concealing face
       objectReference: {fileID: 0}
     - target: {fileID: 5358818815511890467, guid: 527baabfce388994386a1167e313a611,
         type: 3}
@@ -1039,7 +1039,7 @@ MonoBehaviour:
     m_BestFit: 1
     m_MinSize: 10
     m_MaxSize: 40
-    m_Alignment: 0
+    m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -1604,7 +1604,7 @@ PrefabInstance:
     - target: {fileID: 5358818815511890467, guid: 527baabfce388994386a1167e313a611,
         type: 3}
       propertyPath: message
-      value: Box 3
+      value: Backpack potentially concealing tools
       objectReference: {fileID: 0}
     - target: {fileID: 5358818815511890467, guid: 527baabfce388994386a1167e313a611,
         type: 3}
@@ -1703,7 +1703,7 @@ PrefabInstance:
     - target: {fileID: 5358818815511890467, guid: 527baabfce388994386a1167e313a611,
         type: 3}
       propertyPath: message
-      value: Box 1
+      value: Hand in suspicious position
       objectReference: {fileID: 0}
     - target: {fileID: 5358818815511890467, guid: 527baabfce388994386a1167e313a611,
         type: 3}
