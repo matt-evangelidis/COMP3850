@@ -420,7 +420,10 @@ public class Quiz : MonoBehaviour
         {
             return;
         }
-        saveAchievement();
+        if (LEARNER_WORKING == true)
+        {
+            saveAchievement();
+        }
 
     }
 
