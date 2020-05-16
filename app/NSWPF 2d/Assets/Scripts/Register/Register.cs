@@ -22,16 +22,14 @@ public class Register : MonoBehaviour
     private string ConfPassword;
     private string FirstName;
     private string LastName;
-    private string Role = "Learner";
-    private string form;
 
-    private string filePath = "database/login/learner/";
-
-    private bool   EmailValid = false;
+    public Cohort cohort;
 
     // Start is called before the first frame update
     void Start()
     {
+        cohort = Cohort.getCohort();
+        
         firstName.GetComponent<InputField>().text = "";
         lastName.GetComponent<InputField>().text = "";
         username.GetComponent<InputField>().text = "";
@@ -47,197 +45,15 @@ public class Register : MonoBehaviour
 
     public void RegisterButton() {
 
-        bool FN  = false; //first name
-        bool LN  = false; //last name
-        bool UN  = false; //username
-        bool EM  = false; //email
-        bool PW  = false; //password
-        bool CPW = false; //Confirm password
-        bool R   = false; //role
+        KeyValuePair<int, string> error = cohort.addUser(Username,FirstName,LastName,Email,Password,ConfPassword,2);
 
-        warning.GetComponent<Text>().text = "";
-
-        //validate first name
-        if (FirstName != "")
+        if (error.Key == 1) //Error
         {
-            FN = true;
-            //warning.GetComponent<Text>().text = "";
-        }
-        else
-        {
-            warning.GetComponent<Text>().text = "First Name is EMPTY!";
-            Debug.LogWarning("First Name is EMPTY!");
+            warning.GetComponent<Text>().text = error.Value;
             return;
         }
-
-        //validate lastname
-        if(LastName != "")
-        {
-            LN = true;
-            //warning.GetComponent<Text>().text = "";
-        }
-        else
-        {
-            warning.GetComponent<Text>().text = "Last Name is EMPTY!";
-            Debug.LogWarning("Last Name is EMPTY!");
-            return;
-        }
-
-        //validate username
-
-        if (Username != "")
-        {
-            if (!System.IO.Directory.Exists(@filePath)) {
-                System.IO.Directory.CreateDirectory(@filePath);
-            }
-
-            if (Username.Length >= 5)
-            {
-                if (Username.Substring(0, 5).Equals("admin", StringComparison.OrdinalIgnoreCase) || Username.Substring(0,5).Equals("nswpf", StringComparison.OrdinalIgnoreCase))
-                {
-                    warning.GetComponent<Text>().text = "cannot start username with 'admin' or 'nswpf' keywords";
-                    return;
-                }
-            }
-
-            if (!System.IO.File.Exists(@filePath + Username + ".txt"))
-            {
-                UN = true;
-                //warning.GetComponent<Text>().text = "";
-            }
-            else
-            {
-                warning.GetComponent<Text>().text = "Username taken";
-                Debug.LogWarning("Username taken");
-                return;
-            }
-        } 
-        else
-        {
-            warning.GetComponent<Text>().text = "Username field EMPTY!";
-            Debug.LogWarning("Username field EMPTY!");
-            return;
-        }
-
-        //validate email
-
-        if (Email != "")
-        {
-            EmailValidation();
-            if (EmailValid)
-            {
-                if (Email.Contains("@"))
-                {
-                    if (Email.Contains("."))
-                    {
-                        EM = true;
-                        //warning.GetComponent<Text>().text = "";
-                    }
-                    else
-                    {
-                        warning.GetComponent<Text>().text = "Unvalid Email";
-                        Debug.LogWarning("Unvalid Email.");
-                        return;
-                    }
-                }
-                else 
-                {
-                    warning.GetComponent<Text>().text = "Unvalid Email";
-                    Debug.LogWarning("Unvalid Email@");
-                    return;
-                }
-            }
-            else
-            {
-                warning.GetComponent<Text>().text = "Unvalid Email";
-                Debug.LogWarning("Unvalid Email");
-                return;
-            }
-        }
-        else
-        {
-            warning.GetComponent<Text>().text = "Email field EMPTY!";
-            Debug.LogWarning("Email field EMPTY!");
-            return;
-        }
-
-        //validate password
-
-        if (Password != "")
-        {
-            if (Password.Length > 5)
-            {
-                PW = true;
-                //warning.GetComponent<Text>().text = "";
-            }
-            else
-            {
-                warning.GetComponent<Text>().text = "Password must be at least 6 characters long";
-                Debug.LogWarning("Password must be at least 6 characters long");
-                return;
-            }
-        }
-        else 
-        {
-            warning.GetComponent<Text>().text = "Password field EMPTY!";
-            Debug.LogWarning("Password field EMPTY!");
-            return;
-        }
-
-        //validate confirm password
-        if (ConfPassword != "")
-        {
-            if (ConfPassword.Equals(Password))
-            {
-                CPW = true;
-                //warning.GetComponent<Text>().text = "";
-            }
-            else
-            {
-                warning.GetComponent<Text>().text = "Password doesn't match!";
-                Debug.LogWarning("Password doesn't match!");
-                return;
-            }
-        }
-        else 
-        {
-            warning.GetComponent<Text>().text = "Confirm Password field EMPTY";
-            Debug.LogWarning("Confirm Password field EMPTY");
-            return;
-        }
-
-        //validate role
-        if (!Role.Equals("Choose your role"))
-        {
-            R = true;
-        }
-        else
-        {
-            warning.GetComponent<Text>().text = "You must choose your role!";
-            Debug.LogWarning("You must choose your role!");
-            return;
-        }
-
-
-        
-        if (FN == true && LN == true && UN == true && EM == true && PW == true && CPW == true && R == true) 
-        {
-            //encrypt password
-            bool Clear = true;
-            int i = 1;
-            foreach (char c in Password) {
-                if (Clear) {
-                    Password = "";
-                    Clear = false;
-                }
-                char Encrypted = (char)(c * i);
-                Password += Encrypted.ToString();
-                i++;
-            }
-            form = (FirstName + "\n" + LastName + "\n" + Username + "\n" + Email + "\n" + Password + "\n" + Role);
-            System.IO.File.WriteAllText(@filePath + Username + ".txt", form);
-
-            //warning.GetComponent<Text>().text = "Registration complete";
+        else if (error.Key == 0)
+        { 
             SceneManager.LoadScene("Register Success");
         }
     }
@@ -277,18 +93,7 @@ public class Register : MonoBehaviour
         ConfPassword = confPassword.GetComponent<InputField>().text;
 
         if (Input.GetKeyDown(KeyCode.Return)) {
-            RegisterButton();
-            
-        }
-    }
-
-    void EmailValidation() {
-        foreach (char c in Email) 
-        {
-            if ((int)c > 32 && (int)c < 126)
-                EmailValid = true;
-            else
-                EmailValid = false;
+            RegisterButton();  
         }
     }
 }

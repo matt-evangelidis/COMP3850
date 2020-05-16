@@ -46,11 +46,11 @@ public class LeaderboardQuiz : MonoBehaviour
 
     public void backToModule()
     {
-        if (Login.globalRole.Equals("Learner"))
+        if (Login.globalRole==2)
         {
             SceneManager.LoadScene("Module Searching");
         }
-        else if (Login.globalRole.Equals("Supervisor"))
+        else if (Login.globalRole==1)
         {
             SceneManager.LoadScene("Module Searching Supervisor");
         }
@@ -65,10 +65,10 @@ public class LeaderboardQuiz : MonoBehaviour
     }
 
     public void backToManagement() {
-        if (Login.globalRole.Equals("Supervisor"))
+        if (Login.globalRole==1)
         {
         }
-        else if (Login.globalRole.Equals("Admin")) 
+        else if (Login.globalRole==0) 
         {
             SceneManager.LoadScene("Learner Management");
         }
@@ -76,25 +76,20 @@ public class LeaderboardQuiz : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (Login.globalRole == null) 
-        {
-            warning.GetComponent<Text>().text = "ERROR: cannot determine user role";
-            return;
-        }
-        if (Login.globalRole.Equals("Learner"))
+        if (Login.globalRole==2)
         {
             achievementBtn.SetActive(true);
             backBtn.SetActive(false);
             backModuleBtn.SetActive(true);
         }
-        else if (Login.globalRole.Equals("Supervisor"))
+        else if (Login.globalRole==1)
         {
             backModuleBtn.SetActive(true);
             backToSupervisorMainBtnTxt.GetComponent<Text>().text = "Supervisor Menu"; // override button text
             achievementBtn.SetActive(false);
             backBtn.SetActive(false);
         }
-        else if (Login.globalRole.Equals("Admin"))
+        else if (Login.globalRole==0)
         {
             achievementBtn.SetActive(false);
             backBtn.SetActive(true);

@@ -50,11 +50,11 @@ public class AcountSetting : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (Login.globalRole.Equals("Supervisor"))
+        if (Login.globalRole==1)
         {
             path = pathSupervisor;
         }
-        else if (Login.globalRole.Equals("Learner"))
+        else if (Login.globalRole==2)
         {
             path = pathLearner;
         }
@@ -103,11 +103,11 @@ public class AcountSetting : MonoBehaviour
         btmm.ToMain();
 
         // Or alternatively like this, but 255 code smells :)
-        //if (Login.globalRole.Equals("Learner"))
+        //if (Login.2)
         //    SceneManager.LoadScene("Main Menu");
-        //else if (Login.globalRole.Equals("Supervisor"))
+        //else if (Login.globalRole==1)
         //    SceneManager.LoadScene("Supervisor Menu");
-        //else if (Login.globalRole.Equals("Admin")
+        //else if (Login.globalRole==0
         //{ 
             // To be extended
             // SceneManager.LoadScene("Admin Menu");

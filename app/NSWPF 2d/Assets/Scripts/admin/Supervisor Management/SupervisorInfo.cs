@@ -44,9 +44,8 @@ public class SupervisorInfo : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Cohort cohort = new Cohort(filePath);
-        Debug.LogWarning(cohort.users.Count + " users");
-        foreach (User supervisor in cohort.users)
+        Cohort cohort = Cohort.getCohort();
+        foreach (User supervisor in cohort.getSupervisors())
         {
             GameObject go = (GameObject)Instantiate(userEntry);
             go.transform.SetParent(content.transform);

@@ -21,11 +21,11 @@ public class AchievementQuiz : MonoBehaviour
     private string filePath = "database/leaderboard/quiz/";
 
     public void backToModule() {
-        if(Login.globalRole.Equals("Learner"))
+        if(Login.globalRole==2)
         {
             SceneManager.LoadScene("Module Searching");
         }
-        else if (Login.globalRole.Equals("Supervisor"))
+        else if (Login.globalRole==1)
         {
             
             SceneManager.LoadScene("Supervisor Menu");
@@ -46,7 +46,7 @@ public class AchievementQuiz : MonoBehaviour
             warning.GetComponent<Text>().text = "Internal Error. Please contact admin!";
             return;
         }
-        if (Login.globalRole.Equals("Supervisor"))
+        if (Login.globalRole==1)
         {
             backToSupervisorMainBtnTxt.GetComponent<Text>().text = "Supervisor Menu"; // override button text
         }

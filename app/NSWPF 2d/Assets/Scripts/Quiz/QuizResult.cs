@@ -42,11 +42,11 @@ public class QuizResult : MonoBehaviour
     public void toSearchingModule()
     {
         records = null;
-        if (Login.globalRole.Equals("Learner"))
+        if (Login.globalRole==2)
         {
             SceneManager.LoadScene("Module Searching");
         }
-        if (Login.globalRole.Equals("Supervisor"))
+        if (Login.globalRole==1)
         {
             SceneManager.LoadScene("Module Searching Supervisor");
         }

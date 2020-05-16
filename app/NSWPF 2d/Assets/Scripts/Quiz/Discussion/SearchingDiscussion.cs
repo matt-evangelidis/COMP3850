@@ -24,11 +24,11 @@ public class SearchingDiscussion : MonoBehaviour
     // Back button
     public void backToModule()
     {
-        if (Login.globalRole.Equals("Learner"))
+        if (Login.globalRole==2)
         {
             SceneManager.LoadScene("Module Searching");
         }
-        else if (Login.globalRole.Equals("Supervisor"))
+        else if (Login.globalRole==1)
         {
             SceneManager.LoadScene("Module Searching Supervisor");
         }

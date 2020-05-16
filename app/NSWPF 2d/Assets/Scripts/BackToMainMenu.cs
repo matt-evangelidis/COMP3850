@@ -9,7 +9,7 @@ using TMPro;
 
 public class BackToMainMenu : MonoBehaviour
 {
-    private string _role;
+    private int _role;
 
     // Start is called before the first frame update
     void Start()
@@ -28,15 +28,15 @@ public class BackToMainMenu : MonoBehaviour
         _role = Login.globalRole;
         // Debug.Log(Login.globalRole);
         // Debug.Log(_role);
-        if (_role == "Learner")
+        if (_role == 2)
         {
             SceneManager.LoadScene("Main Menu");
         }
-        else if (_role == "Supervisor")
+        else if (_role == 1)
         {
             SceneManager.LoadScene("Supervisor Menu");
         }
-        else if (_role == "Admin")
+        else if (_role == 0)
         {
             // To be extended
             SceneManager.LoadScene("Admin Menu");

@@ -35,13 +35,6 @@ public class UploadDiscussion : MonoBehaviour
             return;
         }
 
-        if (Login.globalRole == null)
-        {
-            warning.GetComponent<Text>().text = "Internal error. Please contact admin";
-            Debug.LogWarning("No role detected");
-            return;
-        }
-
         if (heading.Equals("")) {
             warning.GetComponent<Text>().text = "Heading should not be empty";
             return;

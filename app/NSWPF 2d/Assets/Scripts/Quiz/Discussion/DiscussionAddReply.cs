@@ -20,20 +20,18 @@ public class DiscussionAddReply : MonoBehaviour
 
     private string content;
 
+    public Cohort cohort;
+
     // Start is called before the first frame update
     void Start()
     {
+        cohort = Cohort.getCohort();
         Reply.GetComponent<InputField>().lineType = InputField.LineType.MultiLineNewline;
         Reply.GetComponent<InputField>().text = "";
 
         if (Login.globalUsername == null)
         {
             warning.GetComponent<Text>().text = "cannot verify username! Please contact admin";
-            return;
-        }
-
-        if (Login.globalRole == null) {
-            warning.GetComponent<Text>().text = "cannot verify role! Please contact admin";
             return;
         }
 
@@ -76,7 +74,7 @@ public class DiscussionAddReply : MonoBehaviour
         File.AppendAllText(@filePath + DiscussionDetail.post.name + ".txt", form);
 
         SearchingDiscussion.postDetail.noReplies += 1;
-        Reply newReply = new Reply(Login.globalUsername, content, Login.globalRole);
+        Reply newReply = new Reply(Login.globalUsername, content, cohort.getIndexToRole(Login.globalRole));
         SearchingDiscussion.postDetail.replies.Add(newReply);
 
         SceneManager.LoadScene("Searching Discussion Detail");

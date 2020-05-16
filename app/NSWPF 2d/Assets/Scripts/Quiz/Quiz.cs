@@ -416,7 +416,7 @@ public class Quiz : MonoBehaviour
         totalQuestion = questions.Count;
         noCorrects = sum;
         SceneManager.LoadScene("Quiz Result");
-        if (Login.globalRole.Equals("Supervisor"))
+        if (Login.globalRole==1)
         {
             return;
         }
