@@ -44,6 +44,7 @@ public class SearchingDiscussion : MonoBehaviour
     void Start()
     {
         Discussion discussion = new Discussion(filePath);
+        Debug.Log("number of discussion: " + discussion.threads.Count);
         seeDetail = false;
         entries = new List<GameObject>();
         postDetail = null;

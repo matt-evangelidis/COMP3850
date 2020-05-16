@@ -38,17 +38,18 @@ public class Discussion
             string[] parts = text.Split(new[] { "<END>" }, StringSplitOptions.None);
             string[] post = parts[0].Split(';');
 
-            if (post.Length != 5) {
+            if (post.Length != 6) {
                 return;
             }
 
             // Extract data from the post
             string name = post[0];
             string username = post[1];
-            string heading = post[2];
-            string content = post[4];
+            string role = post[2];
+            string heading = post[3];
+            string dateTIme = post[4];
+            string content = post[5];
             int noReplies = parts.Length - 2;
-            string dateTIme = post[3];
 
             List<Reply> replies = new List<Reply>();
 
@@ -66,7 +67,7 @@ public class Discussion
                 }
             }
 
-            Thread thread = new Thread(name,username,heading,content, dateTIme, replies.Count, replies);
+            Thread thread = new Thread(name,username,role,heading, content, dateTIme, replies.Count,replies);
             threads.Add(thread);
         }
     }
@@ -77,6 +78,7 @@ public class Thread
     private string _name;
     private string _dateTime;
     private string _username;
+    private string _role;
     private int _noReplies;
     private string _heading;
     private string _content;
@@ -84,13 +86,14 @@ public class Thread
 
     public string name { get { return _name; } set { _name = value; } }
     public string username { get { return _username; } set { _username = value; } }
+    public string role { get { return _role; } set { _role = value; } }
     public string dateTime { get { return _dateTime; } set { _dateTime = value; } }
     public int noReplies { get { return _noReplies; } set { _noReplies = value; } }
     public string heading { get { return _heading; } set { _heading = value; } }
     public string content { get { return _content; } set { _content = value; } }
     public List<Reply> replies { get { return _replies; } set { _replies = value; } }
 
-    public Thread(string name, string username, string heading, string content, string dateTime, int noReplies, List<Reply> replies) {
+    public Thread(string name, string username, string role, string heading, string content, string dateTime, int noReplies, List<Reply> replies) {
         this.name = name;
         this.username = username;
         this.dateTime = dateTime;
@@ -98,6 +101,7 @@ public class Thread
         this.heading = heading;
         this.content = content;
         this.replies = replies;
+        this.role = role;
     }
 }
 

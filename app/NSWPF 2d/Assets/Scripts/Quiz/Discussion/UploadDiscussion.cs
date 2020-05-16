@@ -29,6 +29,19 @@ public class UploadDiscussion : MonoBehaviour
 
     public void upload() {
 
+        if (Login.globalUsername == null) {
+            warning.GetComponent<Text>().text = "Internal error. Please contact admin";
+            Debug.LogWarning("No username detected");
+            return;
+        }
+
+        if (Login.globalRole == null)
+        {
+            warning.GetComponent<Text>().text = "Internal error. Please contact admin";
+            Debug.LogWarning("No role detected");
+            return;
+        }
+
         if (heading.Equals("")) {
             warning.GetComponent<Text>().text = "Heading should not be empty";
             return;
@@ -36,6 +49,16 @@ public class UploadDiscussion : MonoBehaviour
 
         if(content.Equals("")) {
             warning.GetComponent<Text>().text = "Content should not be empty";
+            return;
+        }
+
+        if (content.Contains(";")) {
+            warning.GetComponent<Text>().text = "Content should not contaim ';'";
+            return;
+        }
+
+        if (heading.Contains(";")) {
+            warning.GetComponent<Text>().text = "Heading should not contaim ';'";
             return;
         }
 
@@ -47,7 +70,7 @@ public class UploadDiscussion : MonoBehaviour
         String now = DateTime.Now.ToString("yyyy-MM-dd,HH-mm-ss");
         String dateTime = DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss");
 
-        form = now + ";" + Login.globalUsername + ";" + heading + ";" + dateTime + ";" + content + "<END>";
+        form = now + ";" + Login.globalUsername + ";" + Login.globalRole + ";" + heading + ";" + dateTime + ";" + content + "<END>";
 
         System.IO.File.WriteAllText(@filePath + now + ".txt", form);
 
@@ -60,7 +83,8 @@ public class UploadDiscussion : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {       
+    {
+        Content.GetComponent<InputField>().lineType = InputField.LineType.MultiLineNewline;
         Heading.GetComponent<InputField>().text = "";
         Content.GetComponent<InputField>().text = "";
     }

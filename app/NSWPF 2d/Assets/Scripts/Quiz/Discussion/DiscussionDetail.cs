@@ -38,7 +38,7 @@ public class DiscussionDetail : MonoBehaviour
             return;
         }
         
-        detail.GetComponent<Text>().text = post.username + ": " + post.content;
+        detail.GetComponent<Text>().text = post.username + " (" + post.role + ") " + ": " + post.content;
 
         replies = post.replies;
 

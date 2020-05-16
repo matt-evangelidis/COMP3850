@@ -23,6 +23,7 @@ public class DiscussionAddReply : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Reply.GetComponent<InputField>().lineType = InputField.LineType.MultiLineNewline;
         Reply.GetComponent<InputField>().text = "";
 
         if (Login.globalUsername == null)
