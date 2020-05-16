@@ -3,8 +3,8 @@ SQ6;A6.1;A6.2;A6.3;A6.4;4
 SQ7;A7.1;A7.2;A7.3;A7.4;1
 SQ8;A8.1;A8.2;A8.3;A8.4;2
 SQ9;A9.1;A9.2;A9.3;A9.4;3
-1. In conducting the search of a person, what is a police officer able to do?;a. Shoot the person.;b. Quickly run his or her hands over the person’s outer clothing.;c. Take possessions of the person.;d. All of the above.;2
-2. When can a police officer carry out a strip search?;a. The police officer suspects on reasonable grounds that the strip search is necessary;b. When the police officer hasn’t told the informed.;c. When a person is being questioned.;d. When the person is left with unreasonable clothing.;1
-3. What is the legal age limit for a person to be searched?;a. 5;b. 10;c. 8;d. 18;2
-4. What is a strip search?;a. A general search is when police pat down outer layers of clothing. In this case, you may be asked to take off your jacket, socks, hat and/or gloves.;b. When you xray a person.;c. When you search someone without touching them.;d. Finding legal items on a person.;1
-5. Does a suspect have the right to refuse a strip search?;a. Yes, if the suspect is receiving unlawful treatment.;b. No. A officer can search anyone they like.;c. Yes under any circumstances.;d. Depends on the weather.;1
+In conducting the search of a person, what is a police officer able to do?;a. Shoot the person.;b. Quickly run his or her hands over the person’s outer clothing.;c. Take possessions of the person.;d. All of the above.;2
+When can a police officer carry out a strip search?;a. The police officer suspects on reasonable grounds that the strip search is necessary;b. When the police officer hasn’t told the informed.;c. When a person is being questioned.;d. When the person is left with unreasonable clothing.;1
+What is the legal age limit for a person to be searched?;a. 5;b. 10;c. 8;d. 18;2
+What is a strip search?;a. A general search is when police pat down outer layers of clothing. In this case, you may be asked to take off your jacket, socks, hat and/or gloves.;b. When you xray a person.;c. When you search someone without touching them.;d. Finding legal items on a person.;1
+Does a suspect have the right to refuse a strip search?;a. Yes, if the suspect is receiving unlawful treatment.;b. No. A officer can search anyone they like.;c. Yes under any circumstances.;d. Depends on the weather.;1
