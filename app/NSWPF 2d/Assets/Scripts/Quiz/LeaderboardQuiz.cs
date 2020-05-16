@@ -23,8 +23,6 @@ public class LeaderboardQuiz : MonoBehaviour
     public Button Result;
     public Text backToSupervisorMainBtnTxt;
 
-    private string filePath = "database/leaderboard/quiz/";
-
     private List<Achievement> achievementList;
     private List<GameObject> entries;
 
@@ -101,7 +99,7 @@ public class LeaderboardQuiz : MonoBehaviour
             return;
         }
 
-        Leaderboard leaderboard = new Leaderboard(filePath);
+        Leaderboard leaderboard = Leaderboard.getLeaderboard();
 
         if (leaderboard == null) {
             warning.GetComponent<Text>().text = "ERROR: cannot load leaderboard";
@@ -117,9 +115,9 @@ public class LeaderboardQuiz : MonoBehaviour
             entries.Add(go);
             go.transform.SetParent(content.transform);
             go.transform.Find("Username").GetComponentInChildren<InputField>().text = achievement.username;
-            go.transform.Find("Attempt").GetComponentInChildren<InputField>().text = achievement.noAttempts;
-            go.transform.Find("BestAttempt").GetComponentInChildren<InputField>().text = achievement.bestAttempt;
-            go.transform.Find("Percent").GetComponentInChildren<InputField>().text = achievement.percent;
+            go.transform.Find("Attempt").GetComponentInChildren<InputField>().text = achievement.noAttempts.ToString();
+            go.transform.Find("BestAttempt").GetComponentInChildren<InputField>().text = "#"+achievement.bestAttempt.ToString();
+            go.transform.Find("Percent").GetComponentInChildren<InputField>().text = (achievement.bestScore).ToString()+"%";
         }
 
             sorted = true;
@@ -166,11 +164,11 @@ public class LeaderboardQuiz : MonoBehaviour
         {
             if (sortMode != (int)mode.totalAttemptsAsc)
             {
-                return x.totalAttempts.CompareTo(y.totalAttempts);
+                return x.noAttempts.CompareTo(y.noAttempts);
             }
             else
             {
-                return y.totalAttempts.CompareTo(x.totalAttempts);
+                return y.noAttempts.CompareTo(x.noAttempts);
             }
         });
         sorted = false;
@@ -194,11 +192,11 @@ public class LeaderboardQuiz : MonoBehaviour
         {
             if (sortMode != (int)mode.bestAttemptAsc)
             {
-                return y.bestAttemptInt.CompareTo(x.bestAttemptInt);
+                return y.bestAttempt.CompareTo(x.bestAttempt);
             }
             else
             {
-                return x.bestAttemptInt.CompareTo(y.bestAttemptInt);
+                return x.bestAttempt.CompareTo(y.bestAttempt);
             }
         });
         sorted = false;
@@ -218,11 +216,11 @@ public class LeaderboardQuiz : MonoBehaviour
         {
             if (sortMode != (int)mode.resultDes)
             {
-                return y.result.CompareTo(x.result);
+                return y.bestScore.CompareTo(x.bestScore);
             }
             else
             {
-                return x.result.CompareTo(y.result);
+                return x.bestScore.CompareTo(y.bestScore);
             }
         });
         sorted = false;
@@ -257,9 +255,9 @@ public class LeaderboardQuiz : MonoBehaviour
             entries.Add(go);
             go.transform.SetParent(content.transform);
             go.transform.Find("Username").GetComponentInChildren<InputField>().text = achievement.username;
-            go.transform.Find("Attempt").GetComponentInChildren<InputField>().text = achievement.noAttempts;
-            go.transform.Find("BestAttempt").GetComponentInChildren<InputField>().text = achievement.bestAttempt;
-            go.transform.Find("Percent").GetComponentInChildren<InputField>().text = achievement.percent;
+            go.transform.Find("Attempt").GetComponentInChildren<InputField>().text = achievement.noAttempts.ToString();
+            go.transform.Find("BestAttempt").GetComponentInChildren<InputField>().text = "#"+achievement.bestAttempt.ToString();
+            go.transform.Find("Percent").GetComponentInChildren<InputField>().text = (achievement.bestScore).ToString()+"%";
         }
         userEntry.SetActive(false);
         sorted = true;

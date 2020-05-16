@@ -16,7 +16,6 @@ public class Cohort
     private string adminPath = "database/login/admin/";
 
     //singleton implementation
-    private static readonly object padlock = new object();
     private static Cohort instance = null;
     public static Cohort getCohort()
     {
@@ -507,6 +506,20 @@ public class Cohort
     //---------------------------------------------------
     {
         // Getting alll users
+
+        if (!System.IO.Directory.Exists(@learnerPath))
+        {
+            System.IO.Directory.CreateDirectory(@learnerPath);
+        }
+        if (!System.IO.Directory.Exists(@supervisorPath))
+        {
+            System.IO.Directory.CreateDirectory(@supervisorPath);
+        }
+        if (!System.IO.Directory.Exists(@adminPath))
+        {
+            System.IO.Directory.CreateDirectory(@adminPath);
+        }
+
         DirectoryInfo learnerDir = new DirectoryInfo(@learnerPath);
         DirectoryInfo supervisorDir = new DirectoryInfo(@supervisorPath);
         DirectoryInfo adminDir = new DirectoryInfo(@adminPath);

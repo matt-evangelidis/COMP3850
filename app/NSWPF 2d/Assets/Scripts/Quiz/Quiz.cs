@@ -13,9 +13,6 @@ public class Quiz : MonoBehaviour
     // variable to control the flow of game:
     private int currentIndex;
 
-    // variable to save achievement 
-    private string filePath = "database/leaderboard/quiz/";
-
     // variable for result
     public static int totalQuestion;
     public static int noCorrects;
@@ -38,6 +35,9 @@ public class Quiz : MonoBehaviour
     private Answer selectedAnswer = null;
     private GameObject selectedButton;
     public static List<Record> records;
+
+    //Leaderboard object
+    public Leaderboard leaderboard;
 
     // List of question
     public static List<Question> questions;
@@ -374,24 +374,12 @@ public class Quiz : MonoBehaviour
 
     private void saveAchievement()
     //-------------------------------------------------------------------
-    // Save result to file 
+    // Save result to file (database)
     //-------------------------------------------------------------------
     {
-        string finalResult = noCorrects.ToString() + "," + totalQuestion.ToString() + ";"; ;
-
-        if (!System.IO.Directory.Exists(@filePath))
-        {
-            System.IO.Directory.CreateDirectory(@filePath);
-        }
-
-        if (!System.IO.File.Exists(@filePath + Login.globalUsername + ".txt"))
-        {
-            System.IO.File.WriteAllText(@filePath + Login.globalUsername + ".txt", finalResult);
-        }
-        else
-        {
-            File.AppendAllText(@filePath+ Login.globalUsername + ".txt", finalResult);
-        }
+        // using singleton
+        leaderboard = Leaderboard.getLeaderboard();
+        leaderboard.addAchievement(noCorrects, totalQuestion);
     }
 
     public void finish()
