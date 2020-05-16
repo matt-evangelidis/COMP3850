@@ -39,6 +39,9 @@ public class Quiz : MonoBehaviour
     //Leaderboard object
     public Leaderboard leaderboard;
 
+    //Multiple choice object
+    public MultipleChoice mc;
+
     // List of question
     public static List<Question> questions;
     private int no_questions = 5;
@@ -64,17 +67,19 @@ public class Quiz : MonoBehaviour
     // Get the txt file and build question bank from txt content
     //----------------------------------------------------------
     {
-        if (System.IO.File.Exists(@"database/quiz/searching.txt"))
+        mc = MultipleChoice.getMultipleChoice();
+        if (mc != null)
         {
-            //array for reading
-            string[] lines = System.IO.File.ReadAllLines(@"database/quiz/searching.txt");
-            if (lines.Length > no_questions)
+
+            if (mc.questions.Count > no_questions) //pick question from pool
             {
                 List<int> rndList = new List<int>();
                 System.Random rnd = new System.Random();
-                for (int i = 0; i < no_questions; i++) {
-                    int random = rnd.Next(lines.Length);
-                    if (!rndList.Contains(random)) {
+                for (int i = 0; i < no_questions; i++)
+                {
+                    int random = rnd.Next(mc.questions.Count);
+                    if (!rndList.Contains(random))
+                    {
                         rndList.Add(random);
                         continue;
                     }
@@ -82,64 +87,58 @@ public class Quiz : MonoBehaviour
                     i--;
                 }
 
-                for (int i = 0; i < rndList.Count; i++) {
+                for (int i = 0; i < rndList.Count; i++)
+                {
+                    Question quesObj = mc.questions[rndList[i]];
+
                     //temp string array, delimited by ;, first entry is the question, last entry is the correct answer
-                    string[] temp = lines[rndList[i]].Split(';');
+                    string question = quesObj.question;
 
                     //temp answer list
                     List<Answer> a = new List<Answer>();
 
                     //start from first answer, end at last answer
-                    for (int j = 1; j < temp.Length - 1; j++)
+                    foreach (Answer answer in quesObj.answers)
                     {
-                        Answer t = new Answer(temp[j], false);
-                        a.Add(t);
+                        a.Add(answer);
                     }
-
-                    //set correct field
-                    int len = Int32.Parse(temp[temp.Length - 1]) - 1;
-                    a[len].correct = true;
 
                     //shuffle answer
                     ShuffleList<Answer>(a);
 
                     //build question
-                    Question te = new Question(temp[0], a);
+                    Question te = new Question(question, a);
                     questions.Add(te);
                 }
-            }
-            else if (lines.Length <= no_questions)
-            {
-                //if there is <no_questions> questions and under then shows them all.
-                for (int i = 0; i < lines.Length; i++)
+            } 
+            else 
+            { 
+
+                for (int i = 0; i < mc.questions.Count; i++)
                 {
+                    Question quesObj = mc.questions[i];
+
                     //temp string array, delimited by ;, first entry is the question, last entry is the correct answer
-                    string[] temp = lines[i].Split(';');
+                    string question = quesObj.question;
 
                     //temp answer list
                     List<Answer> a = new List<Answer>();
 
                     //start from first answer, end at last answer
-                    for (int j = 1; j < temp.Length - 1; j++)
+                    foreach (Answer answer in quesObj.answers)
                     {
-                        Answer t = new Answer(temp[j], false);
-                        a.Add(t);
+                        a.Add(answer);
                     }
-
-                    //set correct field
-                    int len = Int32.Parse(temp[temp.Length - 1]) - 1;
-                    a[len].correct = true;
 
                     //shuffle answer
                     ShuffleList<Answer>(a);
 
                     //build question
-                    Question te = new Question(temp[0], a);
+                    Question te = new Question(question, a);
                     questions.Add(te);
                 }
                 ShuffleList<Question>(questions);
             }
-            
         }
         else 
         {

@@ -90,7 +90,6 @@ public class Leaderboard
             // Found the place
             if (a.username.CompareTo(username) > 0)
             {
-                Debug.Log(index);
                 return index;
             }
         }
@@ -128,7 +127,6 @@ public class Leaderboard
 
             for (int i = 0; i < tries.Length-1; i++) {
                 string[] items = tries[i].Split(',');
-                Debug.Log(items.Length);
                 int correct = Int32.Parse(items[0]);
                 int total = Int32.Parse(items[1]);
                 Attempt attempt = new Attempt(correct,total);
@@ -178,19 +176,14 @@ public class Achievement
         this.bestScore = -1;
         this.bestAttempt = -1;
 
-        Debug.Log("attempt size: " + attempts.Count);
-
         foreach (Attempt a in this.attempts) 
         {
-            Debug.Log(a.percent + " " + bestScore);
             if (a.percent > bestScore) 
             {
                 bestScore = a.percent;
                 bestAttempt = this.attempts.IndexOf(a) + 1;
             }
         }
-
-        Debug.Log("Best score: " + bestScore);
     }
 }
 

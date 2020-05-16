@@ -8,18 +8,108 @@ using UnityEngine.EventSystems;
 
 public class Discussion
 {
+    private string path = "database/discussion/";
+
+    //singleton implementation
+    private static Discussion instance = null;
+    public static Discussion getDiscussion()
+    {
+        if (instance == null)
+        {
+            instance = new Discussion();
+        }
+        return instance;
+    }
+
+
     private List<Thread> _threads = new List<Thread>();
     public List<Thread> threads { get { return _threads; } set { _threads = value; } }
-    public Discussion(string path)
+
+
+    public KeyValuePair<int, string> addThread(Thread thread)
+    //------------------------------------------------------
+    //------------------------------------------------------
+    {
+        int errorCode = 0;
+        string error_message = "";
+        KeyValuePair<int, string>  error_return;
+
+        if (thread.name == "" || thread.dateTime == "") 
+        {
+            errorCode = 1;
+            error_message = "ERROR: cannot verify date time!";
+            error_return = new KeyValuePair<int, string>(errorCode, error_message);
+            return error_return;
+        }
+
+        if (thread.username == "") 
+        {
+            errorCode = 1;
+            error_message = "ERROR: cannot verify username!";
+            error_return = new KeyValuePair<int, string>(errorCode, error_message);
+            return error_return;
+        }
+
+        if (thread.role == "") 
+        {
+            errorCode = 1;
+            error_message = "ERROR: cannot verify role!";
+            error_return = new KeyValuePair<int, string>(errorCode, error_message);
+            return error_return;
+        }
+
+        if (thread.heading == "") 
+        {
+            errorCode = 1;
+            error_message = "ERROR: heading is empty!";
+            error_return = new KeyValuePair<int, string>(errorCode, error_message);
+            return error_return;
+        }
+
+        if (thread.content == "") 
+        {
+            errorCode = 1;
+            error_message = "ERROR: content is empty!";
+            error_return = new KeyValuePair<int, string>(errorCode, error_message);
+            return error_return;
+        }
+
+        // no error then add it
+        threads.Add(thread);
+
+        //write to database:
+        string form = thread.name + ";" + thread.username + ";" + thread.role + ";" + thread.heading + ";" + thread.dateTime + ";" + thread.content + "<END>";
+        System.IO.File.WriteAllText(@path + thread.name + ".txt", form);
+
+        errorCode = 0;
+        error_message = "New Thread is added successfully!";
+        error_return = new KeyValuePair<int, string>(errorCode, error_message);
+
+        return error_return;
+    }
+
+
+    public Thread getThread(string threadName) 
+    {
+        foreach (Thread thread in threads)
+        {
+            if (thread.name.Equals(threadName))
+            {
+                return thread;
+            }
+        }
+        return null;
+    }
+    private Discussion()
     //---------------------------------------------------
-    // Getting all Thread
+    // Getting all Threads
     //---------------------------------------------------
     {
-        DirectoryInfo directory = new DirectoryInfo(@path);
-        if (directory == null) {
-            Debug.LogWarning("No directory found");
-            return;
+        if (!System.IO.Directory.Exists(@path))
+        {
+            System.IO.Directory.CreateDirectory(@path);
         }
+        DirectoryInfo directory = new DirectoryInfo(@path);
 
         //gettin text file
         FileInfo[] Files = directory.GetFiles("*.txt");
@@ -66,7 +156,6 @@ public class Discussion
                     replies.Add(reply);
                 }
             }
-
             Thread thread = new Thread(name,username,role,heading, content, dateTIme, replies.Count,replies);
             threads.Add(thread);
         }
@@ -84,6 +173,8 @@ public class Thread
     private string _content;
     private List<Reply> _replies;
 
+    private string path = "database/discussion/";
+
     public string name { get { return _name; } set { _name = value; } }
     public string username { get { return _username; } set { _username = value; } }
     public string role { get { return _role; } set { _role = value; } }
@@ -93,7 +184,80 @@ public class Thread
     public string content { get { return _content; } set { _content = value; } }
     public List<Reply> replies { get { return _replies; } set { _replies = value; } }
 
-    public Thread(string name, string username, string role, string heading, string content, string dateTime, int noReplies, List<Reply> replies) {
+
+    public KeyValuePair<int, string> addReply(Reply reply)
+    //------------------------------------------------------
+    // Add reply to a thread
+    //------------------------------------------------------
+    {
+        int errorCode = 0;
+        string error_message = "";
+        KeyValuePair<int, string> error_return;
+
+        if (reply.username == "") 
+        {
+            errorCode = 1;
+            error_message = "ERROR: cannot verify username!";
+            error_return = new KeyValuePair<int, string>(errorCode, error_message);
+            return error_return;
+        }
+        if (reply.role == "")
+        {
+            errorCode = 1;
+            error_message = "ERROR: cannot verify username!";
+            error_return = new KeyValuePair<int, string>(errorCode, error_message);
+            return error_return;
+        }
+        if (reply.content == "") 
+        {
+            errorCode = 1;
+            error_message = "ERROR: your reply is empty!";
+            error_return = new KeyValuePair<int, string>(errorCode, error_message);
+            return error_return;
+        }
+
+        if (reply.content.Contains(";") || reply.content.Contains("<END>"))
+        {
+
+            errorCode = 1;
+            error_message = "Reply cannot contain ';' or '<END>'";
+            error_return = new KeyValuePair<int, string>(errorCode, error_message);
+            return error_return;
+        }
+
+        // no error add reply
+        replies.Add(reply);
+
+        // write to database
+        if (!System.IO.Directory.Exists(@path))
+        {
+            errorCode = 1;
+            error_message = "Error: no database found! Please contact admin";
+            error_return = new KeyValuePair<int, string>(errorCode, error_message);
+            return error_return;
+        }
+
+        if (!System.IO.File.Exists(@path + this.name + ".txt"))
+        {
+            errorCode = 1;
+            error_message = "Error: no post found! Please contact admin";
+            error_return = new KeyValuePair<int, string>(errorCode, error_message);
+            return error_return;
+        }
+
+        string form = reply.username + ";" + reply.role + ";" + reply.content + "<END>";
+
+        File.AppendAllText(@path + this.name + ".txt", form);
+
+        this.noReplies = this.replies.Count;
+
+        errorCode = 0;
+        error_message = "Reply is added successfully!";
+        return error_return;
+    }
+
+    public Thread(string name, string username, string role, string heading, string content, string dateTime, int noReplies, List<Reply> replies)
+    {
         this.name = name;
         this.username = username;
         this.dateTime = dateTime;

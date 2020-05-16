@@ -19,7 +19,8 @@ public class SearchingDiscussion : MonoBehaviour
 
     private List<GameObject> entries;
 
-    private string filePath = "database/discussion/";
+    //Discussion object
+    Discussion discussion;
 
     // Back button
     public void backToModule()
@@ -43,7 +44,7 @@ public class SearchingDiscussion : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Discussion discussion = new Discussion(filePath);
+        discussion = Discussion.getDiscussion();
         Debug.Log("number of discussion: " + discussion.threads.Count);
         seeDetail = false;
         entries = new List<GameObject>();
