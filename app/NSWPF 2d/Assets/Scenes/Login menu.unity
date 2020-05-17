@@ -1333,8 +1333,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: If you are a supervisor and have not yet had a supervisor account, plase
-    contact admin to obtain a new account
+  m_Text: If you are a supervisor and have not yet had a supervisor account, please
+    contact admin to obtain a new account.
 --- !u!222 &967797864
 CanvasRenderer:
   m_ObjectHideFlags: 0
