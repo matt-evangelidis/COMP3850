@@ -12,11 +12,15 @@ public class ChooseUserToEdit : MonoBehaviour
     public GameObject nextBtn;
     public GameObject warning;
 
+    //singleton
+    Cohort cohort;
+
     private string Username;
 
     // Start is called before the first frame update
     void Start()
     {
+        cohort = Cohort.getCohort();
         nextBtn.GetComponent<Button>().interactable = false;
         warning.GetComponent<Text>().text = "";
         inputUsername.GetComponent<InputField>().text = "";
@@ -25,15 +29,16 @@ public class ChooseUserToEdit : MonoBehaviour
     public void nextButton() {
         if (Username != "") 
         {
-            if (!System.IO.File.Exists(@"database/login/learner/" + Username + ".txt")) 
+            User foundUser = cohort.getUser(Username);
+            if (foundUser == null) 
             {
                 warning.GetComponent<Text>().text = "User not found!";
-                Debug.LogWarning("User not found");
+                Debug.LogWarning("User object not found");
                 return;
             }
 
             AdminEdit.adminEditUsername = Username;
-            AdminEdit.adminEditRole = "Learner";
+            AdminEdit.adminEditRole = cohort.getIndexToRole(foundUser.role);
             SceneManager.LoadScene("Admin Edit User");
         }
     }

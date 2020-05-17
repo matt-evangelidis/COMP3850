@@ -17,7 +17,8 @@ public class SupervisorInfo : MonoBehaviour
     public GameObject nextBtn;
     private string Username;
 
-    private string filePath = "database/login/supervisor/";
+    //singleton 
+    Cohort cohort = Cohort.getCohort();
 
     public void backToManagement()
     {
@@ -28,7 +29,9 @@ public class SupervisorInfo : MonoBehaviour
     {
         if (Username != "")
         {
-            if (!System.IO.File.Exists(@filePath + Username + ".txt"))
+            User foundUser = cohort.getUser(Username);
+
+            if (foundUser == null) 
             {
                 warning.GetComponent<Text>().text = "User not found!";
                 Debug.LogWarning("User not found");
@@ -36,7 +39,7 @@ public class SupervisorInfo : MonoBehaviour
             }
 
             AdminEdit.adminEditUsername = Username;
-            AdminEdit.adminEditRole = "Supervisor";
+            AdminEdit.adminEditRole = cohort.getIndexToRole(foundUser.role);
             SceneManager.LoadScene("Admin Edit User");
         }
     }

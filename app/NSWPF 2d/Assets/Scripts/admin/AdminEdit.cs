@@ -23,10 +23,6 @@ public class AdminEdit : MonoBehaviour
     public GameObject cancelBtn;
     public GameObject backBtn;
 
-    private String[] lines;
-    private String DecryptedPassword;
-    private bool EmailValid = false;
-
     private bool edit = false;
 
     public static string adminEditUsername = "";
@@ -41,12 +37,14 @@ public class AdminEdit : MonoBehaviour
     private string Role;
     private string form;
 
-    private string pathLearner = "database/login/learner/";
-    private string pathSupervisor = "database/login/supervisor/";
-    private string path = "";
+    //singleton object
+    Cohort cohort;
+
     // Start is called before the first frame update
     void Start()
     {
+        cohort = Cohort.getCohort();
+
         if (adminEditUsername.Equals(""))
         {
             warning.GetComponent<Text>().text = "Internal error, please contact develper";
@@ -57,48 +55,31 @@ public class AdminEdit : MonoBehaviour
             return;
         }
 
-        if (adminEditRole.Equals("Learner"))
-        {
-            path = pathLearner;
-        }
-        else if (adminEditRole.Equals("Supervisor")) 
-        {
-            path = pathSupervisor;
-        }
-        if (!System.IO.File.Exists(@path + adminEditUsername + ".txt")) {
+        User editUser = cohort.getUser(adminEditUsername);
+        
+        if (editUser == null) {
             warning.GetComponent<Text>().text = "Unexpected error, please contact development team";
-            Debug.LogWarning("cannot find user file");
+            Debug.LogWarning("cannot find user object");
         }
 
-        lines = System.IO.File.ReadAllLines(@path + adminEditUsername + ".txt");
         username.GetComponentInChildren<InputField>().text = adminEditUsername;
-        firstName.GetComponentInChildren<InputField>().text = lines[0];
-        lastName.GetComponentInChildren<InputField>().text = lines[1];
-        email.GetComponentInChildren<InputField>().text = lines[3];
-        role.GetComponentInChildren<InputField>().text = lines[5];
-        Role = lines[5];
+        firstName.GetComponentInChildren<InputField>().text = editUser.firstname;
+        lastName.GetComponentInChildren<InputField>().text = editUser.lastname;
+        email.GetComponentInChildren<InputField>().text = editUser.email;
+        role.GetComponentInChildren<InputField>().text = adminEditRole;
+        Role = adminEditRole;
     }
 
     public void backToUserInfo()
     {
-        if (adminEditRole.Equals("Learner"))
+        int editRole = cohort.getRoleToIndex(adminEditRole);
+        if (editRole==2)
         {
             SceneManager.LoadScene("Learner Info");
         }
-        else if (adminEditRole.Equals("Supervisor")) 
+        else if (editRole==1) 
         {
             SceneManager.LoadScene("Supervisor Info");
-        }
-    }
-
-    void EmailValidation()
-    {
-        foreach (char c in Email)
-        {
-            if ((int)c > 32 && (int)c < 126)
-                EmailValid = true;
-            else
-                EmailValid = false;
         }
     }
 
@@ -119,279 +100,20 @@ public class AdminEdit : MonoBehaviour
         Password = password.GetComponentInChildren<InputField>().text;
         ConfPassword = confPassword.GetComponentInChildren<InputField>().text;
 
-        bool UN = false; //Username
-        bool FN = false; //first name
-        bool LN = false; //last name
-        bool EM = false; //email
-        bool newPW = false; // true if only new password
-        bool PW = false; //password
-        bool CPW = false; //Confirm password
+        User editUser = cohort.getUser(adminEditUsername);
 
+        KeyValuePair<int,string> error =  cohort.editUser(Username,FirstName,LastName,Email,editUser.decryptPassword(),Password,ConfPassword, cohort.getRoleToIndex(Role));
 
-        //validate Username
-        if (Username != "")
+        if (error.Key == 1)
         {
-            UN = true;
-            //warning.GetComponent<Text>().text = "";
-        }
-        else
-        {
-            warning.GetComponent<Text>().text = "Username is empty";
-            Debug.LogWarning("Username is EMPTY!");
+            warning.GetComponent<Text>().text = error.Value;
             return;
         }
+        edit = false;
+        warning.GetComponent<Text>().text = error.Value;
 
-        if (Username.Length >= 5) {
-            if (Username.Substring(0, 5).Equals("admin", StringComparison.OrdinalIgnoreCase)) 
-            {
-                UN = false;
-                warning.GetComponent<Text>().text = "must not start with 'admin'";
-                return;
-            }
-            if (adminEditRole.Equals("Learner"))
-            {
-                if (Username.Substring(0, 5).Equals("nswpf", StringComparison.OrdinalIgnoreCase))
-                {
-                    UN = false;
-                    warning.GetComponent<Text>().text = "Learners cannot start with 'nswpf'";
-                    return;
-                }
-            }
-            else if (adminEditRole.Equals("Supervisor"))
-            {
-                if (!Username.Substring(0, 5).Equals("nswpf", StringComparison.OrdinalIgnoreCase))
-                {
-                    UN = false;
-                    warning.GetComponent<Text>().text = "Supervisor start with 'nswpf'";
-                    return;
-                }
-                if (Username.Equals("nswpf", StringComparison.OrdinalIgnoreCase)) 
-                {
-                    UN = false;
-                    warning.GetComponent<Text>().text = "Supervisor must not only 'nswpf'";
-                    return;
-                }
-            }
-        } 
-        else if (Username.Length <= 5)
-        {
-            if (adminEditRole.Equals("Supervisor"))
-            {
-                UN = false;
-                warning.GetComponent<Text>().text = "Supervisor must start with 'nswpf'";
-                return;
-            }
-        }
-
-        //validate first name
-        if (FirstName != "")
-        {
-            FN = true;
-            //warning.GetComponent<Text>().text = "";
-        }
-        else
-        {
-            warning.GetComponent<Text>().text = "First Name is EMPTY!";
-            Debug.LogWarning("First Name is EMPTY!");
-            return;
-        }
-
-        //validate lastname
-        if (LastName != "")
-        {
-            LN = true;
-            //warning.GetComponent<Text>().text = "";
-        }
-        else
-        {
-            warning.GetComponent<Text>().text = "Last Name is EMPTY!";
-            Debug.LogWarning("Last Name is EMPTY!");
-            return;
-        }
-
-        //validate email
-
-        if (Email != "")
-        {
-            EmailValidation();
-            if (EmailValid)
-            {
-                if (Email.Contains("@"))
-                {
-                    if (Email.Contains("."))
-                    {
-                        EM = true;
-                        //warning.GetComponent<Text>().text = "";
-                    }
-                    else
-                    {
-                        warning.GetComponent<Text>().text = "Unvalid Email";
-                        Debug.LogWarning("Unvalid Email.");
-                        return;
-                    }
-                }
-                else
-                {
-                    warning.GetComponent<Text>().text = "Unvalid Email";
-                    Debug.LogWarning("Unvalid Email@");
-                    return;
-                }
-            }
-            else
-            {
-                warning.GetComponent<Text>().text = "Unvalid Email";
-                Debug.LogWarning("Unvalid Email");
-                return;
-            }
-        }
-        else
-        {
-            warning.GetComponent<Text>().text = "Email field EMPTY!";
-            Debug.LogWarning("Email field EMPTY!");
-            return;
-        }
-
-        //decrypt password in the database and compare
-        int i = 1;
-        DecryptedPassword = "";
-        foreach (char c in lines[4])
-        {
-            char Decrypted = (char)(c / i);
-            DecryptedPassword += Decrypted.ToString();
-            i++;
-        }
-        CurPassword = DecryptedPassword;
-
-        //validate password
-
-        if (Password != "")
-        {
-            newPW = true;
-            if (Password.Length > 5)
-            {
-                PW = true;
-                //warning.GetComponent<Text>().text = "";
-            }
-            else
-            {
-                warning.GetComponent<Text>().text = "Password must be at least 6 characters long";
-                Debug.LogWarning("Password must be at least 6 characters long");
-                return;
-            }
-        }
-        else
-        {
-            newPW = false;
-            Debug.LogWarning("Password field EMPTY!");
-        }
-
-        //validate confirm password
-        if (newPW == true)
-        {
-            if (ConfPassword != "")
-            {
-                if (ConfPassword.Equals(Password))
-                {
-                    CPW = true;
-                    //warning.GetComponent<Text>().text = "";
-                }
-                else
-                {
-                    warning.GetComponent<Text>().text = "Password doesn't match!";
-                    Debug.LogWarning("Password doesn't match!");
-                    return;
-                }
-            }
-            else
-            {
-                warning.GetComponent<Text>().text = "Confirm Password field EMPTY";
-                Debug.LogWarning("Confirm Password field EMPTY");
-                return;
-            }
-        }
-        else if (newPW == false)
-        {
-            if (ConfPassword != "")
-            {
-                warning.GetComponent<Text>().text = "Confirm Password must match the new password";
-                Debug.LogWarning("No new password but confirm password is filled");
-            }
-        }
-
-        //save new detail
-        if (newPW == true)
-        {
-            if (UN == true && FN == true && LN == true && EM == true && PW == true && CPW == true)
-            {
-                bool Clear = true;
-                i = 1;
-                foreach (char c in Password)
-                {
-                    if (Clear)
-                    {
-                        Password = "";
-                        Clear = false;
-                    }
-                    char Encrypted = (char)(c * i);
-                    Password += Encrypted.ToString();
-                    i++;
-                }
-                form = (FirstName + "\n" + LastName + "\n" + Username + "\n" + Email + "\n" + Password + "\n" + Role);
-                if (Username.Equals(adminEditUsername, StringComparison.OrdinalIgnoreCase))
-                {
-                    System.IO.File.WriteAllText(@path + adminEditUsername + ".txt", form);
-                }
-                else if (!Username.Equals(adminEditUsername, StringComparison.OrdinalIgnoreCase))
-                {
-                    System.IO.File.Delete(@path + adminEditUsername + ".txt");
-                    System.IO.File.WriteAllText(@path + Username + ".txt", form);
-                    adminEditUsername = Username;
-                }
-                edit = false;
-                warning.GetComponent<Text>().text = "Changes are saved!";
-                password.GetComponentInChildren<InputField>().text = "";
-                confPassword.GetComponentInChildren<InputField>().text = "";
-            }
-        }
-        else if (newPW == false)
-        {
-            if (UN == true && FN == true && LN == true && EM == true)
-            {
-                bool Clear = true;
-                i = 1;
-                foreach (char c in CurPassword)
-                {
-                    if (Clear)
-                    {
-                        CurPassword = "";
-                        Clear = false;
-                    }
-                    char Encrypted = (char)(c * i);
-                    CurPassword += Encrypted.ToString();
-                    i++;
-                }
-                form = (FirstName + "\n" + LastName + "\n" + Username + "\n" + Email + "\n" + CurPassword + "\n" + Role);
-                if (Username.Equals(adminEditUsername, StringComparison.OrdinalIgnoreCase))
-                {
-                    System.IO.File.WriteAllText(@path + adminEditUsername + ".txt", form);
-                }
-                else if (!Username.Equals(adminEditUsername, StringComparison.OrdinalIgnoreCase))
-                {
-                    System.IO.File.Delete(@path + adminEditUsername + ".txt");
-                    System.IO.File.WriteAllText(@path + Username + ".txt", form);
-                    adminEditUsername = Username;
-                }
-                edit = false;
-                warning.GetComponentInChildren<Text>().text = "Changes are saved!";
-                password.GetComponentInChildren<InputField>().text = "";
-                confPassword.GetComponentInChildren<InputField>().text = "";
-                if (Login.globalRole!=0)
-                {
-                    Login.fullName = FirstName + " " + LastName;
-                }
-            }
-        }
-
+        password.GetComponentInChildren<InputField>().text = "";
+        confPassword.GetComponentInChildren<InputField>().text = "";
     }
 
     // Update is called once per frame
@@ -402,7 +124,7 @@ public class AdminEdit : MonoBehaviour
         editBtn.SetActive(!edit);
         backBtn.SetActive(!edit);
 
-        username.GetComponentInChildren<InputField>().interactable = edit;
+        //username.GetComponentInChildren<InputField>().interactable = edit;
         role.GetComponentInChildren<InputField>().interactable = false;
         firstName.GetComponentInChildren<InputField>().interactable = edit;
         lastName.GetComponentInChildren<InputField>().interactable = edit;

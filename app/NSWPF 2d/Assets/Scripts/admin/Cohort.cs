@@ -5,6 +5,7 @@ using System;
 using System.IO;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEditor.PackageManager;
 
 public class Cohort
 //--------------------------------------------
@@ -66,7 +67,247 @@ public class Cohort
         return null;
     }
 
-    public KeyValuePair<int, string> addUser(string username, string firstname, string lastname, string email, string password, string confPassword, int role)
+    public KeyValuePair<int, string> editUser(string username, string firstname, string lastname, string email, string curPassword, string newPassword, string confNewPassword, int role)
+    //--------------------------------------------------
+    // update user info to database
+    // Return value for int:
+    // ------------ 0 if all good
+    // ------------ 1 if error
+    // Return value for string: message
+    //--------------------------------------------------
+    {
+        int errorCode = 0;
+        string error_message = "";
+        KeyValuePair<int, string> error_return;
+
+        bool FN = false; //first name
+        bool LN = false; //last name
+        bool EM = false; //email
+        bool newPW = false; // true if only new password
+        bool CurPW = false; // current password
+        bool PW = false; //password
+        bool CPW = false; //Confirm password
+
+        if (firstname != "")
+        {
+            FN = true;
+            //warning.GetComponent<Text>().text = "";
+        }
+        else
+        {
+            errorCode = 1;
+            error_message = "First Name is EMPTY!";
+            error_return = new KeyValuePair<int, string>(errorCode,error_message);
+            return error_return;
+        }
+
+        //validate lastname
+        if (lastname != "")
+        {
+            LN = true;
+            //warning.GetComponent<Text>().text = "";
+        }
+        else
+        {
+            errorCode = 1;
+            error_message = "Last Name is EMPTY!";
+            error_return = new KeyValuePair<int, string>(errorCode, error_message);
+            return error_return;
+        }
+
+        // Validate Email
+        if (email != "")
+        {
+            if (email.Contains("@"))
+            {
+                if (email.Contains("."))
+                {
+                    EM = true;
+                    //warning.GetComponent<Text>().text = "";
+                }
+                else
+                {
+                    errorCode = 1;
+                    error_message = "ERROR: invalid email!";
+                    error_return = new KeyValuePair<int, string>(errorCode, error_message);
+                    return error_return;
+                }
+            }
+            else
+            {
+                errorCode = 1;
+                error_message = "ERROR: invalid email!";
+                error_return = new KeyValuePair<int, string>(errorCode, error_message);
+                return error_return;
+            }
+        }
+        else
+        {
+            errorCode = 1;
+            error_message = "ERROR: Email field is empty!";
+            error_return = new KeyValuePair<int, string>(errorCode, error_message);
+            return error_return;
+        }
+
+        //validate current password
+        if (this.getUser(username).decryptPassword().Equals(curPassword))
+        {
+            CurPW = true;
+        }
+        else 
+        {
+            CurPW = false;
+            errorCode = 1;
+            error_message = "The current password is incorrect!";
+            error_return = new KeyValuePair<int, string>(errorCode, error_message);
+            return error_return;
+        }
+
+
+        //validate new password
+
+        if (newPassword != "")
+        {
+            newPW = true;
+            if (newPassword.Length > 5)
+            {
+                PW = true;
+                //warning.GetComponent<Text>().text = "";
+            }
+            else
+            {
+                errorCode = 1;
+                error_message = "Password must be at least 6 characters long";
+                error_return = new KeyValuePair<int, string>(errorCode, error_message);
+                return error_return;
+            }
+        }
+        else
+        {
+            newPW = false;
+        }
+
+        if (newPW == true)
+        {
+            if (confNewPassword != "")
+            {
+                if (confNewPassword.Equals(newPassword))
+                {
+                    CPW = true;
+                }
+                else
+                {
+                    errorCode = 1;
+                    error_message = "Confirm Password must match the new password";
+                    error_return = new KeyValuePair<int, string>(errorCode, error_message);
+                    return error_return;
+                }
+            }
+            else
+            {
+                errorCode = 1;
+                error_message = "Confirm passwaord field is empty!";
+                error_return = new KeyValuePair<int, string>(errorCode, error_message);
+                return error_return;
+            }
+        }
+        else if (newPW == false)
+        {
+            if (confNewPassword != "")
+            {
+                errorCode = 1;
+                error_message = "Confirm Password must match the new password";
+                error_return = new KeyValuePair<int, string>(errorCode, error_message);
+            }
+        }
+
+        if (newPW == true)
+        {
+            if (FN == true && LN == true && EM == true && CurPW == true && PW == true && CPW == true)
+            {
+                bool Clear = true;
+                int i = 1;
+                foreach (char c in newPassword)
+                {
+                    if (Clear)
+                    {
+                        newPassword = "";
+                        Clear = false;
+                    }
+                    char Encrypted = (char)(c * i);
+                    newPassword += Encrypted.ToString();
+                    i++;
+                }
+                string form = (firstname + "\n" + lastname + "\n" + username + "\n" + email + "\n" + newPassword + "\n" + this.getIndexToRole(role));
+                if (role == 2)
+                {
+                    System.IO.File.WriteAllText(@learnerPath + username + ".txt", form);
+                }
+                else if (role == 1)
+                {
+                    System.IO.File.WriteAllText(@supervisorPath + username + ".txt", form);
+                }
+
+
+                //update the singleton:
+                User changeDetail = this.getUser(username);
+                changeDetail.firstname = firstname;
+                changeDetail.lastname = lastname;
+                changeDetail.email = email;
+                changeDetail.encryptedPassword = newPassword;
+
+                errorCode = 0;
+                error_message = "Changes are saved!";
+                Login.fullName = firstname + " " + lastname;
+            }
+        }
+        else if (newPW == false)
+        {
+            if (FN == true && LN == true && EM == true && CurPW == true)
+            {
+                bool Clear = true;
+                int i = 1;
+                foreach (char c in curPassword)
+                {
+                    if (Clear)
+                    {
+                        curPassword = "";
+                        Clear = false;
+                    }
+                    char Encrypted = (char)(c * i);
+                    curPassword += Encrypted.ToString();
+                    i++;
+                }
+                string form = (firstname + "\n" + lastname + "\n" + username + "\n" + email + "\n" + curPassword + "\n" + this.getIndexToRole(role));
+                
+                if (role == 2)
+                {
+                    System.IO.File.WriteAllText(@learnerPath + username + ".txt", form);
+                }
+                else if (role == 1)
+                {
+                    System.IO.File.WriteAllText(@supervisorPath + username + ".txt", form);
+                }
+
+                //update singleton
+                User changeDetail = this.getUser(username);
+                changeDetail.firstname = firstname;
+                changeDetail.lastname = lastname;
+                changeDetail.email = email;
+
+                errorCode = 0;
+                error_message = "Changes are saved!";
+                Login.fullName = firstname + " " + lastname;
+            }
+        }
+
+
+
+        error_return = new KeyValuePair<int, string>(errorCode, error_message);
+        return error_return;
+    }
+
+public KeyValuePair<int, string> addUser(string username, string firstname, string lastname, string email, string password, string confPassword, int role)
     //--------------------------------------------------
     // Add user to database (create new account)
     // Return value for int:
@@ -137,6 +378,38 @@ public class Cohort
                         error_return = new KeyValuePair<int, string>(errorCode, error_message);
                         return error_return;
                     }
+                }
+            }
+
+            // Validate user name for supervisor
+            if (role == 1) 
+            {
+                if (!System.IO.Directory.Exists(@supervisorPath))
+                {
+                    System.IO.Directory.CreateDirectory(@supervisorPath);
+                }
+
+                if (username.Length <= 5)
+                {
+                    errorCode = 1;
+                    error_message = "supervisor account must start with 'nswpf'";
+                    error_return = new KeyValuePair<int, string>(errorCode, error_message);
+                    return error_return;
+                }
+
+                if (username.Substring(0, 5).Equals("admin", StringComparison.OrdinalIgnoreCase))
+                {
+                    errorCode = 1;
+                    error_message = "cannot start username with 'admin' keywords";
+                    error_return = new KeyValuePair<int, string>(errorCode, error_message);
+                    return error_return;
+                }
+                if (!username.Substring(0, 5).Equals("nswpf", StringComparison.OrdinalIgnoreCase))
+                {
+                    errorCode = 1;
+                    error_message = "supervisor account must start with 'nswpf'";
+                    error_return = new KeyValuePair<int, string>(errorCode, error_message);
+                    return error_return;
                 }
             }
 
