@@ -258,7 +258,11 @@ public class Cohort
 
                 errorCode = 0;
                 error_message = "Changes are saved!";
-                Login.fullName = firstname + " " + lastname;
+
+                if (Login.globalRole != 0)
+                {
+                    Login.fullName = firstname + " " + lastname;
+                }
             }
         }
         else if (newPW == false)
@@ -297,7 +301,11 @@ public class Cohort
 
                 errorCode = 0;
                 error_message = "Changes are saved!";
-                Login.fullName = firstname + " " + lastname;
+
+                if (Login.globalRole != 0)
+                {
+                    Login.fullName = firstname + " " + lastname;
+                }
             }
         }
 
