@@ -85,6 +85,18 @@ public class Quiz2Handler : MonoBehaviour
 
     public void FinishClick()
     {
-        SceneManager.LoadScene("Main Menu");
+        if (Login.globalRole == 2)
+        {
+            SceneManager.LoadScene("Module Searching");
+        }
+        else if (Login.globalRole == 1)
+        {
+            SceneManager.LoadScene("Module Searching Supervisor");
+        }
+        else 
+        {
+            Debug.Log("Account Error");
+            SceneManager.LoadScene("Login menu");
+        }
     }
 }
