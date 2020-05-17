@@ -17,6 +17,8 @@ public class DiscussionDetail : MonoBehaviour
     public GameObject warning;
     public GameObject content;
 
+    public Discussion discussion;
+
     public static Thread post = null;
     private List<Reply> replies = null;
 
@@ -32,13 +34,16 @@ public class DiscussionDetail : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        post = SearchingDiscussion.postDetail;
+        discussion = Discussion.getDiscussion();
+
+        post = discussion.getThread(SearchingDiscussion.postDetail.name);
         if (post == null) {
             warning.GetComponent<Text>().text = "no post found";
             return;
         }
         
         detail.GetComponent<Text>().text = post.username + " (" + post.role + ") " + ": " + post.content;
+
 
         replies = post.replies;
 

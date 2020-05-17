@@ -385,7 +385,7 @@ public class AdminEdit : MonoBehaviour
                 warning.GetComponentInChildren<Text>().text = "Changes are saved!";
                 password.GetComponentInChildren<InputField>().text = "";
                 confPassword.GetComponentInChildren<InputField>().text = "";
-                if (!Login.globalRole.Equals("Admin"))
+                if (Login.globalRole!=0)
                 {
                     Login.fullName = FirstName + " " + LastName;
                 }

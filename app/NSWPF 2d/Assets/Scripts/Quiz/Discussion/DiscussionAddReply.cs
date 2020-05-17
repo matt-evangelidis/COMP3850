@@ -16,24 +16,23 @@ public class DiscussionAddReply : MonoBehaviour
     public GameObject warning;
     public GameObject Reply;
 
-    private string filePath = "database/discussion/";
+    Discussion discussion;
 
     private string content;
+
+    public Cohort cohort;
 
     // Start is called before the first frame update
     void Start()
     {
+        discussion = Discussion.getDiscussion();
+        cohort = Cohort.getCohort();
         Reply.GetComponent<InputField>().lineType = InputField.LineType.MultiLineNewline;
         Reply.GetComponent<InputField>().text = "";
 
         if (Login.globalUsername == null)
         {
             warning.GetComponent<Text>().text = "cannot verify username! Please contact admin";
-            return;
-        }
-
-        if (Login.globalRole == null) {
-            warning.GetComponent<Text>().text = "cannot verify role! Please contact admin";
             return;
         }
 
@@ -48,36 +47,17 @@ public class DiscussionAddReply : MonoBehaviour
         Reply.GetComponent<InputField>().text = "";
         SceneManager.LoadScene("Searching Discussion Detail");
     }
-    public void uploadReply() {
-        if (content.Equals("")) {
-            warning.GetComponent<Text>().text = "Nothing to upload";
-            return;
-        }
-
-        if (content.Contains(";") || content.Contains("<END>")) {
-            warning.GetComponent<Text>().text = "Reply cannot contain ';' or '<END>'";
-            return;
-        }
-
-        if (!System.IO.Directory.Exists(@filePath))
+    public void uploadReply() 
+    {
+        string role = cohort.getIndexToRole(Login.globalRole);
+        Reply reply = new Reply(Login.globalUsername,content,role);
+        Thread th = discussion.getThread(DiscussionDetail.post.name);
+        KeyValuePair<int,string>  error = th.addReply(reply);
+        if (error.Key == 1) 
         {
-            warning.GetComponent<Text>().text = "Error: no database found! Please contact admin";
+            warning.GetComponent<Text>().text = error.Value;
             return;
         }
-
-        if (!System.IO.File.Exists(@filePath + DiscussionDetail.post.name + ".txt"))
-        {
-            warning.GetComponent<Text>().text = "Error: no post found! Please contact admin";
-            return;
-        }
-
-        string form = Login.globalUsername + ";" + Login.globalRole + ";" + content + "<END>"; 
-
-        File.AppendAllText(@filePath + DiscussionDetail.post.name + ".txt", form);
-
-        SearchingDiscussion.postDetail.noReplies += 1;
-        Reply newReply = new Reply(Login.globalUsername, content, Login.globalRole);
-        SearchingDiscussion.postDetail.replies.Add(newReply);
 
         SceneManager.LoadScene("Searching Discussion Detail");
     }

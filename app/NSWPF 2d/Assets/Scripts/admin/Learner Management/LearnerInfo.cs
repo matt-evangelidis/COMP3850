@@ -11,7 +11,6 @@ using TMPro;
 public class LearnerInfo : MonoBehaviour
 {
     public GameObject userEntry;
-    private string filePath = "database/login/learner/";
     public void backToLearnerManagement() {
         SceneManager.LoadScene("Learner Management");
     }
@@ -20,8 +19,8 @@ public class LearnerInfo : MonoBehaviour
     void Start()
     {
 
-        Cohort cohort = new Cohort(filePath);
-        foreach (User learner in cohort.users)
+        Cohort cohort = Cohort.getCohort();
+        foreach (User learner in cohort.getLearners())
         {
             GameObject go = (GameObject)Instantiate(userEntry);
             go.transform.SetParent(this.transform);

@@ -15,17 +15,14 @@ public class AchievementQuiz : MonoBehaviour
     public GameObject content;
     public Text backToSupervisorMainBtnTxt;
 
-    private string[] lines;
-    private string[] attemps;
-    private string[] results;
-    private string filePath = "database/leaderboard/quiz/";
+    Leaderboard leaderboard;
 
     public void backToModule() {
-        if(Login.globalRole.Equals("Learner"))
+        if(Login.globalRole==2)
         {
             SceneManager.LoadScene("Module Searching");
         }
-        else if (Login.globalRole.Equals("Supervisor"))
+        else if (Login.globalRole==1)
         {
             
             SceneManager.LoadScene("Supervisor Menu");
@@ -46,38 +43,29 @@ public class AchievementQuiz : MonoBehaviour
             warning.GetComponent<Text>().text = "Internal Error. Please contact admin!";
             return;
         }
-        if (Login.globalRole.Equals("Supervisor"))
+        if (Login.globalRole==1)
         {
             backToSupervisorMainBtnTxt.GetComponent<Text>().text = "Supervisor Menu"; // override button text
         }
 
-        if (!System.IO.File.Exists(@filePath + Login.globalUsername + ".txt"))
+        leaderboard = Leaderboard.getLeaderboard();
+
+        Achievement myAchievement = leaderboard.getAchievement(Login.globalUsername);
+        if (myAchievement == null)
         {
-            warning.GetComponent<Text>().text = "There is no progress yet";
+            warning.GetComponent<Text>().text = "No personal progress yet!";
             return;
         }
+        List<Attempt> myAttempts = myAchievement.attempts; 
 
-        lines = System.IO.File.ReadAllLines(@filePath + Login.globalUsername + ".txt");
-        if (lines[0] == "")
+        foreach (Attempt attempt in myAttempts)
         {
-            warning.GetComponent<Text>().text = "There is no progress yet";
-            return;
-        }
-        attemps = lines[0].Split(';');
-
-        for (int i = 0; i < attemps.Length-1; i++)
-        {
-            results = attemps[i].Split(',');
-            string noCorrects = results[0];
-            string noQuestions = results[1];
-            string noAttemp = "#"+(i + 1).ToString();
-            string percentage = ((float.Parse(noCorrects) / float.Parse(noQuestions)) * 100).ToString() + "%";
             GameObject go = (GameObject)Instantiate(userEntry);
             go.transform.SetParent(content.transform);
-            go.transform.Find("Attemp").GetComponentInChildren<InputField>().text = noAttemp;
-            go.transform.Find("Correct").GetComponent<InputField>().text = noCorrects;
-            go.transform.Find("Total").GetComponent<InputField>().text = noQuestions;
-            go.transform.Find("Percent").GetComponent<InputField>().text = percentage;
+            go.transform.Find("Attemp").GetComponentInChildren<InputField>().text = "#"+(myAttempts.IndexOf(attempt)+1).ToString();
+            go.transform.Find("Correct").GetComponent<InputField>().text = attempt.noCorrects.ToString();
+            go.transform.Find("Total").GetComponent<InputField>().text = attempt.noQuestion.ToString();
+            go.transform.Find("Percent").GetComponent<InputField>().text = attempt.percent.ToString()+"%";
         }
 
         Destroy(userEntry);

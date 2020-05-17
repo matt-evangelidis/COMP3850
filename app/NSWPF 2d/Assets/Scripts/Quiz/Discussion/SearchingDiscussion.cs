@@ -19,16 +19,17 @@ public class SearchingDiscussion : MonoBehaviour
 
     private List<GameObject> entries;
 
-    private string filePath = "database/discussion/";
+    //Discussion object
+    Discussion discussion;
 
     // Back button
     public void backToModule()
     {
-        if (Login.globalRole.Equals("Learner"))
+        if (Login.globalRole==2)
         {
             SceneManager.LoadScene("Module Searching");
         }
-        else if (Login.globalRole.Equals("Supervisor"))
+        else if (Login.globalRole==1)
         {
             SceneManager.LoadScene("Module Searching Supervisor");
         }
@@ -43,7 +44,7 @@ public class SearchingDiscussion : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Discussion discussion = new Discussion(filePath);
+        discussion = Discussion.getDiscussion();
         Debug.Log("number of discussion: " + discussion.threads.Count);
         seeDetail = false;
         entries = new List<GameObject>();
