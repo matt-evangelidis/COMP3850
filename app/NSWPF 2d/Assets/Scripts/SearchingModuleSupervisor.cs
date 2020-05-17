@@ -23,7 +23,7 @@ public class SearchingModuleSupervisor : SearchingModule
 
     public void toModifyQuiz()
     {
-        // SceneManager.LoadScene("Quiz blahblahblah");
+         SceneManager.LoadScene("Add Quiz");
     }
 
     //public void toDiscussion()

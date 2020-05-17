@@ -43,6 +43,10 @@ public class AdminEdit : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (Login.globalRole != 0) 
+        {
+            editBtn.SetActive(false);
+        }
         cohort = Cohort.getCohort();
 
         if (adminEditUsername.Equals(""))

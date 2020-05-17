@@ -122,6 +122,9 @@ public class AcountSetting : MonoBehaviour
         warning.GetComponent<Text>().text = error.Value;
         edit = false;
 
+        curPassword.GetComponent<InputField>().text = "";
+        password.GetComponent<InputField>().text = "";
+        confPassword.GetComponent<InputField>().text = "";
     }
 
     // Update is called once per frame

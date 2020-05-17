@@ -43,9 +43,11 @@ public class AchievementQuiz : MonoBehaviour
             warning.GetComponent<Text>().text = "Internal Error. Please contact admin!";
             return;
         }
-        if (Login.globalRole==1)
+        if (Login.globalRole == 1)
         {
             backToSupervisorMainBtnTxt.GetComponent<Text>().text = "Supervisor Menu"; // override button text
+            warning.GetComponent<Text>().text = "This functionality is currently unavailable for non-learner-role user";
+            return;
         }
 
         leaderboard = Leaderboard.getLeaderboard();

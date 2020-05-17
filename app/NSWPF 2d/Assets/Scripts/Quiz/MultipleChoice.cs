@@ -45,6 +45,14 @@ public class MultipleChoice
             return error_return;
         }
 
+        if (question.question.Contains(";"))
+        {
+            errorCode = 1;
+            error_message = "ERROR: Question cannot contain ';'";
+            error_return = new KeyValuePair<int, string>(errorCode, error_message);
+            return error_return;
+        }
+
         foreach (Answer a in question.answers) {
             if (a.text == "") 
             {
@@ -53,11 +61,37 @@ public class MultipleChoice
                 error_return = new KeyValuePair<int, string>(errorCode, error_message);
                 return error_return;
             }
+
+            if (a.text.Contains(";")) 
+            {
+                errorCode = 1;
+                error_message = "ERROR: Answer cannot contain ';'";
+                error_return = new KeyValuePair<int, string>(errorCode, error_message);
+                return error_return;
+            }
         }
 
         //no error:
+
+        ShuffleList<Answer>(question.answers);
         this.questions.Add(question);
 
+        // add to database
+        List<Answer> answers = question.answers;
+        int correctIndex = -1;
+        foreach (Answer answer in answers)
+        {
+            if (answer.correct == true) {
+                correctIndex = answers.IndexOf(answer) + 1;
+            }
+        }
+        string form = "\n"+question.question + ";" + answers[0].text + ";" + answers[1].text + ";" + answers[2].text + ";" + answers[3].text + ";"+correctIndex.ToString();
+
+        File.AppendAllText(@path, form);
+
+        errorCode = 0;
+        error_message = "New question is added successfully!";
+        error_return = new KeyValuePair<int, string>(errorCode, error_message);
         return error_return;
     }
 
