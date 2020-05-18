@@ -68,9 +68,11 @@ public class AchievementQuiz : MonoBehaviour
             go.transform.Find("Correct").GetComponent<InputField>().text = attempt.noCorrects.ToString();
             go.transform.Find("Total").GetComponent<InputField>().text = attempt.noQuestion.ToString();
             go.transform.Find("Percent").GetComponent<InputField>().text = attempt.percent.ToString()+"%";
+
+            go.transform.localScale = new Vector3(1f,1f,1f);
         }
 
-        Destroy(userEntry);
+        userEntry.SetActive(false);
     }
     // Update is called once per frame
     void Update()

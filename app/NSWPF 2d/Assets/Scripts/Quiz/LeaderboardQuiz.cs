@@ -118,6 +118,9 @@ public class LeaderboardQuiz : MonoBehaviour
             go.transform.Find("Attempt").GetComponentInChildren<InputField>().text = achievement.noAttempts.ToString();
             go.transform.Find("BestAttempt").GetComponentInChildren<InputField>().text = "#"+achievement.bestAttempt.ToString();
             go.transform.Find("Percent").GetComponentInChildren<InputField>().text = (achievement.bestScore).ToString()+"%";
+
+
+            go.transform.localScale = new Vector3(1f,1f,1f);
         }
 
             sorted = true;

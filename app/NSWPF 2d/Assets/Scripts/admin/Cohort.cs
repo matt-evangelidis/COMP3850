@@ -677,7 +677,7 @@ public KeyValuePair<int, string> addUser(string username, string firstname, stri
                 //learner login
                 foreach (User user in learners)
                 {
-                    if (user.username.Equals(username)) // Found username
+                    if (user.username.Equals(username,StringComparison.OrdinalIgnoreCase)) // Found username
                     {
                         // Validate password
                         if (password.Equals(user.decryptPassword()))

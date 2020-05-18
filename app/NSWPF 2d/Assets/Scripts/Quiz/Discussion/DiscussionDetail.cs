@@ -67,6 +67,8 @@ public class DiscussionDetail : MonoBehaviour
             go.transform.Find("Header").Find("Heading").GetComponentInChildren<Text>().text = "Re: " + post.heading;
             go.transform.Find("Header").Find("name-role").GetComponentInChildren<Text>().text = re.username + " - "+ re.role;
             go.transform.Find("Content").GetComponentInChildren<Text>().text = re.content;
+
+            go.transform.localScale = new Vector3(1f, 1f, 1f);
         }
 
         entry.SetActive(false);

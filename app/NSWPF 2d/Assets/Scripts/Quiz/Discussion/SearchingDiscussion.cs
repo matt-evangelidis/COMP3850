@@ -60,6 +60,7 @@ public class SearchingDiscussion : MonoBehaviour
                 Debug.Log(postDetail.heading);
                 seeDetail = true;
             });
+            go.transform.localScale = new Vector3(1f,1f,1f);
             entries.Add(go);
         }
         userEntry.SetActive(false);
