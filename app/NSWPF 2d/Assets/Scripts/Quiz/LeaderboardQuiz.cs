@@ -11,6 +11,9 @@ using System.Linq;
 
 public class LeaderboardQuiz : MonoBehaviour
 {
+    public GameObject scrollView;
+    public GameObject heading;
+
     public GameObject userEntry;
     public GameObject warning;
     public GameObject content;
@@ -22,6 +25,9 @@ public class LeaderboardQuiz : MonoBehaviour
     public Button BestAttemp;
     public Button Result;
     public Text backToSupervisorMainBtnTxt;
+
+    //UI alignment
+    float scrollWidth;
 
     private List<Achievement> achievementList;
     private List<GameObject> entries;
@@ -99,6 +105,17 @@ public class LeaderboardQuiz : MonoBehaviour
             return;
         }
 
+        //UI alignment
+
+        //the width of scroll view. This is used to control the size of user entry.
+        RectTransform rt = scrollView.GetComponent<RectTransform>();
+        scrollWidth = rt.rect.width;
+
+        // set heading alignment
+        RectTransform headingRT = heading.GetComponent<RectTransform>();
+        headingRT.sizeDelta = new Vector2(scrollWidth, headingRT.rect.height);
+        headingRT.position = new Vector3(rt.position.x, headingRT.position.y, headingRT.position.z);
+
         Leaderboard leaderboard = Leaderboard.getLeaderboard();
 
         if (leaderboard == null) {
@@ -112,15 +129,24 @@ public class LeaderboardQuiz : MonoBehaviour
         foreach (Achievement achievement in achievementList) 
         {
             GameObject go = (GameObject)Instantiate(userEntry);
+
             entries.Add(go);
             go.transform.SetParent(content.transform);
             go.transform.Find("Username").GetComponentInChildren<InputField>().text = achievement.username;
             go.transform.Find("Attempt").GetComponentInChildren<InputField>().text = achievement.noAttempts.ToString();
             go.transform.Find("BestAttempt").GetComponentInChildren<InputField>().text = "#"+achievement.bestAttempt.ToString();
             go.transform.Find("Percent").GetComponentInChildren<InputField>().text = (achievement.bestScore).ToString()+"%";
+            
 
+            //UI alignemnt
+            for (int i = 0; i < go.transform.childCount; i++) 
+            {
+                GameObject child = go.transform.GetChild(i).gameObject;
+                RectTransform childRT = child.GetComponent<RectTransform>();
 
-            go.transform.localScale = new Vector3(1f,1f,1f);
+                childRT.sizeDelta = new Vector2(scrollWidth / go.transform.childCount, childRT.rect.height);
+            }
+            go.transform.localScale = new Vector3(1f, 1f, 1f);
         }
 
             sorted = true;
@@ -261,6 +287,16 @@ public class LeaderboardQuiz : MonoBehaviour
             go.transform.Find("Attempt").GetComponentInChildren<InputField>().text = achievement.noAttempts.ToString();
             go.transform.Find("BestAttempt").GetComponentInChildren<InputField>().text = "#"+achievement.bestAttempt.ToString();
             go.transform.Find("Percent").GetComponentInChildren<InputField>().text = (achievement.bestScore).ToString()+"%";
+
+            //UI alignemnt
+            for (int i = 0; i < go.transform.childCount; i++)
+            {
+                GameObject child = go.transform.GetChild(i).gameObject;
+                RectTransform childRT = child.GetComponent<RectTransform>();
+
+                childRT.sizeDelta = new Vector2(scrollWidth / go.transform.childCount, childRT.rect.height);
+            }
+            go.transform.localScale = new Vector3(1f, 1f, 1f);
         }
         userEntry.SetActive(false);
         sorted = true;
