@@ -70,6 +70,10 @@ public class Quiz : MonoBehaviour
         mc = MultipleChoice.getMultipleChoice();
         if (mc != null)
         {
+            if (mc.questions.Count == 0) 
+            { 
+                warning.GetComponent<Text>().text = "no question in database";
+            }
 
             if (mc.questions.Count > no_questions) //pick question from pool
             {
