@@ -11,8 +11,12 @@ using System.Linq;
 
 public class LeaderboardQuiz : MonoBehaviour
 {
+    //UI element
     public GameObject scrollView;
     public GameObject heading;
+
+    //UI alignment
+    float scrollWidth;
 
     public GameObject userEntry;
     public GameObject warning;
@@ -25,9 +29,6 @@ public class LeaderboardQuiz : MonoBehaviour
     public Button BestAttemp;
     public Button Result;
     public Text backToSupervisorMainBtnTxt;
-
-    //UI alignment
-    float scrollWidth;
 
     private List<Achievement> achievementList;
     private List<GameObject> entries;

@@ -10,6 +10,13 @@ using TMPro;
 
 public class AchievementQuiz : MonoBehaviour
 {
+    //UI element
+    public GameObject scrollView;
+    public GameObject heading;
+
+    //UI alignment
+    float scrollWidth;
+
     public GameObject userEntry;
     public GameObject warning;
     public GameObject content;
@@ -50,6 +57,19 @@ public class AchievementQuiz : MonoBehaviour
             return;
         }
 
+        //UI alignment
+
+        //the width of scroll view. This is used to control the size of user entry.
+        RectTransform rt = scrollView.GetComponent<RectTransform>();
+        scrollWidth = rt.rect.width;
+
+        // set heading alignment
+        RectTransform headingRT = heading.GetComponent<RectTransform>();
+        headingRT.sizeDelta = new Vector2(scrollWidth, headingRT.rect.height);
+        headingRT.position = new Vector3(rt.position.x, headingRT.position.y, headingRT.position.z);
+
+
+
         leaderboard = Leaderboard.getLeaderboard();
 
         Achievement myAchievement = leaderboard.getAchievement(Login.globalUsername);
@@ -69,7 +89,15 @@ public class AchievementQuiz : MonoBehaviour
             go.transform.Find("Total").GetComponent<InputField>().text = attempt.noQuestion.ToString();
             go.transform.Find("Percent").GetComponent<InputField>().text = attempt.percent.ToString()+"%";
 
-            go.transform.localScale = new Vector3(1f,1f,1f);
+            //UI alignemnt
+            for (int i = 0; i < go.transform.childCount; i++)
+            {
+                GameObject child = go.transform.GetChild(i).gameObject;
+                RectTransform childRT = child.GetComponent<RectTransform>();
+
+                childRT.sizeDelta = new Vector2(scrollWidth / go.transform.childCount, childRT.rect.height);
+            }
+            go.transform.localScale = new Vector3(1f, 1f, 1f);
         }
 
         userEntry.SetActive(false);
