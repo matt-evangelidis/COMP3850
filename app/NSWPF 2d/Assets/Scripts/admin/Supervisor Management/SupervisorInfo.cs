@@ -10,6 +10,13 @@ using TMPro;
 
 public class SupervisorInfo : MonoBehaviour
 {
+    //UI element
+    public GameObject scrollView;
+    public GameObject heading;
+
+    //UI alignment
+    float scrollWidth;
+
     public GameObject userEntry;
     public GameObject warning;
     public GameObject content;
@@ -47,6 +54,24 @@ public class SupervisorInfo : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //UI alignment
+
+        //the width of scroll view. This is used to control the size of user entry.
+        RectTransform rt = scrollView.GetComponent<RectTransform>();
+        scrollWidth = rt.rect.width;
+
+        // set heading alignment
+        RectTransform headingRT = heading.GetComponent<RectTransform>();
+        headingRT.sizeDelta = new Vector2(scrollWidth, headingRT.rect.height);
+        headingRT.position = new Vector3(rt.position.x, headingRT.position.y, headingRT.position.z);
+        for (int i = 0; i < heading.transform.childCount; i++)
+        {
+            GameObject child = heading.transform.GetChild(i).gameObject;
+            RectTransform childRT = child.GetComponent<RectTransform>();
+
+            childRT.sizeDelta = new Vector2(scrollWidth / heading.transform.childCount, childRT.rect.height);
+        }
+
         Cohort cohort = Cohort.getCohort();
         foreach (User supervisor in cohort.getSupervisors())
         {
@@ -56,6 +81,16 @@ public class SupervisorInfo : MonoBehaviour
             go.transform.Find("Firstname").GetComponent<InputField>().text = supervisor.firstname;
             go.transform.Find("Lastname").GetComponent<InputField>().text = supervisor.lastname;
             go.transform.Find("Email").GetComponent<InputField>().text = supervisor.email;
+
+            //UI alignemnt
+            for (int i = 0; i < go.transform.childCount; i++)
+            {
+                GameObject child = go.transform.GetChild(i).gameObject;
+                RectTransform childRT = child.GetComponent<RectTransform>();
+
+                childRT.sizeDelta = new Vector2(scrollWidth / go.transform.childCount, childRT.rect.height);
+            }
+            go.transform.localScale = new Vector3(1f, 1f, 1f);
         }
 
         Destroy(userEntry);

@@ -61,7 +61,13 @@ public class SearchingDiscussion : MonoBehaviour
         RectTransform headingRT = heading.GetComponent<RectTransform>();
         headingRT.sizeDelta = new Vector2(scrollWidth, headingRT.rect.height);
         headingRT.position = new Vector3(rt.position.x, headingRT.position.y, headingRT.position.z);
+        for (int i = 0; i < heading.transform.childCount; i++)
+        {
+            GameObject child = heading.transform.GetChild(i).gameObject;
+            RectTransform childRT = child.GetComponent<RectTransform>();
 
+            childRT.sizeDelta = new Vector2(scrollWidth / heading.transform.childCount, childRT.rect.height);
+        }
 
         discussion = Discussion.getDiscussion();
         Debug.Log("number of discussion: " + discussion.threads.Count);
