@@ -701,7 +701,7 @@ public KeyValuePair<int, string> addUser(string username, string firstname, stri
                 errorCode = 1;
                 error_message = "Username or password incorrect";
                 error_return = new KeyValuePair<int, string>(errorCode, error_message);
-                Debug.LogWarning("Password incorrect");
+                Debug.LogWarning("username incorrect");
                 return error_return;
             }
         }
