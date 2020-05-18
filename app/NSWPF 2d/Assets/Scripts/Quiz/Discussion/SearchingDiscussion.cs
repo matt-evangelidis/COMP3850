@@ -10,6 +10,13 @@ using TMPro;
 
 public class SearchingDiscussion : MonoBehaviour
 {
+    //UI element
+    public GameObject scrollView;
+    public GameObject heading;
+
+    //UI alignment
+    float scrollWidth;
+
     public GameObject userEntry;
     public GameObject warning;
     public GameObject content;
@@ -44,6 +51,18 @@ public class SearchingDiscussion : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //UI alignment
+
+        //the width of scroll view. This is used to control the size of user entry.
+        RectTransform rt = scrollView.GetComponent<RectTransform>();
+        scrollWidth = rt.rect.width;
+
+        // set heading alignment
+        RectTransform headingRT = heading.GetComponent<RectTransform>();
+        headingRT.sizeDelta = new Vector2(scrollWidth, headingRT.rect.height);
+        headingRT.position = new Vector3(rt.position.x, headingRT.position.y, headingRT.position.z);
+
+
         discussion = Discussion.getDiscussion();
         Debug.Log("number of discussion: " + discussion.threads.Count);
         seeDetail = false;
@@ -60,7 +79,17 @@ public class SearchingDiscussion : MonoBehaviour
                 Debug.Log(postDetail.heading);
                 seeDetail = true;
             });
-            go.transform.localScale = new Vector3(1f,1f,1f);
+
+            //UI alignemnt
+            for (int i = 0; i < go.transform.childCount; i++)
+            {
+                GameObject child = go.transform.GetChild(i).gameObject;
+                RectTransform childRT = child.GetComponent<RectTransform>();
+
+                childRT.sizeDelta = new Vector2(scrollWidth / go.transform.childCount, childRT.rect.height);
+            }
+            go.transform.localScale = new Vector3(1f, 1f, 1f);
+
             entries.Add(go);
         }
         userEntry.SetActive(false);
