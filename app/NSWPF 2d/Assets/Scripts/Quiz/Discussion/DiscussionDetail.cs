@@ -41,14 +41,14 @@ public class DiscussionDetail : MonoBehaviour
 
         if (SearchingDiscussion.postDetail == null)
         {
-            warning.GetComponent<Text>().text = "no post found";
+            warning.GetComponent<Text>().text = "No post found.";
             return;
         }
 
         post = discussion.getThread(SearchingDiscussion.postDetail.name);
         if (post == null)
         {
-            warning.GetComponent<Text>().text = "no post found";
+            warning.GetComponent<Text>().text = "No post found.";
             return;
         }
 
