@@ -84,7 +84,7 @@ public class AchievementQuiz : MonoBehaviour
         {
             GameObject go = (GameObject)Instantiate(userEntry);
             go.transform.SetParent(content.transform);
-            go.transform.Find("Attemp").GetComponentInChildren<InputField>().text = "#"+(myAttempts.IndexOf(attempt)+1).ToString();
+            go.transform.Find("Attempt").GetComponentInChildren<InputField>().text = "#"+(myAttempts.IndexOf(attempt)+1).ToString();
             go.transform.Find("Correct").GetComponent<InputField>().text = attempt.noCorrects.ToString();
             go.transform.Find("Total").GetComponent<InputField>().text = attempt.noQuestion.ToString();
             go.transform.Find("Percent").GetComponent<InputField>().text = attempt.percent.ToString()+"%";
