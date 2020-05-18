@@ -70,6 +70,11 @@ public class DiscussionDetail : MonoBehaviour
         }
 
         entry.SetActive(false);
+
+        if (replies.Count == 0)
+        {
+            reply.SetActive(false);
+        }
     }
 
     // Update is called once per frame
