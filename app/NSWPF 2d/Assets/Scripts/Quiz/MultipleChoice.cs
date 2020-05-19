@@ -13,7 +13,7 @@ public class MultipleChoice
 
     string path = "database/quiz/searching.txt";
 
-    public List<Question> questions;
+    private List<Question> questions;
 
     //singleton implementation
     private static MultipleChoice instance = null;
@@ -26,6 +26,10 @@ public class MultipleChoice
             instance = new MultipleChoice();
         }
         return instance;
+    }
+
+    public List<Question> getQuestions() {
+        return questions;
     }
 
     public KeyValuePair<int, string> addQuestion(Question question) 

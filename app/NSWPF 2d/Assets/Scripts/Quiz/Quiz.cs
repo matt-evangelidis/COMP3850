@@ -70,18 +70,18 @@ public class Quiz : MonoBehaviour
         mc = MultipleChoice.getMultipleChoice();
         if (mc != null)
         {
-            if (mc.questions.Count == 0) 
+            if (mc.getQuestions().Count == 0) 
             { 
                 warning.GetComponent<Text>().text = "no question in database";
             }
 
-            if (mc.questions.Count > no_questions) //pick question from pool
+            if (mc.getQuestions().Count > no_questions) //pick question from pool
             {
                 List<int> rndList = new List<int>();
                 System.Random rnd = new System.Random();
                 for (int i = 0; i < no_questions; i++)
                 {
-                    int random = rnd.Next(mc.questions.Count);
+                    int random = rnd.Next(mc.getQuestions().Count);
                     if (!rndList.Contains(random))
                     {
                         rndList.Add(random);
@@ -93,7 +93,7 @@ public class Quiz : MonoBehaviour
 
                 for (int i = 0; i < rndList.Count; i++)
                 {
-                    Question quesObj = mc.questions[rndList[i]];
+                    Question quesObj = mc.getQuestions()[rndList[i]];
 
                     //temp string array, delimited by ;, first entry is the question, last entry is the correct answer
                     string question = quesObj.question;
@@ -118,9 +118,9 @@ public class Quiz : MonoBehaviour
             else 
             { 
 
-                for (int i = 0; i < mc.questions.Count; i++)
+                for (int i = 0; i < mc.getQuestions().Count; i++)
                 {
-                    Question quesObj = mc.questions[i];
+                    Question quesObj = mc.getQuestions()[i];
 
                     //temp string array, delimited by ;, first entry is the question, last entry is the correct answer
                     string question = quesObj.question;
